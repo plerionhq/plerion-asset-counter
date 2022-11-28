@@ -579,5 +579,5 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
       }
     })
   );
-  console.log(JSON.stringify(AWS_MAPPING));
+  return AWS_MAPPING;
 };
