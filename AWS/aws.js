@@ -42,7 +42,7 @@ import {
   GetPublicAccessBlockCommand,
 } from "@aws-sdk/client-s3-control";
 import { SSMClient, ListDocumentsCommand } from "@aws-sdk/client-ssm";
-import { getAWSAccountId } from "./AWS/utils";
+import { getAWSAccountId } from "./utils";
 
 const AWS_MAPPING = { total: 0 };
 

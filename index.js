@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { queryAWS } from "./aws";
+import { queryAWS } from "./AWS/aws";
 const program = new Command();
 program
   .option("-p, --provider <provider>")
