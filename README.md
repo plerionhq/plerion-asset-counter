@@ -1,7 +1,7 @@
 # plerion-asset-counter
 A script which returns the number of assets Plerion will monitor over a cloud provider's account
 
-## How to run
+## How to run for an AWS account
 1. Ensure you have AWS CLI access. You can test this by running the following command and observing the output:
 ```
 aws sts get-caller-identity
