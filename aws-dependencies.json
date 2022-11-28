@@ -309,36 +309,6 @@
             "resourceIdentifier": "Arn"
           }
         }
-      },
-      {
-        "listClientConfig": {
-          "clientName": "IAMClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-iam"
-        },
-        "resourceType": "AWS::IAM::User",
-        "list": {
-          "action": {
-            "command": "paginateListUsers",
-            "outputProperty": "Users",
-            "resourceIdentifier": "UserName"
-          }
-        }
-      },
-      {
-        "listClientConfig": {
-          "clientName": "IAMClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-iam"
-        },
-        "resourceType": "AWS::IAM::Policy",
-        "list": {
-          "action": {
-            "command": "paginateListPolicies",
-            "outputProperty": "Policies",
-            "resourceIdentifier": "Arn"
-          }
-        }
       }
     ]
   },
