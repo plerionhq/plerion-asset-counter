@@ -20,8 +20,31 @@ import {
   IAMClient,
   paginateGetAccountAuthorizationDetails,
 } from "@aws-sdk/client-iam";
+import {
+  FirehoseClient,
+  ListDeliveryStreamsCommand,
+} from "@aws-sdk/client-firehose";
+import { KinesisClient, ListStreamsCommand } from "@aws-sdk/client-kinesis";
+import { LambdaClient, paginateListFunctions } from "@aws-sdk/client-lambda";
+import {
+  MemoryDBClient,
+  DescribeACLsCommand,
+  DescribeClustersCommand,
+  DescribeUsersCommand,
+} from "@aws-sdk/client-memorydb";
+import {
+  OrganizationsClient,
+  DescribeOrganizationCommand,
+  paginateListRoots,
+} from "@aws-sdk/client-organizations";
+import {
+  S3ControlClient,
+  GetPublicAccessBlockCommand,
+} from "@aws-sdk/client-s3-control";
+import { SSMClient, ListDocumentsCommand } from "@aws-sdk/client-ssm";
+import { getAWSAccountId } from "./AWS/utils";
 
-const MAPPING = { total: 0 };
+const AWS_MAPPING = { total: 0 };
 
 const DDB_SCALABLE_TARGET = "AWS::DynamoDB::ScalableTarget";
 const EC2_INSTANCE = "AWS::EC2::Instance";
@@ -32,6 +55,196 @@ const IAM_GROUP = "AWS::IAM::Group";
 const IAM_ROLE = "AWS::IAM::Role";
 const IAM_USER = "AWS::IAM::User";
 const IAM_POLICY = "AWS::IAM::Policy";
+const KINESIS_FIREHOSE_DELIVERY_STREAM = "AWS::Kinesis::FirehoseDeliveryStream";
+const KINESIS_STREAM = "AWS::Kinesis::Stream";
+const LAMBDA_FUNCTION = "AWS::Lambda::Function";
+const MEMORY_DB_ACL = "AWS::MemoryDB::ACL";
+const MEMORY_DB_CLUSTER = "AWS::MemoryDB::Cluster";
+const MEMORY_DB_USER = "AWS::MemoryDB::User";
+const ORGANIZATIONS_ORGANIZATION = "AWS::Organizations::Organization";
+const ORGANIZATIONS_UNIT = "AWS::Organizations::OrganizationalUnit";
+const S3CONTROL_BLOCK_PUBLIC_ACCESS = "AWS::S3Control::PublicAccessBlock";
+const SSM_DOCUMENT = "AWS::SSM::Document";
+
+const querySSMDocument = async (serviceName, resourceType, region) => {
+  const client = new SSMClient({ region });
+  const command = new ListDocumentsCommand({
+    DocumentFilterList: [
+      {
+        key: "Owner",
+        value: "self",
+      },
+    ],
+  });
+  const response = await client.send(command);
+  let total = 0;
+  if (response && response.DocumentIdentifiers) {
+    total += response.DocumentIdentifiers.length;
+    updateResourceTypeCounter(
+      serviceName,
+      resourceType,
+      response.DocumentIdentifiers.length
+    );
+  }
+  AWS_MAPPING.total += total;
+};
+
+const queryS3ControlBlockPublicAccess = async (
+  serviceName,
+  resourceType,
+  region
+) => {
+  const client = new S3ControlClient({ region });
+  const command = new GetPublicAccessBlockCommand({
+    AccountId: await getAWSAccountId(),
+  });
+  const response = await client.send(command);
+  let total = 0;
+  if (response && response.PublicAccessBlockConfiguration) {
+    total++;
+    updateResourceTypeCounter(serviceName, resourceType, total);
+    AWS_MAPPING.total += total;
+  }
+};
+
+const queryOrganizations = async (serviceName, resourceType, region) => {
+  const client = new OrganizationsClient({ region });
+  const organization = await client.send(new DescribeOrganizationCommand({}));
+  const resources = [];
+  const roots = [];
+  let total = 0;
+  if (
+    AWS_MAPPING[serviceName] &&
+    AWS_MAPPING[serviceName][resourceType] !== undefined
+  ) {
+    return;
+  }
+  // AWS Organization is only counted as a resource for the master account
+  if (
+    organization &&
+    organization.Organization &&
+    organization.Organization.MasterAccountId === (await getAWSAccountId())
+  ) {
+    resources.push(organization.Organization);
+    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    total += resources.length;
+    for await (const { Roots: rootPage } of paginateListRoots({ client }, {})) {
+      roots.push(...(rootPage || []));
+    }
+    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    total += roots.length;
+  }
+  AWS_MAPPING.total += total;
+};
+
+const queryMemoryDBACL = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new MemoryDBClient({ region });
+  const resources = [];
+  let nextToken;
+  do {
+    const command = new DescribeACLsCommand({
+      NextToken: nextToken,
+    });
+    const response = await client.send(command);
+    resources.push(...(response.ACLs || []));
+    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    total += resources.length;
+    nextToken = response.NextToken;
+  } while (nextToken);
+  AWS_MAPPING.total += total;
+};
+
+const queryMemoryDBCluster = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new MemoryDBClient({ region });
+  const resources = [];
+  let nextToken;
+  do {
+    const command = new DescribeClustersCommand({
+      NextToken: nextToken,
+    });
+    const response = await client.send(command);
+    resources.push(...(response.Clusters || []));
+    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    total += resources.length;
+    nextToken = response.NextToken;
+  } while (nextToken);
+  AWS_MAPPING.total += total;
+};
+
+const queryMemoryDBUser = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new MemoryDBClient({ region });
+  const resources = [];
+  let nextToken;
+  do {
+    const command = new DescribeUsersCommand({
+      NextToken: nextToken,
+    });
+    const response = await client.send(command);
+    resources.push(...(response.Users || []));
+    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    total += resources.length;
+    nextToken = response.NextToken;
+  } while (nextToken);
+  AWS_MAPPING.total += total;
+};
+
+const queryLambdaFunction = async (serviceName, resourceType, region) => {
+  let resources = [];
+  const client = new LambdaClient({ region });
+  for await (const page of paginateListFunctions({ client }, {})) {
+    resources.push(...(page.Functions || []));
+  }
+  const resourceCount = resources.length;
+  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  AWS_MAPPING.total += resourceCount;
+};
+
+const queryKinesisStream = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new KinesisClient({ region });
+  const resources = [];
+  let hasMoreStreams = false;
+  do {
+    const command = new ListStreamsCommand({
+      ExclusiveStartStreamName:
+        resources.length > 0 ? resources[resources.length - 1] : undefined,
+    });
+    const response = await client.send(command);
+
+    resources.push(...(response.StreamNames || []));
+    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    total += resources.length;
+    hasMoreStreams = response.HasMoreStreams;
+  } while (hasMoreStreams);
+  AWS_MAPPING.total += total;
+};
+
+const queryKinesisFirehoseDeliveryStream = async (
+  serviceName,
+  resourceType,
+  region
+) => {
+  let total = 0;
+  const client = new FirehoseClient({ region });
+  const resources = [];
+  let hasMoreDeliveryStreams = false;
+  do {
+    const command = new ListDeliveryStreamsCommand({
+      ExclusiveStartDeliveryStreamName:
+        resources.length > 0 ? resources[resources.length - 1] : undefined,
+    });
+    const response = await client.send(command);
+
+    resources.push(...(response.DeliveryStreamNames || []));
+    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    total += resources.length;
+    hasMoreDeliveryStreams = response.HasMoreDeliveryStreams;
+  } while (hasMoreDeliveryStreams);
+  AWS_MAPPING.total += total;
+};
 
 const queryIAMAccountAuthorization = async (
   serviceName,
@@ -42,10 +255,9 @@ const queryIAMAccountAuthorization = async (
   const groups = [];
   const roles = [];
   const managedPolicies = [];
-  console.log(JSON.stringify(MAPPING[serviceName]));
   if (
-    MAPPING[serviceName] &&
-    MAPPING[serviceName][resourceType] !== undefined
+    AWS_MAPPING[serviceName] &&
+    AWS_MAPPING[serviceName][resourceType] !== undefined
   ) {
     return;
   }
@@ -93,24 +305,20 @@ const queryIAMAccountAuthorization = async (
   }
   const total =
     users.length + groups.length + roles.length + managedPolicies.length;
-  MAPPING.total += total;
+  AWS_MAPPING.total += total;
 };
 
 const queryGlacierVault = async (serviceName, resourceType, region) => {
   let total = 0;
   let resources = [];
-  try {
-    const client = new GlacierClient({ region });
-    for await (const page of paginateListVaults({ client }, {})) {
-      resources.push(...(page.VaultList || []));
-    }
-    const resourceCount = resources.length;
-    total += resourceCount;
-    updateResourceTypeCounter(serviceName, resourceType, resourceCount);
-  } catch (err) {
-    console.log(`Error finding ${resourceType}`);
+  const client = new GlacierClient({ region });
+  for await (const page of paginateListVaults({ client }, {})) {
+    resources.push(...(page.VaultList || []));
   }
-  MAPPING.total += total;
+  const resourceCount = resources.length;
+  total += resourceCount;
+  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  AWS_MAPPING.total += total;
 };
 
 const queryScalableTargets = async (serviceName, resourceType, region) => {
@@ -122,23 +330,19 @@ const queryScalableTargets = async (serviceName, resourceType, region) => {
       NextToken: aasNextToken,
       ServiceNamespace: "dynamodb",
     });
-    try {
-      const response = await aasClient.send(describeScalableTargets);
-      if (response && response.ScalableTargets) {
-        const scalableTargetsCount = response.ScalableTargets.length || 0;
-        total += scalableTargetsCount;
-        updateResourceTypeCounter(
-          serviceName,
-          resourceType,
-          scalableTargetsCount
-        );
-        aasNextToken = response.NextToken;
-      }
-    } catch (err) {
-      console.log(`Error finding ${resourceType}`);
+    const response = await aasClient.send(describeScalableTargets);
+    if (response && response.ScalableTargets) {
+      const scalableTargetsCount = response.ScalableTargets.length || 0;
+      total += scalableTargetsCount;
+      updateResourceTypeCounter(
+        serviceName,
+        resourceType,
+        scalableTargetsCount
+      );
+      aasNextToken = response.NextToken;
     }
   } while (aasNextToken);
-  MAPPING.total += total;
+  AWS_MAPPING.total += total;
 };
 
 const queryEC2Instance = async (serviceName, resourceType, region) => {
@@ -161,7 +365,7 @@ const queryEC2Instance = async (serviceName, resourceType, region) => {
   } catch (err) {
     console.log(`Error finding ${resourceType}`);
   }
-  MAPPING.total += total;
+  AWS_MAPPING.total += total;
 };
 
 const querySnapshot = async (serviceName, resourceType, region) => {
@@ -178,25 +382,22 @@ const querySnapshot = async (serviceName, resourceType, region) => {
   } catch (err) {
     console.log(`Error finding ${resourceType}`);
   }
-  MAPPING.total += total;
+  AWS_MAPPING.total += total;
 };
 
 const queryDefaultEBSEncryption = async (serviceName, resourceType, region) => {
   let total = 0;
-  try {
-    const command = new GetEbsEncryptionByDefaultCommand({});
-    const client = new EC2Client({ region });
-    const response = await client.send(command);
-    if (response) {
-      const ebsEncryptionCount =
-        response.EbsEncryptionByDefault !== undefined ? 1 : 0;
-      total += ebsEncryptionCount;
-      updateResourceTypeCounter(serviceName, resourceType, ebsEncryptionCount);
-    }
-  } catch (err) {
-    console.log(`Error finding ${resourceType}`);
+  const command = new GetEbsEncryptionByDefaultCommand({});
+  const client = new EC2Client({ region });
+  const response = await client.send(command);
+  if (response) {
+    const ebsEncryptionCount =
+      response.EbsEncryptionByDefault !== undefined ? 1 : 0;
+    total += ebsEncryptionCount;
+    updateResourceTypeCounter(serviceName, resourceType, ebsEncryptionCount);
   }
-  MAPPING.total += total;
+
+  AWS_MAPPING.total += total;
 };
 
 const queryDependencies = async (serviceName, resourceType, region) => {
@@ -274,71 +475,109 @@ const queryDependencies = async (serviceName, resourceType, region) => {
       }
     }
   }
-  MAPPING.total += total;
+  AWS_MAPPING.total += total;
 };
 
 const updateResourceTypeCounter = (serviceName, resourceType, value) => {
-  if (MAPPING[serviceName] === undefined) {
-    MAPPING[serviceName] = { [resourceType]: value };
-  } else if (MAPPING[serviceName][resourceType] === undefined) {
-    MAPPING[serviceName][resourceType] = value;
+  if (AWS_MAPPING[serviceName] === undefined) {
+    AWS_MAPPING[serviceName] = { [resourceType]: value };
+  } else if (AWS_MAPPING[serviceName][resourceType] === undefined) {
+    AWS_MAPPING[serviceName][resourceType] = value;
   } else {
-    MAPPING[serviceName][resourceType] += value;
+    AWS_MAPPING[serviceName][resourceType] += value;
   }
 };
 
 export const queryAWS = async (parsedService, parsedResourceType) => {
-  for (const service of services) {
-    const { regions, service: serviceName, resources } = service;
-    if (parsedService && parsedService !== serviceName) {
-      continue;
-    }
-    for (const resource of resources) {
-      const { resourceType } = resource;
-      if (parsedResourceType && parsedResourceType !== resourceType) {
-        continue;
+  await Promise.all(
+    services.map(async (service) => {
+      const { regions, service: serviceName, resources } = service;
+      if (parsedService && parsedService !== serviceName) {
+        return;
       }
-      for (const region of regions) {
-        console.log(`Checking ${resourceType} on region ${region}`);
-        try {
-          switch (resourceType) {
-            case DDB_SCALABLE_TARGET:
-              await queryScalableTargets(serviceName, resourceType, region);
-              break;
-            case EC2_DEFAULT_EBS_ENCRYPTION:
-              await queryDefaultEBSEncryption(
-                serviceName,
-                resourceType,
-                region
-              );
-              break;
-            case EC2_SNAPSHOT:
-              await querySnapshot(serviceName, resourceType, region);
-              break;
-            case EC2_INSTANCE:
-              await queryEC2Instance(serviceName, resourceType, region);
-              break;
-            case GLACIER_VAULT:
-              await queryGlacierVault(serviceName, resourceType, region);
-              break;
-            case IAM_GROUP:
-            case IAM_ROLE:
-            case IAM_USER:
-            case IAM_POLICY:
-              await queryIAMAccountAuthorization(
-                serviceName,
-                resourceType,
-                region
-              );
-              break;
-            default:
-              await queryDependencies(serviceName, resourceType, region);
+      for (const resource of resources) {
+        const { resourceType } = resource;
+        if (parsedResourceType && parsedResourceType !== resourceType) {
+          continue;
+        }
+        for (const region of regions) {
+          console.log(`Checking ${resourceType} on region ${region}`);
+          try {
+            switch (resourceType) {
+              case DDB_SCALABLE_TARGET:
+                await queryScalableTargets(serviceName, resourceType, region);
+                break;
+              case EC2_DEFAULT_EBS_ENCRYPTION:
+                await queryDefaultEBSEncryption(
+                  serviceName,
+                  resourceType,
+                  region
+                );
+                break;
+              case EC2_SNAPSHOT:
+                await querySnapshot(serviceName, resourceType, region);
+                break;
+              case EC2_INSTANCE:
+                await queryEC2Instance(serviceName, resourceType, region);
+                break;
+              case GLACIER_VAULT:
+                await queryGlacierVault(serviceName, resourceType, region);
+                break;
+              case IAM_GROUP:
+              case IAM_ROLE:
+              case IAM_USER:
+              case IAM_POLICY:
+                await queryIAMAccountAuthorization(
+                  serviceName,
+                  resourceType,
+                  region
+                );
+                break;
+              case KINESIS_FIREHOSE_DELIVERY_STREAM:
+                await queryKinesisFirehoseDeliveryStream(
+                  serviceName,
+                  resourceType,
+                  region
+                );
+                break;
+              case KINESIS_STREAM:
+                await queryKinesisStream(serviceName, resourceType, region);
+                break;
+              case LAMBDA_FUNCTION:
+                await queryLambdaFunction(serviceName, resourceType, region);
+                break;
+              case MEMORY_DB_ACL:
+                await queryMemoryDBACL(serviceName, resourceType, region);
+                break;
+              case MEMORY_DB_USER:
+                await queryMemoryDBUser(serviceName, resourceType, region);
+                break;
+              case MEMORY_DB_CLUSTER:
+                await queryMemoryDBCluster(serviceName, resourceType, region);
+                break;
+              case ORGANIZATIONS_UNIT:
+              case ORGANIZATIONS_ORGANIZATION:
+                await queryOrganizations(serviceName, resourceType, region);
+                break;
+              case S3CONTROL_BLOCK_PUBLIC_ACCESS:
+                await queryS3ControlBlockPublicAccess(
+                  serviceName,
+                  resourceType,
+                  region
+                );
+                break;
+              case SSM_DOCUMENT:
+                await querySSMDocument(serviceName, resourceType, region);
+                break;
+              default:
+                await queryDependencies(serviceName, resourceType, region);
+            }
+          } catch (err) {
+            console.log(`Error checking ${resourceType} on region ${region}`);
           }
-        } catch (err) {
-          console.log(`Error checking ${resourceType} on region ${region}`);
         }
       }
-    }
-  }
-  console.log(JSON.stringify(MAPPING));
+    })
+  );
+  console.log(JSON.stringify(AWS_MAPPING));
 };
