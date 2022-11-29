@@ -1,5 +1,5 @@
-import services from "./aws-services.json";
-import dependencies from "./aws-dependencies.json";
+import services from "./aws-services.json" assert { type: "json" };
+import dependencies from "./aws-dependencies.json" assert { type: "json" };
 import jp from "jsonpath";
 import {
   ApplicationAutoScalingClient,
@@ -42,7 +42,7 @@ import {
   GetPublicAccessBlockCommand,
 } from "@aws-sdk/client-s3-control";
 import { SSMClient, ListDocumentsCommand } from "@aws-sdk/client-ssm";
-import { getAWSAccountId } from "./utils";
+import { getAWSAccountId } from "./utils.js";
 
 const AWS_MAPPING = { total: 0 };
 

@@ -1,6 +1,7 @@
 import { writeFile } from "fs/promises";
 import { Command } from "commander";
-import { queryAWS } from "./AWS/aws";
+import { queryAWS } from "./AWS/aws.js";
+
 const program = new Command();
 program
   .option("-p, --provider <provider>")
