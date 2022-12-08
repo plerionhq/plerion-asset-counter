@@ -27,6 +27,9 @@ const AWS = "AWS";
   if (verbose) {
     await writeFile(`${provider}-output.json`, JSON.stringify(result));
   } else {
-    await writeFile(`${provider}-output.json`, JSON.stringify(result.total));
+    await writeFile(
+      `${provider}-output.json`,
+      JSON.stringify({ total: result.total })
+    );
   }
 })();
