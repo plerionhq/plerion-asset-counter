@@ -354,7 +354,7 @@
     "id": "CloudWatchLogs",
     "resources": [
       {
-        "resourceType": "AWS::Logs::MetricFilter",
+        "resourceType": "AWS::CloudWatchLogs::MetricFilter",
         "listClientConfig": {
           "clientName": "CloudWatchLogsClient",
           "clientType": "AWS_V3",
@@ -364,6 +364,20 @@
           "action": {
             "command": "DescribeMetricFilters",
             "outputProperty": "metricFilters"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::CloudWatchLogs::ResourcePolicy",
+        "listClientConfig": {
+          "clientName": "CloudWatchLogsClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-cloudwatch-logs"
+        },
+        "list": {
+          "action": {
+            "command": "DescribeResourcePolicies",
+            "outputProperty": "resourcePolicies"
           }
         }
       }
@@ -807,8 +821,8 @@
         },
         "list": {
           "action": {
-            "command": "GetResourcePolicy",
-            "outputProperty": "PolicyHash",
+            "command": "paginateGetResourcePolicies",
+            "outputProperty": "GetResourcePoliciesResponseList",
             "resourceIdentifier": "PolicyHash"
           }
         }
