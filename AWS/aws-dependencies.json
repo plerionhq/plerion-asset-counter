@@ -181,56 +181,6 @@
     ]
   },
   {
-    "id": "RDS",
-    "resources": [
-      {
-        "resourceType": "AWS::RDS::DBInstances",
-        "list": {
-          "action": {
-            "command": "paginateDescribeDBInstances",
-            "outputProperty": "DBInstances",
-            "resourceIdentifier": "DBInstanceIdentifier"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "RDSClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-rds"
-        }
-      },
-      {
-        "resourceType": "AWS::RDS::DBCluster",
-        "list": {
-          "action": {
-            "command": "paginateDescribeDBClusters",
-            "outputProperty": "DBClusters",
-            "resourceIdentifier": "DBClusterIdentifier"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "RDSClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-rds"
-        }
-      },
-      {
-        "resourceType": "AWS::RDS::DBClusterSnapshot",
-        "list": {
-          "action": {
-            "command": "paginateDescribeDBClusterSnapshots",
-            "outputProperty": "DBClusterSnapshots",
-            "resourceIdentifier": "DBClusterSnapshotIdentifier"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "RDSClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-rds"
-        }
-      }
-    ]
-  },
-  {
     "id": "KMS",
     "resources": [
       {
@@ -640,39 +590,6 @@
           "action": {
             "command": "paginateListClustersV2",
             "outputProperty": "ClusterInfoList"
-          }
-        }
-      }
-    ]
-  },
-  {
-    "id": "Neptune",
-    "resources": [
-      {
-        "resourceType": "AWS::Neptune::DBInstance",
-        "listClientConfig": {
-          "clientType": "AWS_V3",
-          "clientName": "NeptuneClient",
-          "packageName": "@aws-sdk/client-neptune"
-        },
-        "list": {
-          "action": {
-            "command": "paginateDescribeDBInstances",
-            "outputProperty": "DBInstances"
-          }
-        }
-      },
-      {
-        "resourceType": "AWS::Neptune::DBClusterParameterGroup",
-        "listClientConfig": {
-          "clientType": "AWS_V3",
-          "clientName": "NeptuneClient",
-          "packageName": "@aws-sdk/client-neptune"
-        },
-        "list": {
-          "action": {
-            "command": "paginateDescribeDBClusterParameterGroups",
-            "outputProperty": "DBClusterParameterGroups"
           }
         }
       }
