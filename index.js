@@ -52,13 +52,13 @@ const calculateUnits = (result, provider) => {
   );
   result["CSPM_UNITS"] = CSPM_UNITS;
   result["CWPP_UNITS"] = CWPP_UNITS;
-  result["TOTAL"] = CWPP_UNITS + CSPM_UNITS;
+  result["TOTAL_UNITS"] = CWPP_UNITS + CSPM_UNITS;
   result["DAYS_PER_MONTH"] = DAYS_PER_MONTH;
   result["CSPM_UNITS_PER_MONTH"] =
     result["DAYS_PER_MONTH"] * result["CSPM_UNITS"];
   result["CWPP_UNITS_PER_MONTH"] =
     result["DAYS_PER_MONTH"] * result["CWPP_UNITS"];
-  result["TOTAL_PER_MONTH"] = result["DAYS_PER_MONTH"] * result["TOTAL"];
+  result["TOTAL_UNITS_PER_MONTH"] = result["DAYS_PER_MONTH"] * result["TOTAL_UNITS"];
   console.log("-----------------------------------");
   console.log("OUTPUT: ");
   console.log(result, null, 2);
@@ -68,7 +68,16 @@ const calculateUnits = (result, provider) => {
   } else {
     await writeFile(
       `${provider}-output.json`,
-      JSON.stringify({ total: result.total })
+      JSON.stringify({
+        TOTAL: result.total,
+        CSPM_UNITS: result["CSPM_UNITS"],
+        CWPP_UNITS: result["CWPP_UNITS"],
+        TOTAL_UNITS: result["TOTAL_UNITS"],
+        DAYS_PER_MONTH: result["DAYS_PER_MONTH"],
+        CSPM_UNITS_PER_MONTH: result["CSPM_UNITS_PER_MONTH"],
+        CWPP_UNITS_PER_MONTH: result["CWPP_UNITS_PER_MONTH"],
+        TOTAL_UNITS_PER_MONTH: result["TOTAL_UNITS_PER_MONTH"],
+      })
     );
   }
   console.log("INFO");
@@ -79,7 +88,7 @@ const calculateUnits = (result, provider) => {
   console.log("DAILY");
   console.log("CSPM/CIEM Asset Units: " + result["CSPM_UNITS"]);
   console.log("CWPP Asset Units: " + result["CWPP_UNITS"]);
-  console.log("Total Asset Units: " + result["TOTAL"]);
+  console.log("Total Asset Units: " + result["TOTAL_UNITS"]);
   console.log("-----------------------------------");
   console.log("MONTHLY");
   console.log(
@@ -88,6 +97,6 @@ const calculateUnits = (result, provider) => {
   console.log(
     "CWPP Asset Units consumed p/m: " + result["CWPP_UNITS_PER_MONTH"]
   );
-  console.log("Total Asset Units consumed p/m: " + result["TOTAL_PER_MONTH"]);
+  console.log("Total Asset Units consumed p/m: " + result["TOTAL_UNITS_PER_MONTH"]);
   console.log("-----------------------------------");
 })();
