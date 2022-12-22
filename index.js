@@ -2,7 +2,7 @@ import { writeFile } from "fs/promises";
 import { Command } from "commander";
 import { queryAWS } from "./AWS/aws.js";
 
-import { UNIT_MAPPING } from "./constants.js";
+import { UNIT_MAPPING, DAYS_PER_MONTH } from "./constants.js";
 
 const program = new Command();
 program
@@ -52,6 +52,13 @@ const calculateUnits = (result, provider) => {
   );
   result["CSPM_UNITS"] = CSPM_UNITS;
   result["CWPP_UNITS"] = CWPP_UNITS;
+  result["TOTAL"] = CWPP_UNITS + CSPM_UNITS;
+  result["DAYS_PER_MONTH"] = DAYS_PER_MONTH;
+  result["CSPM_UNITS_PER_MONTH"] =
+    result["DAYS_PER_MONTH"] * result["CSPM_UNITS"];
+  result["CWPP_UNITS_PER_MONTH"] =
+    result["DAYS_PER_MONTH"] * result["CWPP_UNITS"];
+  result["TOTAL_PER_MONTH"] = result["DAYS_PER_MONTH"] * result["TOTAL"];
   console.log("-----------------------------------");
   console.log("OUTPUT: ");
   console.log(result, null, 2);
@@ -64,8 +71,23 @@ const calculateUnits = (result, provider) => {
       JSON.stringify({ total: result.total })
     );
   }
-  console.log("CSPM/CIEM Asset Units: " + CSPM_UNITS);
-  console.log("CWPP Asset Units: " + CWPP_UNITS);
-  console.log("Total Asset Units: " + (CWPP_UNITS + CSPM_UNITS));
+  console.log("INFO");
+  console.log("CSPM/CIEM Asset Unit Base Consumption: 1");
+  console.log("CWPP Asset Unit Base Consumption: 10");
+  console.log("Total days per month: " + result["DAYS_PER_MONTH"]);
+  console.log("-----------------------------------");
+  console.log("DAILY");
+  console.log("CSPM/CIEM Asset Units: " + result["CSPM_UNITS"]);
+  console.log("CWPP Asset Units: " + result["CWPP_UNITS"]);
+  console.log("Total Asset Units: " + result["TOTAL"]);
+  console.log("-----------------------------------");
+  console.log("MONTHLY");
+  console.log(
+    "CSPM/CIEM Asset Units consumed p/m: " + result["CSPM_UNITS_PER_MONTH"]
+  );
+  console.log(
+    "CWPP Asset Units consumed p/m: " + result["CWPP_UNITS_PER_MONTH"]
+  );
+  console.log("Total Asset Units consumed p/m: " + result["TOTAL_PER_MONTH"]);
   console.log("-----------------------------------");
 })();

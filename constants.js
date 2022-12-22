@@ -8,3 +8,5 @@ export const UNIT_MAPPING = {
     ECS: { "AWS::ECS::Cluster": 10 },
   },
 };
+
+export const DAYS_PER_MONTH = 30;
