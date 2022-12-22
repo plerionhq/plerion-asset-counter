@@ -1076,8 +1076,8 @@
         "resourceType": "AWS::ECS::Cluster",
         "list": {
           "action": {
-            "command": "DescribeClusters",
-            "outputProperty": "clusters"
+            "command": "paginateListClusters",
+            "outputProperty": "clusterArns"
           }
         },
         "listClientConfig": {
