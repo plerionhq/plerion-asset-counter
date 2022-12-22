@@ -31,9 +31,8 @@ const calculateUnits = (result, provider) => {
         cwppUnits +=
           serviceUnits[resourceTypeCount] *
           serviceResourceTypesCounts[resourceTypeCount];
-      } else {
-        cspmUnits += serviceResourceTypesCounts[resourceTypeCount];
       }
+      cspmUnits += serviceResourceTypesCounts[resourceTypeCount];
     });
   });
   return { CSPM: cspmUnits, CWPP: cwppUnits };
