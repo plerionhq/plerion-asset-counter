@@ -42,6 +42,11 @@ import {
   GetPublicAccessBlockCommand,
 } from "@aws-sdk/client-s3-control";
 import { SSMClient, ListDocumentsCommand } from "@aws-sdk/client-ssm";
+import {
+  DocDBClient,
+  paginateDescribeDBInstances,
+  paginateDescribeDBClusters,
+} from "@aws-sdk/client-docdb";
 import { getAWSAccountId } from "./utils.js";
 
 const AWS_MAPPING = { total: 0 };
@@ -65,6 +70,8 @@ const ORGANIZATIONS_ORGANIZATION = "AWS::Organizations::Organization";
 const ORGANIZATIONS_UNIT = "AWS::Organizations::OrganizationalUnit";
 const S3CONTROL_BLOCK_PUBLIC_ACCESS = "AWS::S3Control::PublicAccessBlock";
 const SSM_DOCUMENT = "AWS::SSM::Document";
+const DOC_DB_INSTANCE = "AWS::DocDB::DBInstance";
+const DOC_DB_CLUSTER = "AWS::DocDB::DBCluster";
 
 const querySSMDocument = async (serviceName, resourceType, region) => {
   const client = new SSMClient({ region });
@@ -488,6 +495,34 @@ const updateResourceTypeCounter = (serviceName, resourceType, value) => {
   }
 };
 
+const queryDocDBInstance = async (serviceName, resourceType, region) => {
+  let resources = [];
+  const client = new DocDBClient({ region });
+  for await (const page of paginateDescribeDBInstances(
+    { client },
+    { Filters: [{ Name: "engine", Values: ["docdb"] }] }
+  )) {
+    resources.push(...(page.DBInstances || []));
+  }
+  const resourceCount = resources.length;
+  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  AWS_MAPPING.total += resourceCount;
+};
+
+const queryDocDBCluster = async (serviceName, resourceType, region) => {
+  let resources = [];
+  const client = new DocDBClient({ region });
+  for await (const page of paginateDescribeDBClusters(
+    { client },
+    { Filters: [{ Name: "engine", Values: ["docdb"] }] }
+  )) {
+    resources.push(...(page.DBClusters || []));
+  }
+  const resourceCount = resources.length;
+  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  AWS_MAPPING.total += resourceCount;
+};
+
 export const queryAWS = async (parsedService, parsedResourceType) => {
   await Promise.all(
     services.map(async (service) => {
@@ -568,6 +603,12 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                 break;
               case SSM_DOCUMENT:
                 await querySSMDocument(serviceName, resourceType, region);
+                break;
+              case DOC_DB_INSTANCE:
+                await queryDocDBInstance(serviceName, resourceType, region);
+                break;
+              case DOC_DB_CLUSTER:
+                await queryDocDBCluster(serviceName, resourceType, region);
                 break;
               default:
                 await queryDependencies(serviceName, resourceType, region);
