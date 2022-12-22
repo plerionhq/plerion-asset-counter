@@ -27,7 +27,7 @@ const calculateUnits = (result, provider) => {
     const serviceResourceTypesCounts = result[serviceName];
     const serviceUnits = providerUnits[serviceName];
     Object.keys(serviceResourceTypesCounts).forEach((resourceTypeCount) => {
-      if (serviceUnits[resourceTypeCount] !== undefined) {
+      if (serviceUnits && serviceUnits[resourceTypeCount] !== undefined) {
         cwppUnits +=
           serviceUnits[resourceTypeCount] *
           serviceResourceTypesCounts[resourceTypeCount];
