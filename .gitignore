@@ -41,3 +41,5 @@ dist/**/*
 # ignore yarn.lock
 yarn.lock
 .serverless
+
+AWS-output.json
