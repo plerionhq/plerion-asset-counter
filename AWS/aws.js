@@ -42,6 +42,11 @@ import {
   GetPublicAccessBlockCommand,
 } from "@aws-sdk/client-s3-control";
 import { SSMClient, ListDocumentsCommand } from "@aws-sdk/client-ssm";
+import {
+  APIGatewayClient,
+  paginateGetRestApis,
+  GetStagesCommand,
+} from "@aws-sdk/client-api-gateway";
 import { getAWSAccountId } from "./utils.js";
 
 const AWS_MAPPING = { total: 0 };
@@ -65,6 +70,7 @@ const ORGANIZATIONS_ORGANIZATION = "AWS::Organizations::Organization";
 const ORGANIZATIONS_UNIT = "AWS::Organizations::OrganizationalUnit";
 const S3CONTROL_BLOCK_PUBLIC_ACCESS = "AWS::S3Control::PublicAccessBlock";
 const SSM_DOCUMENT = "AWS::SSM::Document";
+const APIGATEWAY_STAGE = "AWS::APIGateway::Stage";
 
 const querySSMDocument = async (serviceName, resourceType, region) => {
   const client = new SSMClient({ region });
@@ -400,6 +406,25 @@ const queryDefaultEBSEncryption = async (serviceName, resourceType, region) => {
   AWS_MAPPING.total += total;
 };
 
+const queryAPIGatewayStage = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new APIGatewayClient({ region });
+  const resources = [];
+  for await (const page of paginateGetRestApis({ client }, {})) {
+    resources.push(...(page.items || []));
+  }
+  for await (const apis of resources) {
+    const command = new GetStagesCommand({
+      restApiId: apis.id,
+    });
+    const response = await client?.send(command);
+    const stageCount = response?.item.length;
+    total += stageCount;
+    updateResourceTypeCounter(serviceName, resourceType, stageCount);
+  }
+  AWS_MAPPING.total += total;
+};
+
 const queryDependencies = async (serviceName, resourceType, region) => {
   const resourceDependency = dependencies.find((dep) => dep.id === serviceName);
   let total = 0;
@@ -568,6 +593,9 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                 break;
               case SSM_DOCUMENT:
                 await querySSMDocument(serviceName, resourceType, region);
+                break;
+              case APIGATEWAY_STAGE:
+                await queryAPIGatewayStage(serviceName, resourceType, region);
                 break;
               default:
                 await queryDependencies(serviceName, resourceType, region);

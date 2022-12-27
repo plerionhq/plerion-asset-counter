@@ -1453,7 +1453,8 @@
   {
     "service": "APIGateway",
     "resources": [
-      { "resource": "RestAPI", "resourceType": "AWS::APIGateway::RestAPI" }
+      { "resource": "RestAPI", "resourceType": "AWS::APIGateway::RestAPI" },
+      { "resource": "RestAPI", "resourceType": "AWS::APIGateway::Stage" }
     ],
     "regions": [
       "ap-south-1",
