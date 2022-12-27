@@ -47,6 +47,11 @@ import {
   paginateGetRestApis,
   GetStagesCommand,
 } from "@aws-sdk/client-api-gateway";
+import {
+  ECSClient,
+  paginateListClusters,
+  ListServicesCommand,
+} from "@aws-sdk/client-ecs";
 import { getAWSAccountId } from "./utils.js";
 
 const AWS_MAPPING = { total: 0 };
@@ -71,6 +76,7 @@ const ORGANIZATIONS_UNIT = "AWS::Organizations::OrganizationalUnit";
 const S3CONTROL_BLOCK_PUBLIC_ACCESS = "AWS::S3Control::PublicAccessBlock";
 const SSM_DOCUMENT = "AWS::SSM::Document";
 const APIGATEWAY_STAGE = "AWS::APIGateway::Stage";
+const ECS_SERVICE = "AWS::ECS::Service";
 
 const querySSMDocument = async (serviceName, resourceType, region) => {
   const client = new SSMClient({ region });
@@ -425,6 +431,26 @@ const queryAPIGatewayStage = async (serviceName, resourceType, region) => {
   AWS_MAPPING.total += total;
 };
 
+const queryECSService = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new ECSClient({ region });
+  const resources = [];
+  for await (const page of paginateListClusters({ client }, {})) {
+    resources.push(...(page.clusterArns || []));
+  }
+
+  for await (const clusterArn of resources) {
+    const command = new ListServicesCommand({
+      cluster: clusterArn,
+    });
+    const response = await client?.send(command);
+    const serviceCount = response?.serviceArns.length;
+    total += serviceCount;
+    updateResourceTypeCounter(serviceName, resourceType, serviceCount);
+  }
+  AWS_MAPPING.total += total;
+};
+
 const queryDependencies = async (serviceName, resourceType, region) => {
   const resourceDependency = dependencies.find((dep) => dep.id === serviceName);
   let total = 0;
@@ -596,6 +622,9 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                 break;
               case APIGATEWAY_STAGE:
                 await queryAPIGatewayStage(serviceName, resourceType, region);
+                break;
+              case ECS_SERVICE:
+                await queryECSService(serviceName, resourceType, region);
                 break;
               default:
                 await queryDependencies(serviceName, resourceType, region);
