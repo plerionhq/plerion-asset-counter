@@ -12,7 +12,7 @@
     "url": "git+https://github.com/plerionhq/plerion-asset-counter.git"
   },
   "author": "Plerion",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/plerionhq/plerion-asset-counter/issues"
   },
