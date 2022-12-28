@@ -43,6 +43,16 @@ import {
 } from "@aws-sdk/client-s3-control";
 import { SSMClient, ListDocumentsCommand } from "@aws-sdk/client-ssm";
 import {
+  APIGatewayClient,
+  paginateGetRestApis,
+  GetStagesCommand,
+} from "@aws-sdk/client-api-gateway";
+import {
+  ECSClient,
+  paginateListClusters,
+  ListServicesCommand,
+} from "@aws-sdk/client-ecs";
+import {
   DocDBClient,
   paginateDescribeDBInstances,
   paginateDescribeDBClusters,
@@ -81,6 +91,8 @@ const ORGANIZATIONS_ORGANIZATION = "AWS::Organizations::Organization";
 const ORGANIZATIONS_UNIT = "AWS::Organizations::OrganizationalUnit";
 const S3CONTROL_BLOCK_PUBLIC_ACCESS = "AWS::S3Control::PublicAccessBlock";
 const SSM_DOCUMENT = "AWS::SSM::Document";
+const APIGATEWAY_STAGE = "AWS::APIGateway::Stage";
+const ECS_SERVICE = "AWS::ECS::Service";
 const DOC_DB_INSTANCE = "AWS::DocDB::DBInstance";
 const DOC_DB_CLUSTER = "AWS::DocDB::DBCluster";
 const RDS_DB_INSTANCE = "AWS::RDS::DBInstances";
@@ -421,6 +433,45 @@ const queryDefaultEBSEncryption = async (serviceName, resourceType, region) => {
     updateResourceTypeCounter(serviceName, resourceType, ebsEncryptionCount);
   }
 
+  AWS_MAPPING.total += total;
+};
+
+const queryAPIGatewayStage = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new APIGatewayClient({ region });
+  const resources = [];
+  for await (const page of paginateGetRestApis({ client }, {})) {
+    resources.push(...(page.items || []));
+  }
+  for await (const apis of resources) {
+    const command = new GetStagesCommand({
+      restApiId: apis.id,
+    });
+    const response = await client?.send(command);
+    const stageCount = response?.item.length;
+    total += stageCount;
+    updateResourceTypeCounter(serviceName, resourceType, stageCount);
+  }
+  AWS_MAPPING.total += total;
+};
+
+const queryECSService = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new ECSClient({ region });
+  const resources = [];
+  for await (const page of paginateListClusters({ client }, {})) {
+    resources.push(...(page.clusterArns || []));
+  }
+
+  for await (const clusterArn of resources) {
+    const command = new ListServicesCommand({
+      cluster: clusterArn,
+    });
+    const response = await client?.send(command);
+    const serviceCount = response?.serviceArns.length;
+    total += serviceCount;
+    updateResourceTypeCounter(serviceName, resourceType, serviceCount);
+  }
   AWS_MAPPING.total += total;
 };
 
@@ -769,6 +820,12 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                 break;
               case SSM_DOCUMENT:
                 await querySSMDocument(serviceName, resourceType, region);
+                break;
+              case APIGATEWAY_STAGE:
+                await queryAPIGatewayStage(serviceName, resourceType, region);
+                break;
+              case ECS_SERVICE:
+                await queryECSService(serviceName, resourceType, region);
                 break;
               case DOC_DB_INSTANCE:
                 await queryDocDBInstance(serviceName, resourceType, region);
