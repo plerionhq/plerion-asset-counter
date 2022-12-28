@@ -58,10 +58,11 @@ const calculateUnits = (result, provider) => {
     result["DAYS_PER_MONTH"] * result["CSPM_UNITS"];
   result["CWPP_UNITS_PER_MONTH"] =
     result["DAYS_PER_MONTH"] * result["CWPP_UNITS"];
-  result["TOTAL_UNITS_PER_MONTH"] = result["DAYS_PER_MONTH"] * result["TOTAL_UNITS"];
+  result["TOTAL_UNITS_PER_MONTH"] =
+    result["DAYS_PER_MONTH"] * result["TOTAL_UNITS"];
   console.log("-----------------------------------");
   console.log("OUTPUT: ");
-  console.log(result, null, 2);
+  console.log(result);
   console.log("-----------------------------------");
   if (verbose) {
     await writeFile(`${provider}-output.json`, JSON.stringify(result));
@@ -97,6 +98,8 @@ const calculateUnits = (result, provider) => {
   console.log(
     "CWPP Asset Units consumed p/m: " + result["CWPP_UNITS_PER_MONTH"]
   );
-  console.log("Total Asset Units consumed p/m: " + result["TOTAL_UNITS_PER_MONTH"]);
+  console.log(
+    "Total Asset Units consumed p/m: " + result["TOTAL_UNITS_PER_MONTH"]
+  );
   console.log("-----------------------------------");
 })();
