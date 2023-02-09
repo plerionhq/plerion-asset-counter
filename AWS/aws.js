@@ -1,6 +1,8 @@
 import services from "./aws-services.json" assert { type: "json" };
 import dependencies from "./aws-dependencies.json" assert { type: "json" };
 import jp from "jsonpath";
+import chunks from "lodash.chunk";
+import { WAFV2Client, ListRuleGroupsCommand } from "@aws-sdk/client-wafv2";
 import {
   ApplicationAutoScalingClient,
   DescribeScalableTargetsCommand,
@@ -13,6 +15,8 @@ import {
   EC2Client,
   GetEbsEncryptionByDefaultCommand,
   DescribeSnapshotsCommand,
+  DescribeImagesCommand,
+  DescribeFpgaImagesCommand,
   paginateDescribeInstances,
 } from "@aws-sdk/client-ec2";
 import { GlacierClient, paginateListVaults } from "@aws-sdk/client-glacier";
@@ -51,6 +55,7 @@ import {
   ECSClient,
   paginateListClusters,
   ListServicesCommand,
+  DescribeServicesCommand,
 } from "@aws-sdk/client-ecs";
 import {
   DocDBClient,
@@ -76,6 +81,8 @@ const DDB_SCALABLE_TARGET = "AWS::DynamoDB::ScalableTarget";
 const EC2_INSTANCE = "AWS::EC2::Instance";
 const EC2_DEFAULT_EBS_ENCRYPTION = "AWS::EC2::DefaultEBSEncryption";
 const EC2_SNAPSHOT = "AWS::EC2::Snapshot";
+const EC2_AMI = "AWS::EC2::AMI";
+const EC2_FPGA_IMAGE = "AWS::EC2::FpgaImage";
 const GLACIER_VAULT = "AWS::Glacier::Vault";
 const IAM_GROUP = "AWS::IAM::Group";
 const IAM_ROLE = "AWS::IAM::Role";
@@ -101,6 +108,8 @@ const RDS_DB_CLUSTER_SNAPSHOT = "AWS::RDS::DBClusterSnapshot";
 const NEPTUNE_DB_INSTANCE = "AWS::Neptune::DBInstance";
 const NEPTUNE_DB_CLUSTER_PARAMETER_GROUP =
   "AWS::Neptune::DBClusterParameterGroup";
+const ECS_TASK_DEFINITION = "AWS::ECS::TaskDefinition";
+const WAF_RULE_GROUP = "AWS::WAFv2::RuleGroup";
 
 const querySSMDocument = async (serviceName, resourceType, region) => {
   const client = new SSMClient({ region });
@@ -357,6 +366,53 @@ const queryGlacierVault = async (serviceName, resourceType, region) => {
   AWS_MAPPING.total += total;
 };
 
+const queryWafv2RuleGroup = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new WAFV2Client({ region });
+  const commandForRegional = new ListRuleGroupsCommand({
+    Scope: "REGIONAL",
+  });
+  const responseForRegional = await client.send(commandForRegional);
+
+  const commandForCloudfront = new ListRuleGroupsCommand({
+    Scope: "CLOUDFRONT",
+  });
+  const responseForCloudfront = await client.send(commandForCloudfront);
+
+  const data = [];
+  if (responseForRegional.RuleGroups)
+    data.push(...responseForRegional.RuleGroups);
+
+  if (responseForCloudfront.RuleGroups)
+    data.push(...responseForCloudfront.RuleGroups);
+  const resourceCount = data.length;
+  total += resourceCount;
+  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  AWS_MAPPING.total += total;
+};
+
+const queryEc2Ami = async (serviceName, resourceType, region) => {
+  const client = new EC2Client({ region });
+  const command = new DescribeImagesCommand({
+    Owners: ["self"],
+  });
+  const response = await client.send(command);
+  const total = response?.Images?.length ?? 0;
+  updateResourceTypeCounter(serviceName, resourceType, total);
+  AWS_MAPPING.total += total;
+};
+
+const queryEc2fpga = async (serviceName, resourceType, region) => {
+  const client = new EC2Client({ region });
+  const command = new DescribeFpgaImagesCommand({
+    Owners: ["self"],
+  });
+  const response = await client.send(command);
+  const total = response?.Images?.length ?? 0;
+  updateResourceTypeCounter(serviceName, resourceType, total);
+  AWS_MAPPING.total += total;
+};
+
 const queryScalableTargets = async (serviceName, resourceType, region) => {
   const aasClient = new ApplicationAutoScalingClient({ region });
   let total = 0;
@@ -471,6 +527,43 @@ const queryECSService = async (serviceName, resourceType, region) => {
     const serviceCount = response?.serviceArns.length;
     total += serviceCount;
     updateResourceTypeCounter(serviceName, resourceType, serviceCount);
+    const chunkedServices = chunks(response?.serviceArns, 10);
+    // Batching by 10 because this is the API limit per docs
+    // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/describeservicescommandinput.html
+    await Promise.all(
+      chunkedServices.map(async (serviceArns) => {
+        const command = new DescribeServicesCommand({
+          cluster: clusterArn,
+          services: serviceArns,
+        });
+        const response = await this.client?.send(command);
+        const taskDefinitionArns = [];
+        if (response && Array.isArray(response?.services)) {
+          response.services.forEach((service) => {
+            if (service?.taskDefinition) {
+              taskDefinitionArns.push(service.taskDefinition);
+            }
+            if (Array.isArray(service?.deployments)) {
+              const deploymentTaskDefinitionArns = service.deployments
+                .filter(
+                  (deployment) =>
+                    deployment?.status === "PRIMARY" &&
+                    !!deployment?.taskDefinition
+                )
+                .map((deployment) => deployment?.taskDefinition);
+              if (deploymentTaskDefinitionArns) {
+                taskDefinitionArns.push(...deploymentTaskDefinitionArns);
+              }
+            }
+          });
+        }
+        updateResourceTypeCounter(
+          serviceName,
+          ECS_TASK_DEFINITION,
+          taskDefinitionArns.length
+        );
+      })
+    );
   }
   AWS_MAPPING.total += total;
 };
@@ -855,6 +948,15 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                   resourceType,
                   region
                 );
+                break;
+              case WAF_RULE_GROUP:
+                await queryWafv2RuleGroup(serviceName, resourceType, region);
+                break;
+              case EC2_AMI:
+                await queryEc2Ami(serviceName, resourceType, region);
+                break;
+              case EC2_FPGA_IMAGE:
+                await queryEc2fpga(serviceName, resourceType, region);
                 break;
               default:
                 await queryDependencies(serviceName, resourceType, region);
