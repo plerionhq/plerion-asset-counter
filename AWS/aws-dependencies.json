@@ -1152,5 +1152,24 @@
         }
       }
     ]
+  },
+  {
+    "id": "AutoScaling",
+    "resources": [
+      {
+        "resourceType": "AWS::AutoScaling::AutoScalingGroup",
+        "list": {
+          "action": {
+            "command": "paginateDescribeAutoScalingGroups",
+            "outputProperty": "AutoScalingGroups"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "AutoScalingClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-auto-scaling"
+        }
+      }
+    ]
   }
 ]
