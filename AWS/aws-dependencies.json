@@ -854,6 +854,20 @@
             "outputProperty": "CacheClusters"
           }
         }
+      },
+      {
+        "resourceType": "AWS::ElastiCache::UserGroup",
+        "listClientConfig": {
+          "clientName": "ElastiCacheClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-elasticache"
+        },
+        "list": {
+          "action": {
+            "command": "paginateDescribeUserGroups",
+            "outputProperty": "UserGroups"
+          }
+        }
       }
     ]
   },
