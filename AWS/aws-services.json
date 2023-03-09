@@ -111,7 +111,11 @@
       },
       { "resource": "AMI", "resourceType": "AWS::EC2::AMI" },
       { "resource": "FpgaImage", "resourceType": "AWS::EC2::FpgaImage" },
-      { "resource": "Endpoint", "resourceType": "AWS::EC2::Endpoint" }
+      { "resource": "Endpoint", "resourceType": "AWS::EC2::Endpoint" },
+      {
+        "resource": "LaunchTemplate",
+        "resourceType": "AWS::EC2::LaunchTemplate"
+      }
     ],
     "regions": [
       "af-south-1",
