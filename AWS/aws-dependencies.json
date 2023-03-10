@@ -159,6 +159,21 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-ec2"
         }
+      },
+      {
+        "resourceType": "AWS::EC2::LaunchTemplate",
+        "list": {
+          "action": {
+            "command": "paginateDescribeLaunchTemplates",
+            "outputProperty": "LaunchTemplates",
+            "resourceIdentifier": "LaunchTemplateId"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "EC2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-ec2"
+        }
       }
     ]
   },
@@ -1149,6 +1164,25 @@
           "clientName": "BackupClient",
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-backup"
+        }
+      }
+    ]
+  },
+  {
+    "id": "AutoScaling",
+    "resources": [
+      {
+        "resourceType": "AWS::AutoScaling::AutoScalingGroup",
+        "list": {
+          "action": {
+            "command": "paginateDescribeAutoScalingGroups",
+            "outputProperty": "AutoScalingGroups"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "AutoScalingClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-auto-scaling"
         }
       }
     ]
