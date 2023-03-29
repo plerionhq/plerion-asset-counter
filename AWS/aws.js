@@ -440,6 +440,11 @@ const queryScalableTargets = async (serviceName, resourceType, region) => {
 const queryEC2Instance = async (serviceName, resourceType, region) => {
   let total = 0;
   let resources = [];
+  const isInstanceFromAutoScaleGroup = (instance) => {
+    return !!instance?.Tags?.find(
+      (tag) => tag.Key === "aws:autoscaling:groupName"
+    );
+  };
   try {
     const client = new EC2Client({ region });
     for await (const page of paginateDescribeInstances({ client }, {})) {
@@ -451,7 +456,10 @@ const queryEC2Instance = async (serviceName, resourceType, region) => {
         );
       }
     }
-    const ec2InstancesCount = resources.length;
+    const ASGInstances = resources.filter((instance) =>
+      isInstanceFromAutoScaleGroup(instance)
+    );
+    const ec2InstancesCount = (resources.length - ASGInstances.length);
     total += ec2InstancesCount;
     updateResourceTypeCounter(serviceName, resourceType, ec2InstancesCount);
   } catch (err) {
