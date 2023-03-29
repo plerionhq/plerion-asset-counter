@@ -1186,5 +1186,24 @@
         }
       }
     ]
+  },
+  {
+    "id": "SecurityHub",
+    "resources": [
+      {
+        "resourceType": "AWS::SecurityHub::StandardSubscription",
+        "list": {
+          "action": {
+            "command": "GetEnabledStandards",
+            "outputProperty": "StandardsSubscriptions"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "SecurityHubClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-securityhub"
+        }
+      }
+    ]
   }
 ]
