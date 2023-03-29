@@ -445,6 +445,9 @@ const queryEC2Instance = async (serviceName, resourceType, region) => {
       (tag) => tag.Key === "aws:autoscaling:groupName"
     );
   };
+  const isInstanceTerminated = (instance) => {
+    return instance?.State?.Code === 48;
+  };
   try {
     const client = new EC2Client({ region });
     for await (const page of paginateDescribeInstances({ client }, {})) {
@@ -456,10 +459,11 @@ const queryEC2Instance = async (serviceName, resourceType, region) => {
         );
       }
     }
-    const ASGInstances = resources.filter((instance) =>
-      isInstanceFromAutoScaleGroup(instance)
+    const filteredInstances = resources.filter(
+      (instance) =>
+        isInstanceFromAutoScaleGroup(instance) || isInstanceTerminated(instance)
     );
-    const ec2InstancesCount = (resources.length - ASGInstances.length);
+    const ec2InstancesCount = resources.length - filteredInstances.length;
     total += ec2InstancesCount;
     updateResourceTypeCounter(serviceName, resourceType, ec2InstancesCount);
   } catch (err) {
