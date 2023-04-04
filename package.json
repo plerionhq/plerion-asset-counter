@@ -68,6 +68,7 @@
     "@aws-sdk/client-sagemaker": "^3.146.0",
     "@aws-sdk/client-schemas": "^3.186.0",
     "@aws-sdk/client-secrets-manager": "^3.145.0",
+    "@aws-sdk/client-securityhub": "^3.301.0",
     "@aws-sdk/client-serverlessapplicationrepository": "^3.145.0",
     "@aws-sdk/client-sesv2": "^3.186.0",
     "@aws-sdk/client-sns": "^3.145.0",
