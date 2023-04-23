@@ -1013,6 +1013,20 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-elastic-load-balancing-v2"
         }
+      },
+      {
+        "resourceType": "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "list": {
+          "action": {
+            "command": "paginateDescribeTargetGroups",
+            "outputProperty": "TargetGroups"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "ElasticLoadBalancingV2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-elastic-load-balancing-v2"
+        }
       }
     ]
   },

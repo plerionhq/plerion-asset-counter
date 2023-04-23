@@ -1608,6 +1608,10 @@
       {
         "resource": "LoadBalancer",
         "resourceType": "AWS::ElasticLoadBalancingV2::LoadBalancer"
+      },
+      {
+        "resource": "TargetGroup",
+        "resourceType": "AWS::ElasticLoadBalancingV2::TargetGroup"
       }
     ],
     "regions": [
