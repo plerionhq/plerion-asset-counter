@@ -323,7 +323,7 @@
   {
     "service": "RDS",
     "resources": [
-      { "resource": "DBInstances", "resourceType": "AWS::RDS::DBInstances" },
+      { "resource": "DBInstance", "resourceType": "AWS::RDS::DBInstance" },
       { "resource": "DBCluster", "resourceType": "AWS::RDS::DBCluster" },
       {
         "resource": "DBClusterSnapshot",
