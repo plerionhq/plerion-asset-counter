@@ -115,6 +115,10 @@
       {
         "resource": "LaunchTemplate",
         "resourceType": "AWS::EC2::LaunchTemplate"
+      },
+      {
+        "resource": "Volume",
+        "resourceType": "AWS::EC2::Volume"
       }
     ],
     "regions": [
@@ -1844,7 +1848,11 @@
   {
     "service": "Backup",
     "resources": [
-      { "resource": "BackupVault", "resourceType": "AWS::Backup::BackupVault" }
+      { "resource": "BackupVault", "resourceType": "AWS::Backup::BackupVault" },
+      {
+        "resource": "ProtectedResource",
+        "resourceType": "AWS::Backup::ProtectedResource"
+      }
     ],
     "regions": [
       "ap-east-1",

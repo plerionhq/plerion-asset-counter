@@ -174,6 +174,21 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-ec2"
         }
+      },
+      {
+        "resourceType": "AWS::EC2::Volume",
+        "list": {
+          "action": {
+            "command": "paginateDescribeVolumes",
+            "outputProperty": "Volumes",
+            "resourceIdentifier": "VolumeId"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "EC2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-ec2"
+        }
       }
     ]
   },
@@ -1172,6 +1187,20 @@
           "action": {
             "command": "paginateListBackupVaults",
             "outputProperty": "BackupVaultList"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "BackupClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-backup"
+        }
+      },
+      {
+        "resourceType": "AWS::Backup::ProtectedResource",
+        "list": {
+          "action": {
+            "command": "paginateListProtectedResources",
+            "outputProperty": "Results"
           }
         },
         "listClientConfig": {
