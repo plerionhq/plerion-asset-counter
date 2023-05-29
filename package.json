@@ -29,6 +29,7 @@
     "@aws-sdk/client-auto-scaling": "^3.282.0",
     "@aws-sdk/client-backup": "^3.145.0",
     "@aws-sdk/client-cloudcontrol": "^3.145.0",
+    "@aws-sdk/client-cloudformation": "^3.341.0",
     "@aws-sdk/client-cloudfront": "^3.170.0",
     "@aws-sdk/client-cloudtrail": "^3.145.0",
     "@aws-sdk/client-cloudwatch": "^3.146.0",
