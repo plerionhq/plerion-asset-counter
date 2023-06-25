@@ -81,35 +81,39 @@ const calculateUnits = (result, provider) => {
   console.log(result);
   console.log("-----------------------------------");
   if (verbose) {
-    await writeFile(`${provider}-output.json`, JSON.stringify(result));
+    await writeFile(`${provider}-output.json`, JSON.stringify(result, null, 2));
   } else {
     await writeFile(
       `${provider}-output.json`,
-      JSON.stringify({
-        TOTAL: result.total,
-        CSPM_UNITS: result["CSPM_UNITS"],
-        CWPP_UNITS: result["CWPP_UNITS"],
-        TOTAL_UNITS: result["TOTAL_UNITS"],
-        DAYS_PER_MONTH: result["DAYS_PER_MONTH"],
-        CSPM_UNITS_PER_MONTH: result["CSPM_UNITS_PER_MONTH"],
-        CWPP_UNITS_PER_MONTH: result["CWPP_UNITS_PER_MONTH"],
-        TOTAL_UNITS_PER_MONTH: result["TOTAL_UNITS_PER_MONTH"],
-        INFO: {
-          CSPM_CIEM_ASSET_UNIT_BASE_CONSUMPTION: 1,
-          CWPP_ASSET_UNIT_BASE_CONSUMPTION: 10,
-          TOTAL_DAYS_PER_MONTH: result["DAYS_PER_MONTH"],
+      JSON.stringify(
+        {
+          TOTAL: result.total,
+          CSPM_UNITS: result["CSPM_UNITS"],
+          CWPP_UNITS: result["CWPP_UNITS"],
+          TOTAL_UNITS: result["TOTAL_UNITS"],
+          DAYS_PER_MONTH: result["DAYS_PER_MONTH"],
+          CSPM_UNITS_PER_MONTH: result["CSPM_UNITS_PER_MONTH"],
+          CWPP_UNITS_PER_MONTH: result["CWPP_UNITS_PER_MONTH"],
+          TOTAL_UNITS_PER_MONTH: result["TOTAL_UNITS_PER_MONTH"],
+          INFO: {
+            CSPM_CIEM_ASSET_UNIT_BASE_CONSUMPTION: 1,
+            CWPP_ASSET_UNIT_BASE_CONSUMPTION: 10,
+            TOTAL_DAYS_PER_MONTH: result["DAYS_PER_MONTH"],
+          },
+          DAILY: {
+            CSPM_CIEM_ASSET_UNITS: result["CSPM_UNITS"],
+            CWPP_ASSET_UNITS: result["CWPP_UNITS"],
+            TOTAL_ASSET_UNITS: result["TOTAL_UNITS"],
+          },
+          MONTHLY: {
+            CSPM_CIEM_ASSET_UNITS: result["CSPM_UNITS_PER_MONTH"],
+            CWPP_ASSET_UNITS: result["CWPP_UNITS_PER_MONTH"],
+            TOTAL_ASSET_UNITS: result["TOTAL_UNITS_PER_MONTH"],
+          },
         },
-        DAILY: {
-          CSPM_CIEM_ASSET_UNITS: result["CSPM_UNITS"],
-          CWPP_ASSET_UNITS: result["CWPP_UNITS"],
-          TOTAL_ASSET_UNITS: result["TOTAL_UNITS"],
-        },
-        MONTHLY: {
-          CSPM_CIEM_ASSET_UNITS: result["CSPM_UNITS_PER_MONTH"],
-          CWPP_ASSET_UNITS: result["CWPP_UNITS_PER_MONTH"],
-          TOTAL_ASSET_UNITS: result["TOTAL_UNITS_PER_MONTH"],
-        },
-      })
+        null,
+        2
+      )
     );
   }
   console.log("INFO");
