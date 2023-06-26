@@ -332,6 +332,10 @@
       {
         "resource": "DBClusterSnapshot",
         "resourceType": "AWS::RDS::DBClusterSnapshot"
+      },
+      {
+        "resource": "DBSecurityGroup",
+        "resourceType": "AWS::RDS::DBSecurityGroup"
       }
     ],
     "regions": [

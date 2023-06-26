@@ -1267,5 +1267,24 @@
         }
       }
     ]
+  },
+  {
+    "id": "RDS",
+    "resources": [
+      {
+        "resourceType": "AWS::RDS::DBSecurityGroup",
+        "list": {
+          "action": {
+            "command": "paginateDescribeDBSecurityGroups",
+            "outputProperty": "DBSecurityGroups"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "RDSClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-rds"
+        }
+      }
+    ]
   }
 ]
