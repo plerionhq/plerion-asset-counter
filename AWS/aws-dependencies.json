@@ -1272,48 +1272,6 @@
     "id": "RDS",
     "resources": [
       {
-        "resourceType": "AWS::RDS::DBInstance",
-        "list": {
-          "action": {
-            "command": "paginateDescribeDBInstances",
-            "outputProperty": "DBInstances"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "RDSClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-rds"
-        }
-      },
-      {
-        "resourceType": "AWS::RDS::DBCluster",
-        "list": {
-          "action": {
-            "command": "paginateDescribeDBClusters",
-            "outputProperty": "DBClusters"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "RDSClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-rds"
-        }
-      },
-      {
-        "resourceType": "AWS::RDS::DBClusterSnapshot",
-        "list": {
-          "action": {
-            "command": "paginateDescribeDBClusterSnapshots",
-            "outputProperty": "DBClusterSnapshots"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "RDSClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-rds"
-        }
-      },
-      {
         "resourceType": "AWS::RDS::DBSecurityGroup",
         "list": {
           "action": {
