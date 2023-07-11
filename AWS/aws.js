@@ -56,6 +56,7 @@ import {
   paginateListClusters,
   ListServicesCommand,
   DescribeServicesCommand,
+  DescribeTaskDefinitionCommand,
 } from "@aws-sdk/client-ecs";
 import {
   DocDBClient,
@@ -536,7 +537,7 @@ const queryECSService = async (serviceName, resourceType, region) => {
           cluster: clusterArn,
           services: serviceArns,
         });
-        const response = await this.client?.send(command);
+        const response = await client?.send(command);
         const taskDefinitionArns = [];
         if (response && Array.isArray(response?.services)) {
           response.services.forEach((service) => {
@@ -557,10 +558,21 @@ const queryECSService = async (serviceName, resourceType, region) => {
             }
           });
         }
-        updateResourceTypeCounter(
-          serviceName,
-          ECS_TASK_DEFINITION,
-          taskDefinitionArns.length
+
+        await Promise.all(
+          [...new Set(taskDefinitionArns)].map(async (taskDefinition) => {
+            let getTaskDefCmd = new DescribeTaskDefinitionCommand({
+              taskDefinition
+            });
+            let getTaskDefRes = await client?.send(getTaskDefCmd);
+            let containerCount = getTaskDefRes.taskDefinition?.containerDefinitions.length;
+            total += containerCount;
+            updateResourceTypeCounter(
+              serviceName,
+              ECS_TASK_DEFINITION,
+              containerCount
+            );
+          })
         );
       })
     );
