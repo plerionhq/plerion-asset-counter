@@ -1268,7 +1268,8 @@
   {
     "service": "EKS",
     "resources": [
-      { "resource": "Cluster", "resourceType": "AWS::EKS::Cluster" }
+      { "resource": "Cluster", "resourceType": "AWS::EKS::Cluster" },
+      { "resource": "NodeGroup", "resourceType": "AWS::EKS::NodeGroup" }
     ],
     "regions": [
       "ap-east-1",
