@@ -1286,5 +1286,24 @@
         }
       }
     ]
+  },
+  {
+    "id": "ElasticLoadBalancing",
+    "resources": [
+      {
+        "resourceType": "AWS::ElasticLoadBalancing::LoadBalancer",
+        "list": {
+          "action": {
+            "command": "paginateDescribeLoadBalancers",
+            "outputProperty": "LoadBalancerDescriptions"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "ElasticLoadBalancingClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-elastic-load-balancing"
+        }
+      }
+    ]
   }
 ]
