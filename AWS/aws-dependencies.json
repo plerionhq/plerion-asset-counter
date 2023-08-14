@@ -1305,5 +1305,24 @@
         }
       }
     ]
+  },
+  {
+    "id": "NetworkFirewall",
+    "resources": [
+      {
+        "resourceType": "AWS::NetworkFirewall::Firewall",
+        "list": {
+          "action": {
+            "command": "paginateListFirewalls",
+            "outputProperty": "Firewalls"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "NetworkFirewallClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-network-firewall"
+        }
+      }
+    ]
   }
 ]

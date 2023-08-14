@@ -61,6 +61,7 @@
     "@aws-sdk/client-memorydb": "^3.347.1",
     "@aws-sdk/client-mq": "^3.347.1",
     "@aws-sdk/client-neptune": "^3.347.1",
+    "@aws-sdk/client-network-firewall": "^3.347.1",
     "@aws-sdk/client-opensearch": "^3.347.1",
     "@aws-sdk/client-organizations": "^3.347.1",
     "@aws-sdk/client-rds": "^3.347.1",
