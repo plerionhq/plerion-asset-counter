@@ -1324,5 +1324,24 @@
         }
       }
     ]
+  },
+  {
+    "id": "WAFRegional",
+    "resources": [
+      {
+        "resourceType": "AWS::WAFRegional::WebACL",
+        "list": {
+          "action": {
+            "command": "ListWebACLs",
+            "outputProperty": "WebACLs"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "WAFRegionalClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-waf-regional"
+        }
+      }
+    ]
   }
 ]
