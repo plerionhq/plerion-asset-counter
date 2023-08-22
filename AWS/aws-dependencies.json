@@ -1326,10 +1326,10 @@
     ]
   },
   {
-    "id": "WAFRegional",
+    "id": "WAF",
     "resources": [
       {
-        "resourceType": "AWS::WAFRegional::WebACL",
+        "resourceType": "AWS::WAF::WebACL",
         "list": {
           "action": {
             "command": "ListWebACLs",

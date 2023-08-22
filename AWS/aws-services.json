@@ -2183,11 +2183,11 @@
     ]
   },
   {
-    "service": "WAFRegional",
+    "service": "WAF",
     "resources": [
       {
         "resource": "WebACL",
-        "resourceType": "AWS::WAFRegional::WebACL"
+        "resourceType": "AWS::WAF::WebACL"
       }
     ],
     "regions": [
