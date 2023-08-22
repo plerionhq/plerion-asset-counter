@@ -77,7 +77,7 @@
     "@aws-sdk/client-sns": "^3.347.1",
     "@aws-sdk/client-sqs": "^3.347.1",
     "@aws-sdk/client-ssm": "^3.347.1",
-    "@aws-sdk/client-waf-regional": "^3.395.0",
+    "@aws-sdk/client-waf-regional": "^3.347.1",
     "@aws-sdk/client-wafv2": "^3.347.1",
     "commander": "^11.0.0",
     "esm": "^3.2.25",

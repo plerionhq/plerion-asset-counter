@@ -2186,8 +2186,8 @@
     "service": "WAF",
     "resources": [
       {
-        "resource": "WebACL",
-        "resourceType": "AWS::WAF::WebACL"
+        "resource": "RegionalWebACL",
+        "resourceType": "AWS::WAF::RegionalWebACL"
       }
     ],
     "regions": [

@@ -1329,7 +1329,7 @@
     "id": "WAF",
     "resources": [
       {
-        "resourceType": "AWS::WAF::WebACL",
+        "resourceType": "AWS::WAF::RegionalWebACL",
         "list": {
           "action": {
             "command": "ListWebACLs",
