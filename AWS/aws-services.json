@@ -1978,6 +1978,10 @@
       {
         "resource": "AutoScalingGroup",
         "resourceType": "AWS::AutoScaling::AutoScalingGroup"
+      },
+      {
+        "resource": "ScalingPolicy",
+        "resourceType": "AWS::AutoScaling::ScalingPolicy"
       }
     ],
     "regions": [
