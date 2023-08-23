@@ -2231,7 +2231,7 @@
     "service": "ApplicationAutoScaling",
     "resources": [
       {
-        "resource": "ScalingPolicy",
+        "resource": "ECSScalingPolicy",
         "resourceType": "AWS::ApplicationAutoScaling::ECSScalingPolicy"
       }
     ],
