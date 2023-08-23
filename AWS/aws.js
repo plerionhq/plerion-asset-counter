@@ -126,7 +126,7 @@ const EKS_NODE_GROUP = "AWS::EKS::NodeGroup";
 const COMPUTE_OPTIMIZER_ENROLLMENT_STATUS =
   "AWS::ComputeOptimizer::EnrollmentStatus";
 const APPLICATION_AUTOSCALING_SCALING_POLICY =
-  "AWS::ApplicationAutoScaling::ScalingPolicy";
+  "AWS::ApplicationAutoScaling::ECSScalingPolicy";
 
 const querySSMDocument = async (serviceName, resourceType, region) => {
   const client = new SSMClient({ region });

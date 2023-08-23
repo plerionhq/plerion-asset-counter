@@ -2232,7 +2232,7 @@
     "resources": [
       {
         "resource": "ScalingPolicy",
-        "resourceType": "AWS::ApplicationAutoScaling::ScalingPolicy"
+        "resourceType": "AWS::ApplicationAutoScaling::ECSScalingPolicy"
       }
     ],
     "regions": [
