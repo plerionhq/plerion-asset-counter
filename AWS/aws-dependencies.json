@@ -1227,6 +1227,20 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-auto-scaling"
         }
+      },
+      {
+        "resourceType": "AWS::AutoScaling::ScalingPolicy",
+        "list": {
+          "action": {
+            "command": "paginateDescribePolicies",
+            "outputProperty": "ScalingPolicies"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "AutoScalingClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-auto-scaling"
+        }
       }
     ]
   },

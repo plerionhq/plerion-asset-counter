@@ -34,6 +34,7 @@
     "@aws-sdk/client-cloudtrail": "^3.347.1",
     "@aws-sdk/client-cloudwatch": "^3.347.1",
     "@aws-sdk/client-cloudwatch-logs": "^3.347.1",
+    "@aws-sdk/client-compute-optimizer": "^3.347.1",
     "@aws-sdk/client-config-service": "^3.347.1",
     "@aws-sdk/client-docdb": "^3.347.1",
     "@aws-sdk/client-dynamodb": "^3.347.1",
