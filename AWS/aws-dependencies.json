@@ -1357,5 +1357,26 @@
         }
       }
     ]
+  },
+  {
+    "id": "Macie",
+    "resources": [
+      {
+        "resourceType": "AWS::Macie::Session",
+        "list": {
+          "action": {
+            "command": "GetMacieSession",
+            "outputProperty": "$.status",
+            "outputPropertySearchType": "JSON_PATH",
+            "resourceIdentifier": "MacieSession"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Macie2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-macie2"
+        }
+      }
+    ]
   }
 ]
