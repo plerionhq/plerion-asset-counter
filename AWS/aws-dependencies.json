@@ -1378,5 +1378,45 @@
         }
       }
     ]
+  },
+  {
+    "id": "InspectorV2",
+    "resources": [
+      {
+        "resourceType": "AWS::InspectorV2::Accounts",
+        "list": {
+          "action": {
+            "command": "BatchGetAccountStatus",
+            "outputProperty": "$.accounts",
+            "outputPropertySearchType": "JSON_PATH"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Inspector2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-inspector2"
+        }
+      }
+    ]
+  },
+  {
+    "id": "InspectorV2",
+    "resources": [
+      {
+        "resourceType": "AWS::InspectorV2::Accounts",
+        "list": {
+          "action": {
+            "command": "BatchGetAccountStatus",
+            "outputProperty": "$.accounts",
+            "outputPropertySearchType": "JSON_PATH"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Inspector2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-inspector2"
+        }
+      }
+    ]
   }
 ]
