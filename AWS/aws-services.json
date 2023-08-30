@@ -202,6 +202,10 @@
       {
         "resourceType": "AWS::InspectorV2::Findings",
         "resource": "ListFindings"
+      },
+      {
+        "resourceType": "AWS::InspectorV2::Account",
+        "resource": "Account"
       }
     ],
     "regions": [
@@ -318,6 +322,10 @@
       {
         "resource": "OrganizationalUnit",
         "resourceType": "AWS::Organizations::OrganizationalUnit"
+      },
+      {
+        "resource": "Account",
+        "resourceType": "AWS::Organizations::Account"
       }
     ],
     "regions": ["us-east-1"],
