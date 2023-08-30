@@ -222,6 +222,21 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-inspector2"
         }
+      },
+      {
+        "resourceType": "AWS::InspectorV2::Account",
+        "list": {
+          "action": {
+            "command": "BatchGetAccountStatus",
+            "outputProperty": "$.accounts",
+            "outputPropertySearchType": "JSON_PATH"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Inspector2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-inspector2"
+        }
       }
     ]
   },
@@ -1380,41 +1395,21 @@
     ]
   },
   {
-    "id": "InspectorV2",
+    "id": "Organizations",
     "resources": [
       {
-        "resourceType": "AWS::InspectorV2::Accounts",
+        "resourceType": "AWS::Organizations::Account",
         "list": {
           "action": {
-            "command": "BatchGetAccountStatus",
-            "outputProperty": "$.accounts",
+            "command": "DescribeOrganization",
+            "outputProperty": "$.Organization",
             "outputPropertySearchType": "JSON_PATH"
           }
         },
         "listClientConfig": {
-          "clientName": "Inspector2Client",
+          "clientName": "OrganizationsClient",
           "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-inspector2"
-        }
-      }
-    ]
-  },
-  {
-    "id": "InspectorV2",
-    "resources": [
-      {
-        "resourceType": "AWS::InspectorV2::Accounts",
-        "list": {
-          "action": {
-            "command": "BatchGetAccountStatus",
-            "outputProperty": "$.accounts",
-            "outputPropertySearchType": "JSON_PATH"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "Inspector2Client",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-inspector2"
+          "packageName": "@aws-sdk/client-organizations"
         }
       }
     ]
