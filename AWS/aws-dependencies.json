@@ -222,6 +222,21 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-inspector2"
         }
+      },
+      {
+        "resourceType": "AWS::InspectorV2::Account",
+        "list": {
+          "action": {
+            "command": "BatchGetAccountStatus",
+            "outputProperty": "$.accounts",
+            "outputPropertySearchType": "JSON_PATH"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Inspector2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-inspector2"
+        }
       }
     ]
   },
@@ -1354,6 +1369,47 @@
           "clientName": "WAFRegionalClient",
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-waf-regional"
+        }
+      }
+    ]
+  },
+  {
+    "id": "Macie",
+    "resources": [
+      {
+        "resourceType": "AWS::Macie::Session",
+        "list": {
+          "action": {
+            "command": "GetMacieSession",
+            "outputProperty": "$.status",
+            "outputPropertySearchType": "JSON_PATH",
+            "resourceIdentifier": "MacieSession"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Macie2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-macie2"
+        }
+      }
+    ]
+  },
+  {
+    "id": "Organizations",
+    "resources": [
+      {
+        "resourceType": "AWS::Organizations::Account",
+        "list": {
+          "action": {
+            "command": "DescribeOrganization",
+            "outputProperty": "$.Organization",
+            "outputPropertySearchType": "JSON_PATH"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "OrganizationsClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-organizations"
         }
       }
     ]
