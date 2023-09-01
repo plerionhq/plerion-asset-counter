@@ -92,6 +92,7 @@
       },
       { "resource": "Instance", "resourceType": "AWS::EC2::Instance" },
       { "resource": "VPC", "resourceType": "AWS::EC2::VPC" },
+      { "resource": "VPN", "resourceType": "AWS::EC2::VPN" },
       { "resource": "FlowLog", "resourceType": "AWS::EC2::FlowLog" },
       { "resource": "NetworkAcl", "resourceType": "AWS::EC2::NetworkAcl" },
       {
