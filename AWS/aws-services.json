@@ -1989,6 +1989,10 @@
         "resourceType": "AWS::AutoScaling::AutoScalingGroup"
       },
       {
+        "resource": "LaunchConfiguration",
+        "resourceType": "AWS::AutoScaling::LaunchConfiguration"
+      },
+      {
         "resource": "ScalingPolicy",
         "resourceType": "AWS::AutoScaling::ScalingPolicy"
       }
