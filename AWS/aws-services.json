@@ -1903,7 +1903,8 @@
     "service": "DocDB",
     "resources": [
       { "resource": "DBInstance", "resourceType": "AWS::DocDB::DBInstance" },
-      { "resource": "DBCluster", "resourceType": "AWS::DocDB::DBCluster" }
+      { "resource": "DBCluster", "resourceType": "AWS::DocDB::DBCluster" },
+      { "resource": "DBClusterParameterGroup", "resourceType": "AWS::DocDB::DBClusterParameterGroup" }
     ],
     "regions": [
       "ap-northeast-1",
