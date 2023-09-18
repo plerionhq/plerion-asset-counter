@@ -73,6 +73,7 @@ import {
 import {
   NeptuneClient,
   paginateDescribeDBInstances as paginateNeptuneInstances,
+  paginateDescribeDBClusters as paginateNeptuneClusters,
   paginateDescribeDBClusterParameterGroups,
 } from "@aws-sdk/client-neptune";
 import {
@@ -118,6 +119,7 @@ const RDS_DB_INSTANCE = "AWS::RDS::DBInstance";
 const RDS_DB_CLUSTER = "AWS::RDS::DBCluster";
 const RDS_DB_CLUSTER_SNAPSHOT = "AWS::RDS::DBClusterSnapshot";
 const NEPTUNE_DB_INSTANCE = "AWS::Neptune::DBInstance";
+const NEPTUNE_DB_CLUSTER = "AWS::Neptune::DBCluster";
 const NEPTUNE_DB_CLUSTER_PARAMETER_GROUP =
   "AWS::Neptune::DBClusterParameterGroup";
 const ECS_TASK_DEFINITION = "AWS::ECS::TaskDefinition";
@@ -873,6 +875,20 @@ const queryNeptuneInstance = async (serviceName, resourceType, region) => {
   AWS_MAPPING.total += resourceCount;
 };
 
+const queryNeptuneCluster = async (serviceName, resourceType, region) => {
+  let resources = [];
+  const client = new NeptuneClient({ region });
+  for await (const page of paginateNeptuneClusters(
+    { client },
+    { Filters: [{ Name: "engine", Values: ["neptune"] }] }
+  )) {
+    resources.push(...(page.DBClusters || []));
+  }
+  const resourceCount = resources.length;
+  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  AWS_MAPPING.total += resourceCount;
+};
+
 const queryNeptuneClusterParameterGroups = async (
   serviceName,
   resourceType,
@@ -1031,6 +1047,9 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                 break;
               case NEPTUNE_DB_INSTANCE:
                 await queryNeptuneInstance(serviceName, resourceType, region);
+                break;
+              case NEPTUNE_DB_CLUSTER:
+                await queryNeptuneCluster(serviceName, resourceType, region);
                 break;
               case NEPTUNE_DB_CLUSTER_PARAMETER_GROUP:
                 await queryNeptuneClusterParameterGroups(
