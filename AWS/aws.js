@@ -63,6 +63,7 @@ import {
   DocDBClient,
   paginateDescribeDBInstances,
   paginateDescribeDBClusters,
+  paginateDescribeDBClusterParameterGroups as paginateDocDBClusterParameterGroups
 } from "@aws-sdk/client-docdb";
 import {
   RDSClient,
@@ -114,6 +115,7 @@ const APIGATEWAY_STAGE = "AWS::APIGateway::Stage";
 const ECS_SERVICE = "AWS::ECS::Service";
 const DOC_DB_INSTANCE = "AWS::DocDB::DBInstance";
 const DOC_DB_CLUSTER = "AWS::DocDB::DBCluster";
+const DOC_DB_CLUSTER_PARAMETER_GROUP = "AWS::DocDB::DBClusterParameterGroup";
 const RDS_DB_INSTANCE = "AWS::RDS::DBInstance";
 const RDS_DB_CLUSTER = "AWS::RDS::DBCluster";
 const RDS_DB_CLUSTER_SNAPSHOT = "AWS::RDS::DBClusterSnapshot";
@@ -713,6 +715,20 @@ const queryDocDBCluster = async (serviceName, resourceType, region) => {
   AWS_MAPPING.total += resourceCount;
 };
 
+const queryDocDBClusterParameterGroup = async (serviceName, resourceType, region) => {
+  let resources = [];
+  const client = new DocDBClient({ region });
+  for await (const page of paginateDocDBClusterParameterGroups(
+    { client },
+    { Filters: [{ Name: "engine", Values: ["docdb"] }] }
+  )) {
+    resources.push(...(page.DBClusterParameterGroups || []));
+  }
+  const resourceCount = resources.length;
+  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  AWS_MAPPING.total += resourceCount;
+};
+
 const queryRDSInstance = async (serviceName, resourceType, region) => {
   let resources = [];
   const client = new RDSClient({ region });
@@ -1015,6 +1031,9 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                 break;
               case DOC_DB_CLUSTER:
                 await queryDocDBCluster(serviceName, resourceType, region);
+                break;
+              case DOC_DB_CLUSTER_PARAMETER_GROUP:
+                await queryDocDBClusterParameterGroup(serviceName, resourceType, region);
                 break;
               case RDS_DB_INSTANCE:
                 await queryRDSInstance(serviceName, resourceType, region);
