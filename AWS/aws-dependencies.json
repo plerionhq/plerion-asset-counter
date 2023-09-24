@@ -211,34 +211,6 @@
     "id": "InspectorV2",
     "resources": [
       {
-        "resourceType": "AWS::InspectorV2::Coverage",
-        "list": {
-          "action": {
-            "command": "ListCoverage",
-            "outputProperty": "coveredResources"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "Inspector2Client",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-inspector2"
-        }
-      },
-      {
-        "resourceType": "AWS::InspectorV2::Findings",
-        "list": {
-          "action": {
-            "command": "ListFindings",
-            "outputProperty": "findings"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "Inspector2Client",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-inspector2"
-        }
-      },
-      {
         "resourceType": "AWS::InspectorV2::Account",
         "list": {
           "action": {
