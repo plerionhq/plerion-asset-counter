@@ -1409,6 +1409,10 @@
       {
         "resource": "PublicAccessConfiguration",
         "resourceType": "AWS::EMR::PublicAccessConfiguration"
+      },
+      {
+        "resource": "Studio",
+        "resourceType": "AWS::EMR::Studio"
       }
     ],
     "regions": [

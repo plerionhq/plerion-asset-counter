@@ -919,6 +919,20 @@
             "outputProperty": "BlockPublicAccessConfiguration"
           }
         }
+      },
+      {
+        "resourceType": "AWS::EMR::Studio",
+        "listClientConfig": {
+          "clientName": "EMRClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-emr"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListStudios",
+            "outputProperty": "Studios"
+          }
+        }
       }
     ]
   },
