@@ -1011,6 +1011,10 @@
       {
         "resource": "DBClusterParameterGroup",
         "resourceType": "AWS::Neptune::DBClusterParameterGroup"
+      },
+      {
+        "resource": "DBCluster",
+        "resourceType": "AWS::Neptune::DBCluster"
       }
     ],
     "regions": [
