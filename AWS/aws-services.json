@@ -1133,6 +1133,10 @@
       {
         "resource": "ResourcePolicy",
         "resourceType": "AWS::Glue::ResourcePolicy"
+      },
+      {
+        "resource": "Job",
+        "resourceType": "AWS::Glue::Job"
       }
     ],
     "regions": [
