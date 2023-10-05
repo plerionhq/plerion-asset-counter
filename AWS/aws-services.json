@@ -2305,7 +2305,8 @@
   {
     "service": "Macie",
     "resources": [
-      { "resource": "Session", "resourceType": "AWS::Macie::Session" }
+      { "resource": "Session", "resourceType": "AWS::Macie::Session" },
+      { "resource": "Finding", "resourceType": "AWS::Macie::Finding" }
     ],
     "regions": [
       "af-south-1",

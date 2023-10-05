@@ -1406,6 +1406,22 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-macie2"
         }
+      },
+      {
+        "resourceType": "AWS::Macie::Finding",
+        "list": {
+          "action": {
+            "command": "paginateListFindings",
+            "outputProperty": "$.findingIds",
+            "outputPropertySearchType": "JSON_PATH",
+            "resourceIdentifier": "FindingId"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Macie2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-macie2"
+        }
       }
     ]
   },
