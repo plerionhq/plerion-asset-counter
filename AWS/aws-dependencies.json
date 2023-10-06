@@ -790,6 +790,20 @@
             "resourceIdentifier": "PolicyHash"
           }
         }
+      },
+      {
+        "resourceType": "AWS::Glue::Job",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "GlueClient",
+          "packageName": "@aws-sdk/client-glue"
+        },
+        "list": {
+          "action": {
+            "command": "paginateGetJobs",
+            "outputProperty": "Jobs"
+          }
+        }
       }
     ]
   },
