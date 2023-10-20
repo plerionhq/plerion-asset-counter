@@ -1,24 +1,5 @@
 [
   {
-    "id": "S3",
-    "resources": [
-      {
-        "resourceType": "AWS::S3::Bucket",
-        "listClientConfig": {
-          "clientType": "AWS_CLOUDCONTROL_V3",
-          "clientName": "CloudControlClient",
-          "packageName": "@aws-sdk/client-cloudcontrol"
-        },
-        "list": {
-          "action": {
-            "outputProperty": "Identifier",
-            "resourceIdentifier": "Identifier"
-          }
-        }
-      }
-    ]
-  },
-  {
     "id": "DynamoDB",
     "resources": [
       {
@@ -211,12 +192,39 @@
     "id": "InspectorV2",
     "resources": [
       {
+        "resourceType": "AWS::InspectorV2::Coverage",
+        "list": {
+          "action": {
+            "command": "ListCoverage",
+            "outputProperty": "coveredResources"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Inspector2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-inspector2"
+        }
+      },
+      {
+        "resourceType": "AWS::InspectorV2::Findings",
+        "list": {
+          "action": {
+            "command": "ListFindings",
+            "outputProperty": "findings"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Inspector2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-inspector2"
+        }
+      },
+      {
         "resourceType": "AWS::InspectorV2::Account",
         "list": {
           "action": {
             "command": "BatchGetAccountStatus",
-            "outputProperty": "$.accounts",
-            "outputPropertySearchType": "JSON_PATH"
+            "outputProperty": "accounts"
           }
         },
         "listClientConfig": {
@@ -392,7 +400,7 @@
         },
         "list": {
           "action": {
-            "command": "ListSubscriptions",
+            "command": "paginateListSubscriptions",
             "outputProperty": "Subscriptions"
           }
         }
@@ -907,20 +915,6 @@
     "id": "EMR",
     "resources": [
       {
-        "resourceType": "AWS::EMR::Cluster",
-        "listClientConfig": {
-          "clientName": "EMRClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-emr"
-        },
-        "list": {
-          "action": {
-            "command": "paginateListClusters",
-            "outputProperty": "Clusters"
-          }
-        }
-      },
-      {
         "resourceType": "AWS::EMR::PublicAccessConfiguration",
         "listClientConfig": {
           "clientName": "EMRClient",
@@ -990,26 +984,6 @@
     ]
   },
   {
-    "id": "ApiGatewayV2",
-    "resources": [
-      {
-        "resourceType": "AWS::ApiGatewayV2::Api",
-        "list": {
-          "action": {
-            "command": "GetApis",
-            "outputProperty": "Items",
-            "resourceIdentifier": "ApiId"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "ApiGatewayV2Client",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-apigatewayv2"
-        }
-      }
-    ]
-  },
-  {
     "id": "Lightsail",
     "resources": [
       {
@@ -1017,7 +991,9 @@
         "list": {
           "action": {
             "command": "GetInstances",
-            "outputProperty": "instances"
+            "outputProperty": "instances",
+            "paginationToken": "nextPageToken",
+            "nextPageTokenKey": "pageToken"
           }
         },
         "listClientConfig": {
@@ -1178,7 +1154,8 @@
         "list": {
           "action": {
             "command": "ListWebACLs",
-            "outputProperty": "WebACLs"
+            "outputProperty": "WebACLs",
+            "paginationToken": "NextMarker"
           }
         },
         "listClientConfig": {
@@ -1391,6 +1368,7 @@
         "list": {
           "action": {
             "command": "ListWebACLs",
+            "paginationToken": "NextMarker",
             "outputProperty": "WebACLs"
           }
         },
