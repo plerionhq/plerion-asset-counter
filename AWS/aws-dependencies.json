@@ -142,6 +142,21 @@
         }
       },
       {
+        "resourceType": "AWS::EC2::VPC",
+        "list": {
+          "action": {
+            "command": "paginateDescribeVpcs",
+            "outputProperty": "Vpcs",
+            "resourceIdentifier": "VpcIds"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "EC2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-ec2"
+        }
+      },
+      {
         "resourceType": "AWS::EC2::LaunchTemplate",
         "list": {
           "action": {
@@ -1007,7 +1022,9 @@
         "list": {
           "action": {
             "command": "GetRelationalDatabases",
-            "outputProperty": "relationalDatabases"
+            "outputProperty": "relationalDatabases",
+            "paginationToken": "nextPageToken",
+            "nextPageTokenKey": "pageToken"
           }
         },
         "listClientConfig": {
@@ -1059,7 +1076,8 @@
         "list": {
           "action": {
             "command": "paginateListClusters",
-            "outputProperty": "clusterArns"
+            "outputProperty": "clusterArns",
+            "resourceIdentifier": "clusterArn"
           }
         },
         "listClientConfig": {

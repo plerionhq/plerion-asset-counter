@@ -18,7 +18,7 @@ import {
   DescribeSnapshotsCommand,
   DescribeImagesCommand,
   DescribeFpgaImagesCommand,
-  paginateDescribeInstances
+  paginateDescribeInstances, paginateDescribeImages, paginateDescribeFpgaImages, paginateDescribeSnapshots
 } from "@aws-sdk/client-ec2";
 import { GlacierClient, paginateListVaults } from "@aws-sdk/client-glacier";
 import {
@@ -46,7 +46,7 @@ import {
   S3ControlClient,
   GetPublicAccessBlockCommand
 } from "@aws-sdk/client-s3-control";
-import { SSMClient, ListDocumentsCommand } from "@aws-sdk/client-ssm";
+import { SSMClient, ListDocumentsCommand, paginateListDocuments } from "@aws-sdk/client-ssm";
 import {
   APIGatewayClient,
   paginateGetRestApis,
@@ -87,7 +87,12 @@ import {
   GetEnrollmentStatusCommand
 } from "@aws-sdk/client-compute-optimizer";
 
-import { getAWSAccountId, getNextPageTokenKeyFromResponse } from "./utils.js";
+import {
+  getAWSAccountId,
+  getNextListPageTokenKey,
+  getNextListPageTokenRequestKey,
+  getNextPageTokenKeyFromResponse, paginate
+} from "./utils.js";
 import { ListBucketsCommand, S3Client } from "@aws-sdk/client-s3";
 import { EMRClient } from "@aws-sdk/client-emr";
 import { ApiGatewayV2Client, GetApisCommand } from "@aws-sdk/client-apigatewayv2";
@@ -113,6 +118,7 @@ const MEMORY_DB_CLUSTER = "AWS::MemoryDB::Cluster";
 const MEMORY_DB_USER = "AWS::MemoryDB::User";
 const ORGANIZATIONS_ORGANIZATION = "AWS::Organizations::Organization";
 const ORGANIZATIONS_UNIT = "AWS::Organizations::OrganizationalUnit";
+const ORGANIZATIONS_ACCOUNT = "AWS::Organizations::Account";
 const S3CONTROL_BLOCK_PUBLIC_ACCESS = "AWS::S3Control::PublicAccessBlock";
 const SSM_DOCUMENT = "AWS::SSM::Document";
 const APIGATEWAY_STAGE = "AWS::APIGateway::Stage";
@@ -139,26 +145,26 @@ const EMR_CLUSTER = "AWS::EMR::Cluster";
 const APIGATEWAYV2_API = "AWS::ApiGatewayV2::API";
 
 const querySSMDocument = async (serviceName, resourceType, region) => {
+  let resources = [];
   const client = new SSMClient({ region });
-  const command = new ListDocumentsCommand({
-    DocumentFilterList: [
-      {
-        key: "Owner",
-        value: "self"
-      }
-    ]
-  });
-  const response = await client.send(command);
-  let total = 0;
-  if (response && response.DocumentIdentifiers) {
-    total += response.DocumentIdentifiers.length;
-    updateResourceTypeCounter(
-      serviceName,
-      resourceType,
-      response.DocumentIdentifiers.length
-    );
+  for await (const document of paginateListDocuments(
+    { client: this.client },
+    {
+      MaxResults: 50,
+      DocumentFilterList: [
+        {
+          key: "Owner",
+          value: "self"
+        }
+      ]
+    }
+  )) {
+    const { DocumentIdentifiers: documentIdentifiers } = document;
+    resources.push(...(documentIdentifiers || []));
   }
-  AWS_MAPPING.total += total;
+  const resourceCount = resources.length;
+  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  AWS_MAPPING.total += resourceCount;
 };
 
 const queryS3ControlBlockPublicAccess = async (
@@ -177,6 +183,19 @@ const queryS3ControlBlockPublicAccess = async (
     updateResourceTypeCounter(serviceName, resourceType, total);
     AWS_MAPPING.total += total;
   }
+};
+
+const queryOrganizationsAccount = async (serviceName, resourceType, region) => {
+  let total = 0;
+  const client = new OrganizationsClient({ region });
+  const organization =
+    await client.send(new DescribeOrganizationCommand({}));
+  const resources = [];
+  if (organization.Organization) {
+    resources.push(organization.Organization);
+    total += resources.length;
+  }
+  AWS_MAPPING.total += total;
 };
 
 const queryOrganizations = async (serviceName, resourceType, region) => {
@@ -396,15 +415,33 @@ const queryGlacierVault = async (serviceName, resourceType, region) => {
 const queryWafv2RuleGroup = async (serviceName, resourceType, region) => {
   let total = 0;
   const client = new WAFV2Client({ region });
-  const commandForRegional = new ListRuleGroupsCommand({
-    Scope: "REGIONAL"
+  const responseForRegional = await paginate({
+    client,
+    command: {
+      CommandClass: ListRuleGroupsCommand,
+      params: {
+        Scope: "REGIONAL"
+      }
+    },
+    nextKey: "NextMarker",
+    responseKey: "RuleGroups"
   });
-  const responseForRegional = await client.send(commandForRegional);
 
-  const commandForCloudfront = new ListRuleGroupsCommand({
-    Scope: "CLOUDFRONT"
-  });
-  const responseForCloudfront = await client.send(commandForCloudfront);
+  // CLOUDFRONT only supported for us-east-1
+  let responseForCloudfront;
+  if (region === "us-east-1") {
+    responseForCloudfront = await paginate({
+      client,
+      command: {
+        CommandClass: ListRuleGroupsCommand,
+        params: {
+          Scope: "CLOUDFRONT"
+        }
+      },
+      nextKey: "NextMarker",
+      responseKey: "RuleGroups"
+    });
+  }
 
   const data = [];
   if (responseForRegional.RuleGroups)
@@ -420,24 +457,30 @@ const queryWafv2RuleGroup = async (serviceName, resourceType, region) => {
 
 const queryEc2Ami = async (serviceName, resourceType, region) => {
   const client = new EC2Client({ region });
-  const command = new DescribeImagesCommand({
-    Owners: ["self"]
-  });
-  const response = await client.send(command);
-  const total = response?.Images?.length ?? 0;
-  updateResourceTypeCounter(serviceName, resourceType, total);
-  AWS_MAPPING.total += total;
+  let resources = [];
+  for await (const image of paginateDescribeImages(
+    { client },
+    { Owners: ["self"] }
+  )) {
+    const { Images: images } = image;
+    resources.push(...(images || []));
+  }
+  updateResourceTypeCounter(serviceName, resourceType, resources.length);
+  AWS_MAPPING.total += resources.length;
 };
 
 const queryEc2fpga = async (serviceName, resourceType, region) => {
   const client = new EC2Client({ region });
-  const command = new DescribeFpgaImagesCommand({
-    Owners: ["self"]
-  });
-  const response = await client.send(command);
-  const total = response?.Images?.length ?? 0;
-  updateResourceTypeCounter(serviceName, resourceType, total);
-  AWS_MAPPING.total += total;
+  let resources = [];
+  for await (const image of paginateDescribeFpgaImages(
+    { client },
+    { Owners: ["self"] }
+  )) {
+    const { FpgaImages: images } = image;
+    resources.push(...(images || []));
+  }
+  updateResourceTypeCounter(serviceName, resourceType, resources.length);
+  AWS_MAPPING.total += resources.length;
 };
 
 const queryScalableTargets = async (serviceName, resourceType, region) => {
@@ -488,20 +531,17 @@ const queryEC2Instance = async (serviceName, resourceType, region) => {
 };
 
 const querySnapshot = async (serviceName, resourceType, region) => {
-  let total = 0;
-  try {
-    const command = new DescribeSnapshotsCommand({ OwnerIds: ["self"] });
-    const client = new EC2Client({ region });
-    const response = await client.send(command);
-    if (response && response.Snapshots) {
-      const snapshotCount = response.Snapshots.length;
-      total += snapshotCount;
-      updateResourceTypeCounter(serviceName, resourceType, snapshotCount);
-    }
-  } catch (err) {
-    console.log(`Error finding ${resourceType}`);
+  const client = new EC2Client({ region });
+  let resources = [];
+  for await (const image of paginateDescribeSnapshots(
+    { client },
+    { OwnerIds: ["self"] }
+  )) {
+    const { Snapshots:  snapshots } = snapshots;
+    resources.push(...(snapshots || []));
   }
-  AWS_MAPPING.total += total;
+  updateResourceTypeCounter(serviceName, resourceType, resources.length);
+  AWS_MAPPING.total += resources.length;
 };
 
 const queryDefaultEBSEncryption = async (serviceName, resourceType, region) => {
@@ -667,8 +707,6 @@ const queryDependencies = async (serviceName, resourceType, region) => {
           let nextResponsePageToken;
           let nextRequestPageToken;
           let nextPageTokenValue;
-          const listResponse = await listClient.send(com);
-
           do {
             const paginationArgs =
               nextResponsePageToken && nextPageTokenValue && nextRequestPageToken
@@ -676,14 +714,14 @@ const queryDependencies = async (serviceName, resourceType, region) => {
                 : {};
             const com = new CommandClass(paginationArgs);
             // @ts-ignore
-            const listResponse = await this.listClient?.send(com);
+            const listResponse = await listClient?.send(com);
             nextResponsePageToken = getNextPageTokenKeyFromResponse(
               listResponse,
-              this.getNextListPageTokenKey()
+              getNextListPageTokenKey(list)
             );
             nextPageTokenValue =
               nextResponsePageToken && listResponse[nextResponsePageToken];
-            if (outputPropertySearchType === 'JSON_PATH') {
+            if (outputPropertySearchType === "JSON_PATH") {
               const result = jp.query(listResponse, outputProperty)[0];
               const responses = Array.isArray(result) ? result : [result];
               resources.push(...responses);
@@ -693,8 +731,9 @@ const queryDependencies = async (serviceName, resourceType, region) => {
                 : [listResponse[outputProperty]];
               resources.push(...responses);
             }
-            nextRequestPageToken = this.getNextListPageTokenRequestKey(
-              nextResponsePageToken
+            nextRequestPageToken = getNextListPageTokenRequestKey(
+              nextResponsePageToken,
+              list
             );
           } while (
             nextPageTokenValue &&
@@ -1005,9 +1044,9 @@ const queryEMRClusters = async (serviceName, resourceType, region) => {
   const client = new EMRClient({ region });
   for await (const page of paginateListClusters(
     { client },
-    {  }
+    {}
   )) {
-    resources.push(...(page.Clusters|| []));
+    resources.push(...(page.Clusters || []));
   }
   const resourceCount = resources.length;
   updateResourceTypeCounter(serviceName, resourceType, resourceCount);
@@ -1022,7 +1061,7 @@ const queryAPIGatewayV2APIs = async (serviceName, resourceType, region) => {
   let nextToken;
   do {
     const command = new GetApisCommand({
-      NextToken: nextToken,
+      NextToken: nextToken
     });
     const response = await client.send(command);
     resources.push(...(response.Items || []));
@@ -1032,7 +1071,7 @@ const queryAPIGatewayV2APIs = async (serviceName, resourceType, region) => {
   updateResourceTypeCounter(serviceName, resourceType, resourceCount);
   total += resources.length;
   AWS_MAPPING.total += total;
-}
+};
 
 export const queryAWS = async (parsedService, parsedResourceType) => {
   await Promise.all(
@@ -1104,6 +1143,9 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
               case ORGANIZATIONS_UNIT:
               case ORGANIZATIONS_ORGANIZATION:
                 await queryOrganizations(serviceName, resourceType, region);
+                break;
+              case ORGANIZATIONS_ACCOUNT:
+                await queryOrganizationsAccount(serviceName, resourceType, region);
                 break;
               case S3CONTROL_BLOCK_PUBLIC_ACCESS:
                 await queryS3ControlBlockPublicAccess(
