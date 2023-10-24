@@ -1,4 +1,5 @@
 import { promises as fs, readFileSync } from "fs";
+
 const services = JSON.parse(
   readFileSync(path.join(process.cwd(), "AWS/aws-services.json")),
 );
@@ -19,16 +20,16 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
         if (parsedResourceType && parsedResourceType !== resourceType) {
           continue;
         }
-        // Extract service and resource
-        const [providerName, serviceName, resourceName] =
-          resourceType.split("::");
-
-        // Construct the file path
-        const filePath = path.join(
-          process.cwd(),
-          `${providerName}/collectors/custom/${serviceName}/${resourceName}.js`,
-        );
         for (const region of regions) {
+          // Extract service and resource
+          const [providerName, serviceName, resourceName] =
+            resourceType.split("::");
+
+          // Construct the file path
+          const filePath = path.join(
+            process.cwd(),
+            `${providerName}/collectors/custom/${serviceName}/${resourceName}.js`,
+          );
           console.log(`Checking ${resourceType} on region ${region}`);
           try {
             await fs.access(filePath);
@@ -44,15 +45,15 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                 region,
               );
             } else {
-              console.error(`Function 'query' not found in ${filePath}`);
+              await queryDependencies(
+                AWS_MAPPING,
+                serviceName,
+                resourceType,
+                region,
+              );
             }
           } catch (error) {
-            await queryDependencies(
-              AWS_MAPPING,
-              serviceName,
-              resourceType,
-              region,
-            );
+            console.log(`Error checking ${resourceType} on region ${region}`);
           }
         }
       }

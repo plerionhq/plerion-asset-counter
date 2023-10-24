@@ -1553,13 +1553,9 @@
     ],
     "regions": [
       "ap-south-1",
-      "ap-southeast-3",
-      "cn-north-1",
-      "cn-northwest-1",
       "eu-central-2",
       "eu-north-1",
       "eu-west-2",
-      "me-central-1",
       "us-east-1",
       "us-west-2",
       "af-south-1",

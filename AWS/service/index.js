@@ -99,8 +99,7 @@ export const queryDependencies = async (
 
         const resources = [];
         if (command.includes("paginate")) {
-          const packageImport = await import(listClientConfig.packageName);
-          const CommandClass = packageImport[command];
+          const CommandClass = classPackage[command];
           for await (const page of CommandClass({ client: listClient }, {})) {
             if (outputPropertySearchType === "JSON_PATH") {
               const result = jp.query(page, outputProperty)[0];
@@ -110,8 +109,7 @@ export const queryDependencies = async (
             }
           }
         } else {
-          const packageImport = await import(listClientConfig.packageName);
-          const CommandClass = packageImport[`${command}Command`];
+          const CommandClass = classPackage[`${command}Command`];
           let nextResponsePageToken;
           let nextRequestPageToken;
           let nextPageTokenValue;
@@ -123,8 +121,7 @@ export const queryDependencies = async (
                 ? { [nextRequestPageToken]: nextPageTokenValue }
                 : {};
             const com = new CommandClass(paginationArgs);
-            // @ts-ignore
-            const listResponse = await listClient?.send(com);
+            const listResponse = await listClient.send(com);
             nextResponsePageToken = getNextPageTokenKeyFromResponse(
               listResponse,
               getNextListPageTokenKey(list),
