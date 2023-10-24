@@ -1,12 +1,14 @@
-import { EKSClient, paginateListNodegroups } from "@aws-sdk/client-eks";
 import {
-  paginateListClusters as paginateListEKSClusters
-} from "@aws-sdk/client-eks/dist-types/pagination/ListClustersPaginator.js";
+  EKSClient,
+  paginateListNodegroups,
+  paginateListClusters,
+} from "@aws-sdk/client-eks";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryEKSNodeGroup = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new EKSClient({ region });
   const clusterNames = [];
-  for await (const page of paginateListEKSClusters({ client }, {})) {
+  for await (const page of paginateListClusters({ client }, {})) {
     clusterNames.push(...(page.clusters || []));
   }
   let nodeGroups = [];
@@ -14,7 +16,7 @@ export const queryEKSNodeGroup = async (AWS_MAPPING, serviceName, resourceType, 
     clusterNames.map(async (clusterName) => {
       for await (const page of paginateListNodegroups(
         { client },
-        { clusterName }
+        { clusterName },
       )) {
         if (
           page?.nodegroups?.length !== undefined &&
@@ -25,7 +27,7 @@ export const queryEKSNodeGroup = async (AWS_MAPPING, serviceName, resourceType, 
           }
         }
       }
-    })
+    }),
   );
   const resourceCount = nodeGroups.length;
   updateResourceTypeCounter(serviceName, resourceType, resourceCount);

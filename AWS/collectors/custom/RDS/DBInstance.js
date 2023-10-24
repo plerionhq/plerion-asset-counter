@@ -1,9 +1,8 @@
 import { RDSClient } from "@aws-sdk/client-rds";
-import {
-  paginateDescribeDBInstances as paginateRDSInstances
-} from "@aws-sdk/client-rds/dist-types/pagination/DescribeDBInstancesPaginator.js";
+import { paginateDescribeDBInstances as paginateRDSInstances } from "@aws-sdk/client-rds/dist-types/pagination/DescribeDBInstancesPaginator.js";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryRDSInstance = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
   const client = new RDSClient({ region });
   for await (const page of paginateRDSInstances(
@@ -29,11 +28,11 @@ export const queryRDSInstance = async (AWS_MAPPING, serviceName, resourceType, r
             "sqlserver-ee",
             "sqlserver-ex",
             "sqlserver-se",
-            "sqlserver-web"
-          ]
-        }
-      ]
-    }
+            "sqlserver-web",
+          ],
+        },
+      ],
+    },
   )) {
     resources.push(...(page.DBInstances || []));
   }
@@ -41,4 +40,3 @@ export const queryRDSInstance = async (AWS_MAPPING, serviceName, resourceType, r
   updateResourceTypeCounter(serviceName, resourceType, resourceCount);
   AWS_MAPPING.total += resourceCount;
 };
-

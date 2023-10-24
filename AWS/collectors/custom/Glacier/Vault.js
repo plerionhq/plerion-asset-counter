@@ -1,6 +1,7 @@
 import { GlacierClient, paginateListVaults } from "@aws-sdk/client-glacier";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryGlacierVault = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   let resources = [];
   const client = new GlacierClient({ region });

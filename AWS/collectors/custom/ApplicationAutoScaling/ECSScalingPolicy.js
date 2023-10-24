@@ -1,15 +1,16 @@
 import {
   ApplicationAutoScalingClient,
-  paginateDescribeScalingPolicies
+  paginateDescribeScalingPolicies,
 } from "@aws-sdk/client-application-auto-scaling";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryScalingPolicies = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const resources = [];
   const client = new ApplicationAutoScalingClient({ region });
   for await (const page of paginateDescribeScalingPolicies(
     { client },
-    { ServiceNamespace: "ecs" }
+    { ServiceNamespace: "ecs" },
   )) {
     resources.push(...(page.ScalingPolicies || []));
   }

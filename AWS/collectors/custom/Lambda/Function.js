@@ -1,6 +1,7 @@
 import { LambdaClient, paginateListFunctions } from "@aws-sdk/client-lambda";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryLambdaFunction = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
   const client = new LambdaClient({ region });
   for await (const page of paginateListFunctions({ client }, {})) {

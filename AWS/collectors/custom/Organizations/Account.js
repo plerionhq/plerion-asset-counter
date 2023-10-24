@@ -1,14 +1,18 @@
-import { DescribeOrganizationCommand, OrganizationsClient } from "@aws-sdk/client-organizations";
+import {
+  DescribeOrganizationCommand,
+  OrganizationsClient,
+} from "@aws-sdk/client-organizations";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryOrganizationsAccount = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const client = new OrganizationsClient({ region });
-  const organization =
-    await client.send(new DescribeOrganizationCommand({}));
+  const organization = await client.send(new DescribeOrganizationCommand({}));
   const resources = [];
   if (organization.Organization) {
     resources.push(organization.Organization);
     total += resources.length;
   }
+  updateResourceTypeCounter(serviceName, resourceType, total);
   AWS_MAPPING.total += total;
 };

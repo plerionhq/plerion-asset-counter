@@ -1,6 +1,7 @@
 import { EC2Client, paginateDescribeInstances } from "@aws-sdk/client-ec2";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryEC2Instance = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   let resources = [];
   try {
@@ -9,8 +10,8 @@ export const queryEC2Instance = async (AWS_MAPPING, serviceName, resourceType, r
       if (page.Reservations) {
         resources.push(
           ...(page.Reservations.map(
-            (reservation) => reservation.Instances
-          ).flat() || [])
+            (reservation) => reservation.Instances,
+          ).flat() || []),
         );
       }
     }
@@ -22,4 +23,3 @@ export const queryEC2Instance = async (AWS_MAPPING, serviceName, resourceType, r
   }
   AWS_MAPPING.total += total;
 };
-

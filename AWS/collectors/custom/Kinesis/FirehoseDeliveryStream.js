@@ -1,10 +1,10 @@
-import { FirehoseClient, ListDeliveryStreamsCommand } from "@aws-sdk/client-firehose";
+import {
+  FirehoseClient,
+  ListDeliveryStreamsCommand,
+} from "@aws-sdk/client-firehose";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-const queryKinesisFirehoseDeliveryStream = async (
-  serviceName,
-  resourceType,
-  region
-) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const client = new FirehoseClient({ region });
   const resources = [];
@@ -12,7 +12,7 @@ const queryKinesisFirehoseDeliveryStream = async (
   do {
     const command = new ListDeliveryStreamsCommand({
       ExclusiveStartDeliveryStreamName:
-        resources.length > 0 ? resources[resources.length - 1] : undefined
+        resources.length > 0 ? resources[resources.length - 1] : undefined,
     });
     const response = await client.send(command);
 
@@ -23,4 +23,3 @@ const queryKinesisFirehoseDeliveryStream = async (
   } while (hasMoreDeliveryStreams);
   AWS_MAPPING.total += total;
 };
-

@@ -1,19 +1,20 @@
 import { paginateListDocuments, SSMClient } from "@aws-sdk/client-ssm";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const querySSMDocument = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
   const client = new SSMClient({ region });
   for await (const document of paginateListDocuments(
-    { client: this.client },
+    { client },
     {
       MaxResults: 50,
       DocumentFilterList: [
         {
           key: "Owner",
-          value: "self"
-        }
-      ]
-    }
+          value: "self",
+        },
+      ],
+    },
   )) {
     const { DocumentIdentifiers: documentIdentifiers } = document;
     resources.push(...(documentIdentifiers || []));

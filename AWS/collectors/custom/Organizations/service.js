@@ -1,7 +1,17 @@
-import { DescribeOrganizationCommand, OrganizationsClient, paginateListRoots } from "@aws-sdk/client-organizations";
+import {
+  DescribeOrganizationCommand,
+  OrganizationsClient,
+  paginateListRoots,
+} from "@aws-sdk/client-organizations";
 import { getAWSAccountId } from "../../../service/index.js";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryOrganizations = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const queryOrganizations = async (
+  AWS_MAPPING,
+  serviceName,
+  resourceType,
+  region,
+) => {
   const client = new OrganizationsClient({ region });
   const organization = await client.send(new DescribeOrganizationCommand({}));
   const resources = [];

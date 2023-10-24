@@ -1,9 +1,8 @@
 import { RDSClient } from "@aws-sdk/client-rds";
-import {
-  paginateDescribeDBClusters as paginateRDSClusters
-} from "@aws-sdk/client-rds/dist-types/pagination/DescribeDBClustersPaginator.js";
+import { paginateDescribeDBClusters as paginateRDSClusters } from "@aws-sdk/client-rds/dist-types/pagination/DescribeDBClustersPaginator.js";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryRDSCluster = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
   const client = new RDSClient({ region });
   for await (const page of paginateRDSClusters(
@@ -29,11 +28,11 @@ export const queryRDSCluster = async (AWS_MAPPING, serviceName, resourceType, re
             "sqlserver-ee",
             "sqlserver-ex",
             "sqlserver-se",
-            "sqlserver-web"
-          ]
-        }
-      ]
-    }
+            "sqlserver-web",
+          ],
+        },
+      ],
+    },
   )) {
     resources.push(...(page.DBClusters || []));
   }

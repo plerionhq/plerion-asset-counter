@@ -1,10 +1,19 @@
-import { IAMClient, paginateGetAccountAuthorizationDetails } from "@aws-sdk/client-iam";
+import {
+  IAMClient,
+  paginateGetAccountAuthorizationDetails,
+} from "@aws-sdk/client-iam";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-const queryIAMAccountAuthorization = async (
+const IAM_GROUP = "AWS::IAM::Group";
+const IAM_ROLE = "AWS::IAM::Role";
+const IAM_USER = "AWS::IAM::User";
+const IAM_POLICY = "AWS::IAM::Policy";
+
+export const queryIAMAccountAuthorization = async (
   AWS_MAPPING,
   serviceName,
   resourceType,
-  region
+  region,
 ) => {
   const users = [];
   const groups = [];
@@ -19,14 +28,14 @@ const queryIAMAccountAuthorization = async (
   const client = new IAMClient({ region });
   for await (const page of paginateGetAccountAuthorizationDetails(
     { client },
-    {}
+    {},
   )) {
     if (page.UserDetailList && page.UserDetailList.length) {
       users.push(...(page.UserDetailList || []));
       updateResourceTypeCounter(
         serviceName,
         IAM_USER,
-        page.UserDetailList.length
+        page.UserDetailList.length,
       );
     } else {
       updateResourceTypeCounter(serviceName, IAM_USER, 0);
@@ -36,7 +45,7 @@ const queryIAMAccountAuthorization = async (
       updateResourceTypeCounter(
         serviceName,
         IAM_GROUP,
-        page.GroupDetailList.length
+        page.GroupDetailList.length,
       );
     } else {
       updateResourceTypeCounter(serviceName, IAM_GROUP, 0);
@@ -46,7 +55,7 @@ const queryIAMAccountAuthorization = async (
       updateResourceTypeCounter(
         serviceName,
         IAM_ROLE,
-        page.RoleDetailList.length
+        page.RoleDetailList.length,
       );
     } else {
       updateResourceTypeCounter(serviceName, IAM_ROLE, 0);
@@ -62,4 +71,3 @@ const queryIAMAccountAuthorization = async (
     users.length + groups.length + roles.length + managedPolicies.length;
   AWS_MAPPING.total += total;
 };
-

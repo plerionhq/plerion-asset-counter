@@ -1,10 +1,10 @@
-import { ComputeOptimizerClient, GetEnrollmentStatusCommand } from "@aws-sdk/client-compute-optimizer";
+import {
+  ComputeOptimizerClient,
+  GetEnrollmentStatusCommand,
+} from "@aws-sdk/client-compute-optimizer";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-const queryComputeOptimizerEnrollmentStatus = async (
-  serviceName,
-  resourceType,
-  region
-) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const client = new ComputeOptimizerClient({ region });
   const resources = [];
@@ -15,4 +15,3 @@ const queryComputeOptimizerEnrollmentStatus = async (
   total += resources.length;
   AWS_MAPPING.total += total;
 };
-

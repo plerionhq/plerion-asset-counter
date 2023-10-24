@@ -1,11 +1,7 @@
-
-export const getNextPageTokenKeyFromResponse = (
-  response,
-  paginationKey
-) => {
+export const getNextPageTokenKeyFromResponse = (response, paginationKey) => {
   const responseKeys = Object.keys(response);
   return responseKeys.find(
-    (k) => k.toLowerCase() === paginationKey.toLowerCase()
+    (k) => k.toLowerCase() === paginationKey.toLowerCase(),
   );
 };
 
@@ -20,7 +16,7 @@ export const getNextListPageTokenKey = (list) => {
 
 export const getNextListPageTokenRequestKey = (
   nextPageTokenResponseKey,
-  list
+  list,
 ) => {
   const { action: listAction } = list;
   const { nextPageTokenKey } = listAction;
@@ -30,8 +26,12 @@ export const getNextListPageTokenRequestKey = (
   return nextPageTokenResponseKey;
 };
 
-
-export const updateResourceTypeCounter = (AWS_MAPPING, serviceName, resourceType, value) => {
+export const updateResourceTypeCounter = (
+  AWS_MAPPING,
+  serviceName,
+  resourceType,
+  value,
+) => {
   if (AWS_MAPPING[serviceName] === undefined) {
     AWS_MAPPING[serviceName] = { [resourceType]: value };
   } else if (AWS_MAPPING[serviceName][resourceType] === undefined) {

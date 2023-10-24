@@ -1,13 +1,14 @@
 import { EC2Client, paginateDescribeSnapshots } from "@aws-sdk/client-ec2";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const querySnapshot = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new EC2Client({ region });
   let resources = [];
-  for await (const image of paginateDescribeSnapshots(
+  for await (const ss of paginateDescribeSnapshots(
     { client },
-    { OwnerIds: ["self"] }
+    { OwnerIds: ["self"] },
   )) {
-    const { Snapshots: snapshots } = snapshots;
+    const { Snapshots: snapshots } = ss;
     resources.push(...(snapshots || []));
   }
   updateResourceTypeCounter(serviceName, resourceType, resources.length);

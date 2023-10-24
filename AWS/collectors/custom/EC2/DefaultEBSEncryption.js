@@ -1,6 +1,10 @@
-import { EC2Client, GetEbsEncryptionByDefaultCommand } from "@aws-sdk/client-ec2";
+import {
+  EC2Client,
+  GetEbsEncryptionByDefaultCommand,
+} from "@aws-sdk/client-ec2";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryDefaultEBSEncryption = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const command = new GetEbsEncryptionByDefaultCommand({});
   const client = new EC2Client({ region });

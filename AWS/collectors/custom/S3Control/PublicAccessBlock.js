@@ -1,14 +1,14 @@
-import { GetPublicAccessBlockCommand, S3ControlClient } from "@aws-sdk/client-s3-control";
+import {
+  GetPublicAccessBlockCommand,
+  S3ControlClient,
+} from "@aws-sdk/client-s3-control";
 import { getAWSAccountId } from "../../../service/index.js";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-const queryS3ControlBlockPublicAccess = async (
-  serviceName,
-  resourceType,
-  region
-) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new S3ControlClient({ region });
   const command = new GetPublicAccessBlockCommand({
-    AccountId: await getAWSAccountId()
+    AccountId: await getAWSAccountId(),
   });
   const response = await client.send(command);
   let total = 0;

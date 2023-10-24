@@ -1,13 +1,17 @@
-import { ApplicationAutoScalingClient, DescribeScalableTargetsCommand } from "@aws-sdk/client-application-auto-scaling";
+import {
+  ApplicationAutoScalingClient,
+  DescribeScalableTargetsCommand,
+} from "@aws-sdk/client-application-auto-scaling";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryScalableTargets = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const aasClient = new ApplicationAutoScalingClient({ region });
   let total = 0;
   let aasNextToken;
   do {
     const describeScalableTargets = new DescribeScalableTargetsCommand({
       NextToken: aasNextToken,
-      ServiceNamespace: "dynamodb"
+      ServiceNamespace: "dynamodb",
     });
     const response = await aasClient.send(describeScalableTargets);
     if (response && response.ScalableTargets) {
@@ -16,7 +20,7 @@ export const queryScalableTargets = async (AWS_MAPPING, serviceName, resourceTyp
       updateResourceTypeCounter(
         serviceName,
         resourceType,
-        scalableTargetsCount
+        scalableTargetsCount,
       );
       aasNextToken = response.NextToken;
     }

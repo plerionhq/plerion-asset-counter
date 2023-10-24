@@ -1,6 +1,11 @@
-import { APIGatewayClient, GetStagesCommand, paginateGetRestApis } from "@aws-sdk/client-api-gateway";
+import {
+  APIGatewayClient,
+  GetStagesCommand,
+  paginateGetRestApis,
+} from "@aws-sdk/client-api-gateway";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryAPIGatewayStage = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const client = new APIGatewayClient({ region });
   const resources = [];
@@ -9,7 +14,7 @@ export const queryAPIGatewayStage = async (AWS_MAPPING, serviceName, resourceTyp
   }
   for await (const apis of resources) {
     const command = new GetStagesCommand({
-      restApiId: apis.id
+      restApiId: apis.id,
     });
     const response = await client?.send(command);
     const stageCount = response?.item.length;

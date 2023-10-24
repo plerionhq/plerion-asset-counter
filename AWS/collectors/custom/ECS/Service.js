@@ -3,13 +3,14 @@ import {
   DescribeTaskDefinitionCommand,
   ECSClient,
   ListServicesCommand,
-  paginateListClusters
+  paginateListClusters,
 } from "@aws-sdk/client-ecs";
 import chunks from "lodash.chunk";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 const ECS_TASK_DEFINITION = "AWS::ECS::TaskDefinition";
 
-export const queryECSService = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const client = new ECSClient({ region });
   const resources = [];
@@ -19,7 +20,7 @@ export const queryECSService = async (AWS_MAPPING, serviceName, resourceType, re
 
   for await (const clusterArn of resources) {
     const command = new ListServicesCommand({
-      cluster: clusterArn
+      cluster: clusterArn,
     });
     const response = await client?.send(command);
     const serviceCount = response?.serviceArns.length;
@@ -32,7 +33,7 @@ export const queryECSService = async (AWS_MAPPING, serviceName, resourceType, re
       chunkedServices.map(async (serviceArns) => {
         const command = new DescribeServicesCommand({
           cluster: clusterArn,
-          services: serviceArns
+          services: serviceArns,
         });
         const response = await client?.send(command);
         const taskDefinitionArns = [];
@@ -46,7 +47,7 @@ export const queryECSService = async (AWS_MAPPING, serviceName, resourceType, re
                 .filter(
                   (deployment) =>
                     deployment?.status === "PRIMARY" &&
-                    !!deployment?.taskDefinition
+                    !!deployment?.taskDefinition,
                 )
                 .map((deployment) => deployment?.taskDefinition);
               if (deploymentTaskDefinitionArns) {
@@ -59,7 +60,7 @@ export const queryECSService = async (AWS_MAPPING, serviceName, resourceType, re
         await Promise.all(
           [...new Set(taskDefinitionArns)].map(async (taskDefinition) => {
             let getTaskDefCmd = new DescribeTaskDefinitionCommand({
-              taskDefinition
+              taskDefinition,
             });
             let getTaskDefRes = await client?.send(getTaskDefCmd);
             let containerCount =
@@ -68,11 +69,11 @@ export const queryECSService = async (AWS_MAPPING, serviceName, resourceType, re
             updateResourceTypeCounter(
               serviceName,
               ECS_TASK_DEFINITION,
-              containerCount
+              containerCount,
             );
-          })
+          }),
         );
-      })
+      }),
     );
   }
   AWS_MAPPING.total += total;

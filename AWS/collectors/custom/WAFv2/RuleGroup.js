@@ -1,7 +1,8 @@
 import { ListRuleGroupsCommand, WAFV2Client } from "@aws-sdk/client-wafv2";
 import { paginate } from "../../../service/index.js";
+import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-export const queryWafv2RuleGroup = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const client = new WAFV2Client({ region });
   const responseForRegional = await paginate({
@@ -9,11 +10,11 @@ export const queryWafv2RuleGroup = async (AWS_MAPPING, serviceName, resourceType
     command: {
       CommandClass: ListRuleGroupsCommand,
       params: {
-        Scope: "REGIONAL"
-      }
+        Scope: "REGIONAL",
+      },
     },
     nextKey: "NextMarker",
-    responseKey: "RuleGroups"
+    responseKey: "RuleGroups",
   });
 
   // CLOUDFRONT only supported for us-east-1
@@ -24,11 +25,11 @@ export const queryWafv2RuleGroup = async (AWS_MAPPING, serviceName, resourceType
       command: {
         CommandClass: ListRuleGroupsCommand,
         params: {
-          Scope: "CLOUDFRONT"
-        }
+          Scope: "CLOUDFRONT",
+        },
       },
       nextKey: "NextMarker",
-      responseKey: "RuleGroups"
+      responseKey: "RuleGroups",
     });
   }
 

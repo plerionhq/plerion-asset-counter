@@ -1,14 +1,23 @@
 import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
 import dependencies from "../aws-dependencies.json";
-import { CloudControlClient, paginateListResources } from "@aws-sdk/client-cloudcontrol";
+import {
+  CloudControlClient,
+  paginateListResources,
+} from "@aws-sdk/client-cloudcontrol";
 import jp from "jsonpath";
 import {
   getNextListPageTokenKey,
   getNextListPageTokenRequestKey,
-  getNextPageTokenKeyFromResponse
+  getNextPageTokenKeyFromResponse,
+  updateResourceTypeCounter,
 } from "../utils/index.js";
 
-export const paginate = async ({ client, command, responseKey = "Items", nextKey = "NextToken" }) => {
+export const paginate = async ({
+  client,
+  command,
+  responseKey = "Items",
+  nextKey = "NextToken",
+}) => {
   let nextToken;
   const results = [];
   let commandParams = command.params;
@@ -16,25 +25,33 @@ export const paginate = async ({ client, command, responseKey = "Items", nextKey
     const response = await client.send(new command.CommandClass(commandParams));
     results.push(...(response[responseKey] || []));
     nextToken = response[nextKey];
-    commandParams = command.params ? { [nextKey]: nextToken, ...command.params } : { [nextKey]: nextToken };
+    commandParams = command.params
+      ? { [nextKey]: nextToken, ...command.params }
+      : { [nextKey]: nextToken };
   } while (nextToken);
   return results;
 };
 
-
 export const getAWSAccountId = async () => {
-  const response = await new STSClient({}).send(new GetCallerIdentityCommand({}));
+  const response = await new STSClient({}).send(
+    new GetCallerIdentityCommand({}),
+  );
 
   return String(response.Account);
 };
 
-export const queryDependencies = async (AWS_MAPPING, serviceName, resourceType, region) => {
+export const queryDependencies = async (
+  AWS_MAPPING,
+  serviceName,
+  resourceType,
+  region,
+) => {
   const resourceDependency = dependencies.find((dep) => dep.id === serviceName);
   let total = 0;
   if (resourceDependency) {
     const { resources } = resourceDependency;
     const resourceTypeDependency = resources.find(
-      (resource) => resource.resourceType === resourceType
+      (resource) => resource.resourceType === resourceType,
     );
     if (resourceTypeDependency) {
       if (
@@ -42,14 +59,14 @@ export const queryDependencies = async (AWS_MAPPING, serviceName, resourceType, 
         "AWS_CLOUDCONTROL_V3"
       ) {
         const listClient = new CloudControlClient({
-          region
+          region,
         });
         const paginatorConfig = {
           client: listClient,
-          pageSize: 25
+          pageSize: 25,
         };
         const commandInput = {
-          TypeName: resourceType
+          TypeName: resourceType,
         };
         const paginator = paginateListResources(paginatorConfig, commandInput);
         for await (const page of paginator) {
@@ -63,7 +80,7 @@ export const queryDependencies = async (AWS_MAPPING, serviceName, resourceType, 
         const classPackage = await import(listClientConfig.packageName);
         const ClientClass = classPackage[listClientConfig.clientName];
         const listClient = new ClientClass({
-          region
+          region,
         });
         const { action: listAction } = list;
         const { command, outputProperty, outputPropertySearchType } =
@@ -84,13 +101,14 @@ export const queryDependencies = async (AWS_MAPPING, serviceName, resourceType, 
         } else {
           const packageImport = await import(listClientConfig.packageName);
           const CommandClass = packageImport[`${command}Command`];
-          const com = new CommandClass({});
           let nextResponsePageToken;
           let nextRequestPageToken;
           let nextPageTokenValue;
           do {
             const paginationArgs =
-              nextResponsePageToken && nextPageTokenValue && nextRequestPageToken
+              nextResponsePageToken &&
+              nextPageTokenValue &&
+              nextRequestPageToken
                 ? { [nextRequestPageToken]: nextPageTokenValue }
                 : {};
             const com = new CommandClass(paginationArgs);
@@ -98,7 +116,7 @@ export const queryDependencies = async (AWS_MAPPING, serviceName, resourceType, 
             const listResponse = await listClient?.send(com);
             nextResponsePageToken = getNextPageTokenKeyFromResponse(
               listResponse,
-              getNextListPageTokenKey(list)
+              getNextListPageTokenKey(list),
             );
             nextPageTokenValue =
               nextResponsePageToken && listResponse[nextResponsePageToken];
@@ -114,13 +132,13 @@ export const queryDependencies = async (AWS_MAPPING, serviceName, resourceType, 
             }
             nextRequestPageToken = getNextListPageTokenRequestKey(
               nextResponsePageToken,
-              list
+              list,
             );
           } while (
             nextPageTokenValue &&
             nextResponsePageToken &&
             nextRequestPageToken
-            );
+          );
         }
         const resultsLength = resources.length || 0;
         updateResourceTypeCounter(serviceName, resourceType, resultsLength);
