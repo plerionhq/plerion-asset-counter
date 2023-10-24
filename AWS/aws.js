@@ -1,10 +1,10 @@
-import { promises as fs, readFileSync } from "fs";
+import { readFileSync } from "fs";
 
 const services = JSON.parse(
   readFileSync(path.join(process.cwd(), "AWS/aws-services.json")),
 );
 import path from "path";
-import { queryDependencies } from "./service/index.js";
+import { queryDependencies, checkModuleAndQuery } from "./service/index.js";
 
 const AWS_MAPPING = { total: 0 };
 
@@ -31,29 +31,26 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
             `${providerName}/collectors/custom/${serviceName}/${resourceName}.js`,
           );
           console.log(`Checking ${resourceType} on region ${region}`);
-          try {
-            await fs.access(filePath);
 
-            // Dynamically import the module
-            const module = await import(filePath);
-            // Check if query function exists in the module
-            if (typeof module.query === "function") {
-              await module.query(
-                AWS_MAPPING,
-                serviceName,
-                resourceType,
-                region,
-              );
-            } else {
+          const success = await checkModuleAndQuery(
+            filePath,
+            AWS_MAPPING,
+            serviceName,
+            resourceType,
+            region,
+          );
+
+          if (!success) {
+            try {
               await queryDependencies(
                 AWS_MAPPING,
                 serviceName,
                 resourceType,
                 region,
               );
+            } catch (err) {
+              console.log(`Error checking ${resourceType} on ${region}`);
             }
-          } catch (error) {
-            console.log(`Error checking ${resourceType} on region ${region}`);
           }
         }
       }

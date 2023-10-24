@@ -1,5 +1,4 @@
-import { EMRClient } from "@aws-sdk/client-emr";
-import { paginateListClusters } from "@aws-sdk/client-ecs";
+import { EMRClient, paginateListClusters } from "@aws-sdk/client-emr";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {

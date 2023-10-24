@@ -1,11 +1,13 @@
-import { NeptuneClient } from "@aws-sdk/client-neptune";
-import { paginateDescribeDBClusters as paginateNeptuneClusters } from "@aws-sdk/client-neptune/dist-types/pagination/DescribeDBClustersPaginator.js";
+import {
+  NeptuneClient,
+  paginateDescribeDBClusters,
+} from "@aws-sdk/client-neptune";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
   const client = new NeptuneClient({ region });
-  for await (const page of paginateNeptuneClusters(
+  for await (const page of paginateDescribeDBClusters(
     { client },
     { Filters: [{ Name: "engine", Values: ["neptune"] }] },
   )) {

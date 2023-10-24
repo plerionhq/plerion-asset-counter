@@ -1,11 +1,10 @@
-import { NeptuneClient } from "@aws-sdk/client-neptune";
-import { paginateDescribeDBInstances as paginateNeptuneInstances } from "@aws-sdk/client-neptune/dist-types/pagination/DescribeDBInstancesPaginator.js";
+import { NeptuneClient, paginateDescribeDBInstances } from "@aws-sdk/client-neptune";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
   const client = new NeptuneClient({ region });
-  for await (const page of paginateNeptuneInstances(
+  for await (const page of paginateDescribeDBInstances(
     { client },
     { Filters: [{ Name: "engine", Values: ["neptune"] }] },
   )) {

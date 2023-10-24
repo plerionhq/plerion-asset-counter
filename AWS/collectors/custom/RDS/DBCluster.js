@@ -1,11 +1,10 @@
-import { RDSClient } from "@aws-sdk/client-rds";
-import { paginateDescribeDBClusters as paginateRDSClusters } from "@aws-sdk/client-rds/dist-types/pagination/DescribeDBClustersPaginator.js";
+import { RDSClient, paginateDescribeDBClusters } from "@aws-sdk/client-rds";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
   const client = new RDSClient({ region });
-  for await (const page of paginateRDSClusters(
+  for await (const page of paginateDescribeDBClusters(
     { client },
     {
       Filters: [

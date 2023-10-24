@@ -1,5 +1,6 @@
-import { readFileSync } from "fs";
+import { promises as fs, readFileSync } from "fs";
 import path from "path";
+
 const dependencies = JSON.parse(
   readFileSync(
     path.join(process.cwd(), "AWS/collectors/codeless/aws-dependencies.json"),
@@ -160,4 +161,26 @@ export const queryDependencies = async (
     }
   }
   AWS_MAPPING.total += total;
+};
+
+export const checkModuleAndQuery = async (
+  filePath,
+  AWS_MAPPING,
+  serviceName,
+  resourceType,
+  region,
+) => {
+  try {
+    await fs.access(filePath);
+    const module = await import(filePath);
+    if (typeof module.query === "function") {
+      await module.query(AWS_MAPPING, serviceName, resourceType, region);
+      return true;
+    } else {
+      console.log(`No query function for ${resourceType}`);
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
 };

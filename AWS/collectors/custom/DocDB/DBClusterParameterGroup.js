@@ -1,11 +1,13 @@
-import { DocDBClient } from "@aws-sdk/client-docdb";
-import { paginateDescribeDBClusterParameterGroups as paginateDocDBClusterParameterGroups } from "@aws-sdk/client-docdb/dist-types/pagination/DescribeDBClusterParameterGroupsPaginator.js";
+import {
+  DocDBClient,
+  paginateDescribeDBClusterParameterGroups,
+} from "@aws-sdk/client-docdb";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
   const client = new DocDBClient({ region });
-  for await (const page of paginateDocDBClusterParameterGroups(
+  for await (const page of paginateDescribeDBClusterParameterGroups(
     { client },
     { Filters: [{ Name: "engine", Values: ["docdb"] }] },
   )) {

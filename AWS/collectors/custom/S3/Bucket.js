@@ -7,7 +7,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new S3Client({ region });
   const command = new ListBucketsCommand({});
   const response = await client.send(command);
-  resources.push({ ...(response.Buckets || []) });
+  resources.push(...(response.Buckets || []));
   updateResourceTypeCounter(
     AWS_MAPPING,
     serviceName,
