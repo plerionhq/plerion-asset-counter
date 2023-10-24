@@ -33,38 +33,46 @@ export const queryIAMAccountAuthorization = async (
     if (page.UserDetailList && page.UserDetailList.length) {
       users.push(...(page.UserDetailList || []));
       updateResourceTypeCounter(
+        AWS_MAPPING,
         serviceName,
         IAM_USER,
         page.UserDetailList.length,
       );
     } else {
-      updateResourceTypeCounter(serviceName, IAM_USER, 0);
+      updateResourceTypeCounter(AWS_MAPPING, serviceName, IAM_USER, 0);
     }
     if (page.GroupDetailList && page.GroupDetailList.length) {
       groups.push(...(page.GroupDetailList || []));
       updateResourceTypeCounter(
+        AWS_MAPPING,
         serviceName,
         IAM_GROUP,
         page.GroupDetailList.length,
       );
     } else {
-      updateResourceTypeCounter(serviceName, IAM_GROUP, 0);
+      updateResourceTypeCounter(AWS_MAPPING, serviceName, IAM_GROUP, 0);
     }
     if (page.RoleDetailList && page.RoleDetailList.length) {
       roles.push(...(page.RoleDetailList || []));
       updateResourceTypeCounter(
+        AWS_MAPPING,
         serviceName,
         IAM_ROLE,
         page.RoleDetailList.length,
       );
     } else {
-      updateResourceTypeCounter(serviceName, IAM_ROLE, 0);
+      updateResourceTypeCounter(AWS_MAPPING, serviceName, IAM_ROLE, 0);
     }
     if (page.Policies && page.Policies.length) {
       managedPolicies.push(...(page.Policies || []));
-      updateResourceTypeCounter(serviceName, IAM_POLICY, page.Policies.length);
+      updateResourceTypeCounter(
+        AWS_MAPPING,
+        serviceName,
+        IAM_POLICY,
+        page.Policies.length,
+      );
     } else {
-      updateResourceTypeCounter(serviceName, IAM_POLICY, 0);
+      updateResourceTypeCounter(AWS_MAPPING, serviceName, IAM_POLICY, 0);
     }
   }
   const total =

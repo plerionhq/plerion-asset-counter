@@ -30,6 +30,11 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     }),
   );
   const resourceCount = nodeGroups.length;
-  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  updateResourceTypeCounter(
+    AWS_MAPPING,
+    serviceName,
+    resourceType,
+    resourceCount,
+  );
   AWS_MAPPING.total += resourceCount;
 };

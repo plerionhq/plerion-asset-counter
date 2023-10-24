@@ -10,7 +10,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     resources.push(...(page.Clusters || []));
   }
   const resourceCount = resources.length;
-  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  updateResourceTypeCounter(
+    AWS_MAPPING,
+    serviceName,
+    resourceType,
+    resourceCount,
+  );
   total += resources.length;
   AWS_MAPPING.total += total;
 };

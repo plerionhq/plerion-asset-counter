@@ -14,7 +14,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     const response = await client.send(command);
 
     resources.push(...(response.StreamNames || []));
-    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    updateResourceTypeCounter(
+      AWS_MAPPING,
+      serviceName,
+      resourceType,
+      resources.length,
+    );
     total += resources.length;
     hasMoreStreams = response.HasMoreStreams;
   } while (hasMoreStreams);

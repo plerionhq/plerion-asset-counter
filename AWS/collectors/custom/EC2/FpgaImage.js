@@ -11,6 +11,11 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     const { FpgaImages: images } = image;
     resources.push(...(images || []));
   }
-  updateResourceTypeCounter(serviceName, resourceType, resources.length);
+  updateResourceTypeCounter(
+    AWS_MAPPING,
+    serviceName,
+    resourceType,
+    resources.length,
+  );
   AWS_MAPPING.total += resources.length;
 };

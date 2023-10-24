@@ -17,7 +17,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     }
     const ec2InstancesCount = resources.length;
     total += ec2InstancesCount;
-    updateResourceTypeCounter(serviceName, resourceType, ec2InstancesCount);
+    updateResourceTypeCounter(
+      AWS_MAPPING,
+      serviceName,
+      resourceType,
+      ec2InstancesCount,
+    );
   } catch (err) {
     console.log(`Error finding ${resourceType}`);
   }

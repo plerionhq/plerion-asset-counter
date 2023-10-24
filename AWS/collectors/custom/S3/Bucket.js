@@ -8,7 +8,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const command = new ListBucketsCommand({});
   const response = await client.send(command);
   resources.push({ ...(response.Buckets || []) });
-  updateResourceTypeCounter(serviceName, resourceType, resources.length);
+  updateResourceTypeCounter(
+    AWS_MAPPING,
+    serviceName,
+    resourceType,
+    resources.length,
+  );
   total += resources.length;
   AWS_MAPPING.total += total;
 };

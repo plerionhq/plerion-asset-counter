@@ -11,7 +11,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const command = new GetEnrollmentStatusCommand({});
   const response = await client.send(command);
   resources.push({ ...(response || {}) });
-  updateResourceTypeCounter(serviceName, resourceType, resources.length);
+  updateResourceTypeCounter(
+    AWS_MAPPING,
+    serviceName,
+    resourceType,
+    resources.length,
+  );
   total += resources.length;
   AWS_MAPPING.total += total;
 };

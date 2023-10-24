@@ -13,7 +13,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     const ebsEncryptionCount =
       response.EbsEncryptionByDefault !== undefined ? 1 : 0;
     total += ebsEncryptionCount;
-    updateResourceTypeCounter(serviceName, resourceType, ebsEncryptionCount);
+    updateResourceTypeCounter(
+      AWS_MAPPING,
+      serviceName,
+      resourceType,
+      ebsEncryptionCount,
+    );
   }
 
   AWS_MAPPING.total += total;

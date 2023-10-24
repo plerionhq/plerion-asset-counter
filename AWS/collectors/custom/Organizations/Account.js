@@ -13,6 +13,6 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     resources.push(organization.Organization);
     total += resources.length;
   }
-  updateResourceTypeCounter(serviceName, resourceType, total);
+  updateResourceTypeCounter(AWS_MAPPING, serviceName, resourceType, total);
   AWS_MAPPING.total += total;
 };

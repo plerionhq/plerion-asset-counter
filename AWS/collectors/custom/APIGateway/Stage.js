@@ -19,7 +19,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     const response = await client?.send(command);
     const stageCount = response?.item.length;
     total += stageCount;
-    updateResourceTypeCounter(serviceName, resourceType, stageCount);
+    updateResourceTypeCounter(
+      AWS_MAPPING,
+      serviceName,
+      resourceType,
+      stageCount,
+    );
   }
   AWS_MAPPING.total += total;
 };

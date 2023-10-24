@@ -18,6 +18,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
       const scalableTargetsCount = response.ScalableTargets.length || 0;
       total += scalableTargetsCount;
       updateResourceTypeCounter(
+        AWS_MAPPING,
         serviceName,
         resourceType,
         scalableTargetsCount,

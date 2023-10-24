@@ -30,12 +30,22 @@ export const queryOrganizations = async (
     organization.Organization.MasterAccountId === (await getAWSAccountId())
   ) {
     resources.push(organization.Organization);
-    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    updateResourceTypeCounter(
+      AWS_MAPPING,
+      serviceName,
+      resourceType,
+      resources.length,
+    );
     total += resources.length;
     for await (const { Roots: rootPage } of paginateListRoots({ client }, {})) {
       roots.push(...(rootPage || []));
     }
-    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    updateResourceTypeCounter(
+      AWS_MAPPING,
+      serviceName,
+      resourceType,
+      resources.length,
+    );
     total += roots.length;
   }
   AWS_MAPPING.total += total;

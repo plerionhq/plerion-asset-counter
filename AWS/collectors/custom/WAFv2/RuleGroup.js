@@ -41,6 +41,11 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     data.push(...responseForCloudfront.RuleGroups);
   const resourceCount = data.length;
   total += resourceCount;
-  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  updateResourceTypeCounter(
+    AWS_MAPPING,
+    serviceName,
+    resourceType,
+    resourceCount,
+  );
   AWS_MAPPING.total += total;
 };

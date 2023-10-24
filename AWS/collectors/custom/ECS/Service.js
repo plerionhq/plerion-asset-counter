@@ -25,7 +25,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     const response = await client?.send(command);
     const serviceCount = response?.serviceArns.length;
     total += serviceCount;
-    updateResourceTypeCounter(serviceName, resourceType, serviceCount);
+    updateResourceTypeCounter(
+      AWS_MAPPING,
+      serviceName,
+      resourceType,
+      serviceCount,
+    );
     const chunkedServices = chunks(response?.serviceArns, 10);
     // Batching by 10 because this is the API limit per docs
     // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/describeservicescommandinput.html
@@ -67,6 +72,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
               getTaskDefRes.taskDefinition?.containerDefinitions.length;
             total += containerCount;
             updateResourceTypeCounter(
+              AWS_MAPPING,
               serviceName,
               ECS_TASK_DEFINITION,
               containerCount,

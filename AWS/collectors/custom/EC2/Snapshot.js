@@ -11,6 +11,11 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     const { Snapshots: snapshots } = ss;
     resources.push(...(snapshots || []));
   }
-  updateResourceTypeCounter(serviceName, resourceType, resources.length);
+  updateResourceTypeCounter(
+    AWS_MAPPING,
+    serviceName,
+    resourceType,
+    resources.length,
+  );
   AWS_MAPPING.total += resources.length;
 };

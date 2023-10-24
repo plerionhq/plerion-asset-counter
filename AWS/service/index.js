@@ -1,5 +1,11 @@
+import { readFileSync } from "fs";
+import path from "path";
+const dependencies = JSON.parse(
+  readFileSync(
+    path.join(process.cwd(), "AWS/collectors/codeless/aws-dependencies.json"),
+  ),
+);
 import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
-import dependencies from "../aws-dependencies.json";
 import {
   CloudControlClient,
   paginateListResources,
@@ -72,7 +78,12 @@ export const queryDependencies = async (
         for await (const page of paginator) {
           const descriptors = page.ResourceDescriptions;
           const s3BucketsLength = descriptors.length || 0;
-          updateResourceTypeCounter(serviceName, resourceType, s3BucketsLength);
+          updateResourceTypeCounter(
+            AWS_MAPPING,
+            serviceName,
+            resourceType,
+            s3BucketsLength,
+          );
           total += s3BucketsLength;
         }
       } else {
@@ -141,7 +152,12 @@ export const queryDependencies = async (
           );
         }
         const resultsLength = resources.length || 0;
-        updateResourceTypeCounter(serviceName, resourceType, resultsLength);
+        updateResourceTypeCounter(
+          AWS_MAPPING,
+          serviceName,
+          resourceType,
+          resultsLength,
+        );
         total += resultsLength;
       }
     }

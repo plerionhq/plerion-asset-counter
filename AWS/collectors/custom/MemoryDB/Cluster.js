@@ -15,7 +15,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     });
     const response = await client.send(command);
     resources.push(...(response.Clusters || []));
-    updateResourceTypeCounter(serviceName, resourceType, resources.length);
+    updateResourceTypeCounter(
+      AWS_MAPPING,
+      serviceName,
+      resourceType,
+      resources.length,
+    );
     total += resources.length;
     nextToken = response.NextToken;
   } while (nextToken);

@@ -20,6 +20,11 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     resources.push(...(documentIdentifiers || []));
   }
   const resourceCount = resources.length;
-  updateResourceTypeCounter(serviceName, resourceType, resourceCount);
+  updateResourceTypeCounter(
+    AWS_MAPPING,
+    serviceName,
+    resourceType,
+    resourceCount,
+  );
   AWS_MAPPING.total += resourceCount;
 };

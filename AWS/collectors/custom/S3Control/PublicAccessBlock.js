@@ -14,7 +14,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   if (response && response.PublicAccessBlockConfiguration) {
     total++;
-    updateResourceTypeCounter(serviceName, resourceType, total);
+    updateResourceTypeCounter(AWS_MAPPING, serviceName, resourceType, total);
     AWS_MAPPING.total += total;
   }
 };

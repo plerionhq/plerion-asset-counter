@@ -1,5 +1,7 @@
-import services from "./aws-services.json";
-import { promises as fs } from "fs";
+import { promises as fs, readFileSync } from "fs";
+const services = JSON.parse(
+  readFileSync(path.join(process.cwd(), "AWS/aws-services.json")),
+);
 import path from "path";
 import { queryDependencies } from "./service/index.js";
 
@@ -18,12 +20,13 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
           continue;
         }
         // Extract service and resource
-        const [, serviceName, resourceName] = resourceType;
+        const [providerName, serviceName, resourceName] =
+          resourceType.split("::");
 
         // Construct the file path
         const filePath = path.join(
           process.cwd(),
-          `collectors/custom/${service}/${resourceName}.js`,
+          `${providerName}/collectors/custom/${serviceName}/${resourceName}.js`,
         );
         for (const region of regions) {
           console.log(`Checking ${resourceType} on region ${region}`);
@@ -32,7 +35,6 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
 
             // Dynamically import the module
             const module = await import(filePath);
-
             // Check if query function exists in the module
             if (typeof module.query === "function") {
               await module.query(
