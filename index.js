@@ -48,7 +48,7 @@ const calculateUnits = (result, provider) => {
   }
   const { CSPM: CSPM_UNITS, CWPP: CWPP_UNITS } = calculateUnits(
     result,
-    provider
+    provider,
   );
   result["CSPM_UNITS"] = CSPM_UNITS;
   result["CWPP_UNITS"] = CWPP_UNITS;
@@ -112,8 +112,8 @@ const calculateUnits = (result, provider) => {
           },
         },
         null,
-        2
-      )
+        2,
+      ),
     );
   }
   console.log("INFO");
@@ -128,13 +128,13 @@ const calculateUnits = (result, provider) => {
   console.log("-----------------------------------");
   console.log("MONTHLY");
   console.log(
-    "CSPM/CIEM Asset Units consumed p/m: " + result["CSPM_UNITS_PER_MONTH"]
+    "CSPM/CIEM Asset Units consumed p/m: " + result["CSPM_UNITS_PER_MONTH"],
   );
   console.log(
-    "CWPP Asset Units consumed p/m: " + result["CWPP_UNITS_PER_MONTH"]
+    "CWPP Asset Units consumed p/m: " + result["CWPP_UNITS_PER_MONTH"],
   );
   console.log(
-    "Total Asset Units consumed p/m: " + result["TOTAL_UNITS_PER_MONTH"]
+    "Total Asset Units consumed p/m: " + result["TOTAL_UNITS_PER_MONTH"],
   );
   console.log("-----------------------------------");
 })();
