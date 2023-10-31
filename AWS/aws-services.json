@@ -2542,6 +2542,10 @@
       {
         "resource": "Session",
         "resourceType": "AWS::Macie::Session"
+      },
+      {
+        "resource": "Finding",
+        "resourceType": "AWS::Macie::Finding"
       }
     ],
     "regions": [
