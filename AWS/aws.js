@@ -459,11 +459,20 @@ const queryEC2Instance = async (serviceName, resourceType, region) => {
         );
       }
     }
-    const filteredInstances = resources.filter(
+    const nonTerminatedInstances = resources.filter(
+      (instance) => !isInstanceTerminated(instance));
+
+    const asgInstances =  nonTerminatedInstances.filter(
       (instance) =>
-        isInstanceFromAutoScaleGroup(instance) || isInstanceTerminated(instance)
+        isInstanceFromAutoScaleGroup(instance)
     );
-    const ec2InstancesCount = resources.length - filteredInstances.length;
+    const amiScannedForAsg = asgInstances.reduce((amiIds, instance) => {
+      if (!amiIds.some(amiId => amiId === instance.ImageId)) {
+        amiIds.push(instance.ImageId);
+      }
+      return amiIds;
+    }, []);
+    const ec2InstancesCount = (nonTerminatedInstances.length - asgInstances.length) + amiScannedForAsg.length;
     total += ec2InstancesCount;
     updateResourceTypeCounter(serviceName, resourceType, ec2InstancesCount);
   } catch (err) {
