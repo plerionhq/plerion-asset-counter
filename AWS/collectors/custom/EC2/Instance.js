@@ -23,12 +23,19 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
         );
       }
     }
-    const filteredInstances = resources.filter(
-      (instance) =>
-        isInstanceFromAutoScaleGroup(instance) ||
-        isInstanceTerminated(instance),
-    );
-    const ec2InstancesCount = resources.length - filteredInstances.length;
+    const nonTerminatedInstances = resources.filter(
+      (instance) => !isInstanceTerminated(instance));
+    const asgInstances =  nonTerminatedInstances.filter(
+        (instance) =>
+          isInstanceFromAutoScaleGroup(instance)
+      );
+    const amiScannedForAsg = asgInstances.reduce((amiIds, instance) => {
+        if (!amiIds.some(amiId => amiId === instance.ImageId)) {
+          amiIds.push(instance.ImageId);
+        }
+        return amiIds;
+      }, []);
+      const ec2InstancesCount = (nonTerminatedInstances.length - asgInstances.length) + amiScannedForAsg.length;
     total += ec2InstancesCount;
     updateResourceTypeCounter(
       AWS_MAPPING,
