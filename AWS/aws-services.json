@@ -2,7 +2,10 @@
   {
     "service": "CloudTrail",
     "resources": [
-      { "resource": "Trail", "resourceType": "AWS::CloudTrail::Trail" }
+      {
+        "resource": "Trail",
+        "resourceType": "AWS::CloudTrail::Trail"
+      }
     ],
     "regions": [
       "ap-northeast-2",
@@ -16,25 +19,26 @@
       "us-gov-west-1",
       "us-west-1",
       "ap-northeast-1",
-      "ap-northeast-3",
       "ap-southeast-2",
       "ca-central-1",
       "cn-northwest-1",
       "eu-north-1",
+      "il-central-1",
       "us-east-1",
       "us-east-2",
       "us-gov-east-1",
       "us-west-2",
       "af-south-1",
       "ap-east-1",
+      "ap-northeast-3",
       "ap-south-2",
       "ap-southeast-3",
-      "ap-southeast-4",
       "eu-central-2",
       "eu-west-1",
       "me-central-1",
       "me-south-1",
       "sa-east-1",
+      "ap-southeast-4",
       "eu-west-3"
     ],
     "scope": "AWSAccount"
@@ -42,7 +46,10 @@
   {
     "service": "DynamoDB",
     "resources": [
-      { "resource": "Table", "resourceType": "AWS::DynamoDB::Table" },
+      {
+        "resource": "Table",
+        "resourceType": "AWS::DynamoDB::Table"
+      },
       {
         "resource": "ScalableTarget",
         "resourceType": "AWS::DynamoDB::ScalableTarget"
@@ -64,9 +71,9 @@
       "ap-southeast-3",
       "ca-central-1",
       "eu-central-2",
-      "eu-south-1",
       "eu-south-2",
       "eu-west-3",
+      "il-central-1",
       "us-gov-east-1",
       "us-west-1",
       "af-south-1",
@@ -77,9 +84,10 @@
       "ap-southeast-4",
       "cn-north-1",
       "cn-northwest-1",
+      "eu-south-1",
       "us-gov-west-1",
-      "us-west-2",
-      "us-east-1"
+      "us-east-1",
+      "us-west-2"
     ],
     "scope": "AWSAccount"
   },
@@ -90,17 +98,38 @@
         "resource": "DefaultEBSEncryption",
         "resourceType": "AWS::EC2::DefaultEBSEncryption"
       },
-      { "resource": "Instance", "resourceType": "AWS::EC2::Instance" },
-      { "resource": "VPC", "resourceType": "AWS::EC2::VPC" },
-      { "resource": "FlowLog", "resourceType": "AWS::EC2::FlowLog" },
-      { "resource": "NetworkAcl", "resourceType": "AWS::EC2::NetworkAcl" },
+      {
+        "resource": "Instance",
+        "resourceType": "AWS::EC2::Instance"
+      },
+      {
+        "resource": "VPC",
+        "resourceType": "AWS::EC2::VPC"
+      },
+      {
+        "resource": "FlowLog",
+        "resourceType": "AWS::EC2::FlowLog"
+      },
+      {
+        "resource": "NetworkAcl",
+        "resourceType": "AWS::EC2::NetworkAcl"
+      },
       {
         "resource": "SecurityGroup",
         "resourceType": "AWS::EC2::SecurityGroup"
       },
-      { "resource": "Subnet", "resourceType": "AWS::EC2::Subnet" },
-      { "resource": "Snapshot", "resourceType": "AWS::EC2::Snapshot" },
-      { "resource": "RouteTable", "resourceType": "AWS::EC2::RouteTable" },
+      {
+        "resource": "Subnet",
+        "resourceType": "AWS::EC2::Subnet"
+      },
+      {
+        "resource": "Snapshot",
+        "resourceType": "AWS::EC2::Snapshot"
+      },
+      {
+        "resource": "RouteTable",
+        "resourceType": "AWS::EC2::RouteTable"
+      },
       {
         "resource": "NetworkInterface",
         "resourceType": "AWS::EC2::NetworkInterface"
@@ -109,22 +138,44 @@
         "resource": "InternetGateway",
         "resourceType": "AWS::EC2::InternetGateway"
       },
-      { "resource": "AMI", "resourceType": "AWS::EC2::AMI" },
-      { "resource": "FpgaImage", "resourceType": "AWS::EC2::FpgaImage" },
-      { "resource": "Endpoint", "resourceType": "AWS::EC2::Endpoint" },
+      {
+        "resource": "AMI",
+        "resourceType": "AWS::EC2::AMI"
+      },
+      {
+        "resource": "FpgaImage",
+        "resourceType": "AWS::EC2::FpgaImage",
+        "resourceRegions": [
+          "us-east-1",
+          "us-west-2",
+          "eu-west-1"
+        ]
+      },
+      {
+        "resource": "Endpoint",
+        "resourceType": "AWS::EC2::Endpoint"
+      },
       {
         "resource": "LaunchTemplate",
         "resourceType": "AWS::EC2::LaunchTemplate"
+      },
+      {
+        "resource": "Volume",
+        "resourceType": "AWS::EC2::Volume"
+      },
+      {
+        "resource": "VPN",
+        "resourceType": "AWS::EC2::VPN"
       }
     ],
     "regions": [
       "af-south-1",
       "ap-east-1",
       "ap-southeast-1",
-      "eu-central-1",
       "eu-central-2",
       "eu-south-1",
       "eu-south-2",
+      "il-central-1",
       "us-east-2",
       "us-gov-east-1",
       "us-gov-west-1",
@@ -135,9 +186,9 @@
       "ap-southeast-3",
       "ap-southeast-4",
       "cn-northwest-1",
+      "eu-central-1",
       "eu-north-1",
       "eu-west-2",
-      "us-west-1",
       "ap-northeast-2",
       "ca-central-1",
       "cn-north-1",
@@ -147,8 +198,9 @@
       "me-south-1",
       "sa-east-1",
       "us-east-1",
-      "us-west-2",
-      "ap-northeast-1"
+      "us-west-1",
+      "ap-northeast-1",
+      "us-west-2"
     ],
     "scope": "AWSAccount"
   },
@@ -171,9 +223,18 @@
         "resourceType": "AWS::IAM::AccountPasswordPolicy",
         "resource": "AccountPasswordPolicy"
       },
-      { "resourceType": "AWS::IAM::User", "resource": "User" },
-      { "resourceType": "AWS::IAM::Policy", "resource": "Policy" },
-      { "resourceType": "AWS::IAM::Role", "resource": "Role" },
+      {
+        "resourceType": "AWS::IAM::User",
+        "resource": "User"
+      },
+      {
+        "resourceType": "AWS::IAM::Policy",
+        "resource": "Policy"
+      },
+      {
+        "resourceType": "AWS::IAM::Role",
+        "resource": "Role"
+      },
       {
         "resourceType": "AWS::IAM::ServerCertificate",
         "resource": "ServerCertificate"
@@ -182,9 +243,14 @@
         "resourceType": "AWS::IAM::InstanceProfile",
         "resource": "InstanceProfile"
       },
-      { "resourceType": "AWS::IAM::Group", "resource": "Group" }
+      {
+        "resourceType": "AWS::IAM::Group",
+        "resource": "Group"
+      }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -192,42 +258,47 @@
     "service": "InspectorV2",
     "resources": [
       {
-        "resourceType": "AWS::InspectorV2::Coverage",
-        "resource": "ListCoverage"
-      },
-      {
-        "resourceType": "AWS::InspectorV2::Findings",
-        "resource": "ListFindings"
+        "resourceType": "AWS::InspectorV2::Account",
+        "resource": "Account"
       }
     ],
     "regions": [
+      "ap-northeast-3",
       "ap-southeast-2",
       "eu-central-1",
       "eu-south-1",
       "eu-west-2",
-      "eu-west-3",
       "me-south-1",
       "sa-east-1",
       "us-east-1",
       "us-east-2",
       "us-west-2",
+      "af-south-1",
       "ap-east-1",
       "ap-northeast-1",
-      "ap-northeast-2",
       "ap-south-1",
       "ap-southeast-1",
-      "ca-central-1",
-      "eu-west-1",
+      "ap-southeast-3",
+      "eu-central-2",
+      "eu-west-3",
       "us-gov-east-1",
-      "us-gov-west-1",
       "us-west-1",
-      "eu-north-1"
+      "ap-northeast-2",
+      "ca-central-1",
+      "eu-north-1",
+      "eu-west-1",
+      "us-gov-west-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "KMS",
-    "resources": [{ "resource": "Key", "resourceType": "AWS::KMS::Key" }],
+    "resources": [
+      {
+        "resource": "Key",
+        "resourceType": "AWS::KMS::Key"
+      }
+    ],
     "regions": [
       "af-south-1",
       "ap-east-1",
@@ -245,41 +316,49 @@
       "ap-southeast-4",
       "eu-central-1",
       "eu-south-2",
+      "il-central-1",
       "me-central-1",
       "sa-east-1",
       "us-gov-east-1",
-      "us-west-1",
       "ap-northeast-1",
       "ap-northeast-3",
       "ap-south-2",
       "ap-southeast-2",
       "ca-central-1",
       "cn-northwest-1",
-      "eu-north-1",
       "eu-south-1",
       "eu-west-2",
       "me-south-1",
-      "eu-central-2"
+      "us-west-1",
+      "eu-central-2",
+      "eu-north-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "Lambda",
     "resources": [
-      { "resource": "Function", "resourceType": "AWS::Lambda::Function" },
-      { "resource": "Layer", "resourceType": "AWS::Lambda::Layer" }
+      {
+        "resource": "Function",
+        "resourceType": "AWS::Lambda::Function"
+      },
+      {
+        "resource": "Layer",
+        "resourceType": "AWS::Lambda::Layer"
+      }
     ],
     "regions": [
-      "af-south-1",
       "ap-southeast-1",
       "cn-northwest-1",
       "eu-south-1",
       "eu-south-2",
       "eu-west-2",
       "eu-west-3",
+      "il-central-1",
       "me-south-1",
       "us-west-1",
       "us-west-2",
+      "af-south-1",
       "ap-northeast-3",
       "ap-south-1",
       "ap-southeast-2",
@@ -287,7 +366,6 @@
       "cn-north-1",
       "eu-central-1",
       "eu-central-2",
-      "eu-north-1",
       "sa-east-1",
       "us-east-1",
       "ap-northeast-1",
@@ -295,12 +373,13 @@
       "ap-south-2",
       "ap-southeast-3",
       "ap-southeast-4",
+      "eu-north-1",
       "eu-west-1",
       "me-central-1",
       "us-east-2",
       "us-gov-east-1",
-      "us-gov-west-1",
-      "ap-east-1"
+      "ap-east-1",
+      "us-gov-west-1"
     ],
     "scope": "AWSAccount"
   },
@@ -314,20 +393,36 @@
       {
         "resource": "OrganizationalUnit",
         "resourceType": "AWS::Organizations::OrganizationalUnit"
+      },
+      {
+        "resource": "Account",
+        "resourceType": "AWS::Organizations::Account"
       }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
   {
     "service": "RDS",
     "resources": [
-      { "resource": "DBInstances", "resourceType": "AWS::RDS::DBInstances" },
-      { "resource": "DBCluster", "resourceType": "AWS::RDS::DBCluster" },
+      {
+        "resource": "DBInstance",
+        "resourceType": "AWS::RDS::DBInstance"
+      },
+      {
+        "resource": "DBCluster",
+        "resourceType": "AWS::RDS::DBCluster"
+      },
       {
         "resource": "DBClusterSnapshot",
         "resourceType": "AWS::RDS::DBClusterSnapshot"
+      },
+      {
+        "resource": "DBSecurityGroup",
+        "resourceType": "AWS::RDS::DBSecurityGroup"
       }
     ],
     "regions": [
@@ -343,32 +438,40 @@
       "us-west-2",
       "ap-northeast-3",
       "ap-south-2",
-      "ap-southeast-1",
       "ap-southeast-2",
       "ca-central-1",
       "cn-northwest-1",
       "eu-south-1",
       "eu-south-2",
       "eu-west-2",
+      "il-central-1",
       "us-west-1",
       "af-south-1",
       "ap-east-1",
       "ap-south-1",
+      "ap-southeast-1",
       "ap-southeast-3",
       "ap-southeast-4",
       "cn-north-1",
       "eu-central-2",
       "me-south-1",
-      "sa-east-1",
       "us-east-2",
-      "eu-west-3"
+      "eu-west-3",
+      "sa-east-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "S3",
-    "resources": [{ "resource": "Bucket", "resourceType": "AWS::S3::Bucket" }],
-    "regions": ["us-east-1"],
+    "resources": [
+      {
+        "resource": "Bucket",
+        "resourceType": "AWS::S3::Bucket"
+      }
+    ],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -394,24 +497,25 @@
       "ap-east-1",
       "ap-northeast-1",
       "ap-northeast-3",
-      "ap-south-1",
       "cn-north-1",
       "eu-central-2",
       "eu-north-1",
       "eu-south-2",
+      "il-central-1",
       "us-east-2",
       "us-west-1",
       "ap-northeast-2",
+      "ap-south-1",
       "ap-southeast-1",
       "ca-central-1",
       "cn-northwest-1",
       "eu-central-1",
       "eu-west-1",
-      "eu-west-2",
       "me-south-1",
       "sa-east-1",
       "us-gov-west-1",
-      "ap-southeast-4"
+      "ap-southeast-4",
+      "eu-west-2"
     ],
     "scope": "AWSAccount"
   },
@@ -423,7 +527,9 @@
         "resourceType": "AWS::S3Control::PublicAccessBlock"
       }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -456,20 +562,21 @@
       "ap-southeast-2",
       "ap-southeast-3",
       "cn-north-1",
-      "eu-south-2",
       "eu-west-3",
+      "il-central-1",
       "me-south-1",
       "us-east-2",
       "ap-east-1",
       "ap-northeast-2",
       "ap-south-1",
-      "ap-southeast-1",
       "eu-central-2",
+      "eu-south-2",
       "eu-west-2",
       "sa-east-1",
       "us-east-1",
       "us-gov-east-1",
       "us-gov-west-1",
+      "ap-southeast-1",
       "eu-central-1"
     ],
     "scope": "AWSAccount"
@@ -477,8 +584,14 @@
   {
     "service": "SNS",
     "resources": [
-      { "resource": "Subscription", "resourceType": "AWS::SNS::Subscription" },
-      { "resource": "Topic", "resourceType": "AWS::SNS::Topic" }
+      {
+        "resource": "Subscription",
+        "resourceType": "AWS::SNS::Subscription"
+      },
+      {
+        "resource": "Topic",
+        "resourceType": "AWS::SNS::Topic"
+      }
     ],
     "regions": [
       "af-south-1",
@@ -493,10 +606,10 @@
       "sa-east-1",
       "ap-east-1",
       "ap-southeast-1",
-      "cn-north-1",
       "eu-central-2",
       "eu-north-1",
       "eu-south-1",
+      "il-central-1",
       "us-east-1",
       "us-east-2",
       "us-gov-east-1",
@@ -505,12 +618,13 @@
       "ap-northeast-3",
       "ap-southeast-2",
       "ca-central-1",
+      "cn-north-1",
       "eu-central-1",
-      "eu-south-2",
       "eu-west-2",
       "eu-west-3",
       "us-gov-west-1",
       "us-west-2",
+      "eu-south-2",
       "eu-west-1"
     ],
     "scope": "AWSAccount"
@@ -518,7 +632,10 @@
   {
     "service": "CloudWatch",
     "resources": [
-      { "resource": "Alarm", "resourceType": "AWS::CloudWatch::Alarm" }
+      {
+        "resource": "Alarm",
+        "resourceType": "AWS::CloudWatch::Alarm"
+      }
     ],
     "regions": [
       "ap-south-2",
@@ -537,20 +654,21 @@
       "ap-southeast-2",
       "ap-southeast-3",
       "cn-north-1",
-      "eu-south-2",
       "eu-west-3",
+      "il-central-1",
       "me-south-1",
       "us-east-2",
       "ap-east-1",
       "ap-northeast-2",
       "ap-south-1",
-      "ap-southeast-1",
       "eu-central-2",
+      "eu-south-2",
       "eu-west-2",
       "sa-east-1",
       "us-east-1",
       "us-gov-east-1",
       "us-gov-west-1",
+      "ap-southeast-1",
       "eu-central-1"
     ],
     "scope": "AWSAccount"
@@ -583,14 +701,14 @@
       "ca-central-1",
       "cn-north-1",
       "cn-northwest-1",
-      "eu-central-1",
+      "il-central-1",
       "me-south-1",
       "us-east-2",
       "us-gov-east-1",
       "us-west-1",
-      "ap-east-1",
       "ap-south-1",
       "ap-southeast-4",
+      "eu-central-1",
       "eu-north-1",
       "eu-south-1",
       "eu-west-1",
@@ -598,6 +716,7 @@
       "sa-east-1",
       "us-east-1",
       "us-gov-west-1",
+      "ap-east-1",
       "eu-west-3"
     ],
     "scope": "AWSAccount"
@@ -605,7 +724,10 @@
   {
     "service": "Redshift",
     "resources": [
-      { "resource": "Cluster", "resourceType": "AWS::Redshift::Cluster" },
+      {
+        "resource": "Cluster",
+        "resourceType": "AWS::Redshift::Cluster"
+      },
       {
         "resource": "ParameterGroup",
         "resourceType": "AWS::Redshift::ParameterGroup"
@@ -623,12 +745,12 @@
       "us-east-2",
       "us-west-2",
       "af-south-1",
-      "ap-southeast-4",
       "eu-central-2",
       "eu-south-1",
       "eu-west-1",
       "eu-west-2",
       "eu-west-3",
+      "il-central-1",
       "me-south-1",
       "us-gov-west-1",
       "us-west-1",
@@ -638,55 +760,66 @@
       "ap-south-2",
       "ap-southeast-2",
       "ap-southeast-3",
+      "ap-southeast-4",
       "eu-north-1",
       "sa-east-1",
-      "us-east-1",
       "us-gov-east-1",
-      "cn-north-1"
+      "cn-north-1",
+      "us-east-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "GuardDuty",
     "resources": [
-      { "resource": "Detector", "resourceType": "AWS::GuardDuty::Detector" }
+      {
+        "resource": "Detector",
+        "resourceType": "AWS::GuardDuty::Detector"
+      }
     ],
     "regions": [
       "ap-east-1",
       "ap-northeast-3",
+      "ap-south-2",
       "ap-southeast-2",
-      "ca-central-1",
       "cn-northwest-1",
-      "eu-central-2",
+      "eu-south-2",
       "eu-west-2",
       "me-south-1",
       "sa-east-1",
       "us-west-2",
-      "ap-south-1",
       "ap-southeast-1",
       "ap-southeast-3",
+      "ca-central-1",
       "cn-north-1",
       "eu-central-1",
+      "eu-central-2",
       "eu-north-1",
-      "eu-west-3",
-      "me-central-1",
+      "il-central-1",
       "us-east-1",
       "us-gov-east-1",
       "af-south-1",
-      "ap-northeast-1",
       "ap-northeast-2",
+      "ap-south-1",
+      "ap-southeast-4",
       "eu-south-1",
       "eu-west-1",
+      "eu-west-3",
+      "me-central-1",
       "us-east-2",
-      "us-gov-west-1",
-      "us-west-1"
+      "us-west-1",
+      "ap-northeast-1",
+      "us-gov-west-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "ACM",
     "resources": [
-      { "resource": "Certificate", "resourceType": "AWS::ACM::Certificate" }
+      {
+        "resource": "Certificate",
+        "resourceType": "AWS::ACM::Certificate"
+      }
     ],
     "regions": [
       "ap-northeast-1",
@@ -699,7 +832,6 @@
       "sa-east-1",
       "us-east-1",
       "us-east-2",
-      "af-south-1",
       "ap-northeast-2",
       "ca-central-1",
       "cn-northwest-1",
@@ -707,26 +839,31 @@
       "eu-central-2",
       "eu-south-1",
       "eu-west-2",
+      "il-central-1",
       "us-gov-west-1",
       "us-west-2",
+      "af-south-1",
       "ap-south-2",
       "ap-southeast-1",
       "ap-southeast-2",
       "ap-southeast-3",
       "eu-north-1",
       "eu-west-1",
-      "eu-west-3",
       "me-central-1",
       "us-gov-east-1",
       "us-west-1",
-      "ap-east-1"
+      "ap-east-1",
+      "eu-west-3"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "ECR",
     "resources": [
-      { "resource": "Repository", "resourceType": "AWS::ECR::Repository" }
+      {
+        "resource": "Repository",
+        "resourceType": "AWS::ECR::Repository"
+      }
     ],
     "regions": [
       "ca-central-1",
@@ -735,16 +872,16 @@
       "eu-north-1",
       "eu-south-1",
       "eu-west-1",
-      "eu-west-2",
+      "il-central-1",
       "me-central-1",
       "us-east-1",
       "us-gov-west-1",
       "af-south-1",
       "ap-south-1",
       "ap-southeast-2",
-      "ap-southeast-4",
       "cn-north-1",
       "cn-northwest-1",
+      "eu-west-2",
       "eu-west-3",
       "me-south-1",
       "sa-east-1",
@@ -755,20 +892,25 @@
       "ap-south-2",
       "ap-southeast-1",
       "ap-southeast-3",
+      "ap-southeast-4",
       "eu-south-2",
-      "us-gov-east-1",
       "us-west-1",
       "us-west-2",
-      "ap-east-1"
+      "ap-east-1",
+      "us-gov-east-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "EFS",
     "resources": [
-      { "resource": "FileSystem", "resourceType": "AWS::EFS::FileSystem" }
+      {
+        "resource": "FileSystem",
+        "resourceType": "AWS::EFS::FileSystem"
+      }
     ],
     "regions": [
+      "ap-south-2",
       "ap-southeast-2",
       "ca-central-1",
       "eu-north-1",
@@ -778,63 +920,70 @@
       "me-south-1",
       "sa-east-1",
       "us-east-2",
-      "us-west-2",
-      "af-south-1",
-      "ap-northeast-1",
       "ap-northeast-3",
       "ap-south-1",
-      "ap-southeast-1",
+      "ap-southeast-4",
       "cn-north-1",
       "eu-south-2",
+      "il-central-1",
       "us-east-1",
       "us-gov-east-1",
       "us-gov-west-1",
+      "us-west-2",
+      "af-south-1",
       "ap-east-1",
+      "ap-northeast-1",
       "ap-northeast-2",
-      "cn-northwest-1",
+      "ap-southeast-1",
       "eu-central-1",
       "eu-central-2",
       "eu-west-1",
       "eu-west-2",
-      "us-west-1"
+      "us-west-1",
+      "cn-northwest-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "SecretsManager",
     "resources": [
-      { "resource": "Secret", "resourceType": "AWS::SecretsManager::Secret" }
+      {
+        "resource": "Secret",
+        "resourceType": "AWS::SecretsManager::Secret"
+      }
     ],
     "regions": [
       "ap-northeast-3",
       "ap-south-1",
+      "ap-southeast-3",
       "ca-central-1",
       "cn-northwest-1",
       "eu-south-1",
       "eu-south-2",
       "eu-west-1",
       "me-central-1",
-      "us-east-2",
       "us-west-2",
       "af-south-1",
       "ap-east-1",
       "ap-northeast-2",
-      "ap-southeast-2",
       "cn-north-1",
       "eu-north-1",
       "eu-west-3",
       "sa-east-1",
       "us-east-1",
+      "us-east-2",
       "us-gov-east-1",
-      "ap-northeast-1",
       "ap-south-2",
       "ap-southeast-1",
+      "ap-southeast-2",
       "ap-southeast-4",
       "eu-central-1",
       "eu-central-2",
       "eu-west-2",
+      "il-central-1",
       "me-south-1",
       "us-gov-west-1",
+      "ap-northeast-1",
       "us-west-1"
     ],
     "scope": "AWSAccount"
@@ -842,7 +991,10 @@
   {
     "service": "Glacier",
     "resources": [
-      { "resource": "Vault", "resourceType": "AWS::Glacier::Vault" }
+      {
+        "resource": "Vault",
+        "resourceType": "AWS::Glacier::Vault"
+      }
     ],
     "regions": [
       "af-south-1",
@@ -877,23 +1029,27 @@
   {
     "service": "Kinesis",
     "resources": [
-      { "resource": "Stream", "resourceType": "AWS::Kinesis::Stream" },
+      {
+        "resource": "Stream",
+        "resourceType": "AWS::Kinesis::Stream"
+      },
       {
         "resource": "FirehoseDeliveryStream",
         "resourceType": "AWS::Kinesis::FirehoseDeliveryStream"
       }
     ],
     "regions": [
-      "ap-northeast-2",
       "ap-south-2",
       "ap-southeast-1",
       "ca-central-1",
       "cn-north-1",
       "eu-central-1",
       "eu-west-3",
+      "il-central-1",
       "us-east-1",
       "us-gov-west-1",
       "us-west-1",
+      "ap-northeast-2",
       "ap-south-1",
       "cn-northwest-1",
       "eu-central-2",
@@ -901,61 +1057,73 @@
       "eu-south-1",
       "eu-south-2",
       "eu-west-1",
-      "me-central-1",
       "me-south-1",
       "us-gov-east-1",
       "af-south-1",
       "ap-east-1",
       "ap-northeast-1",
       "ap-northeast-3",
-      "ap-southeast-2",
       "ap-southeast-3",
       "eu-west-2",
+      "me-central-1",
       "sa-east-1",
       "us-east-2",
       "us-west-2",
+      "ap-southeast-2",
       "ap-southeast-4"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "MQ",
-    "resources": [{ "resource": "Broker", "resourceType": "AWS::MQ::Broker" }],
+    "resources": [
+      {
+        "resource": "Broker",
+        "resourceType": "AWS::MQ::Broker"
+      }
+    ],
     "regions": [
       "af-south-1",
       "ap-east-1",
-      "ap-northeast-2",
       "ap-south-1",
       "ap-southeast-3",
+      "ap-southeast-4",
       "cn-north-1",
+      "eu-central-2",
       "eu-south-1",
       "eu-west-1",
       "me-central-1",
-      "us-east-1",
+      "ap-northeast-2",
       "ap-southeast-2",
       "ca-central-1",
       "eu-central-1",
-      "eu-north-1",
       "eu-west-2",
       "me-south-1",
+      "us-east-1",
       "us-east-2",
       "us-gov-east-1",
-      "us-gov-west-1",
       "us-west-1",
       "ap-northeast-1",
       "ap-northeast-3",
+      "ap-south-2",
       "ap-southeast-1",
       "cn-northwest-1",
-      "eu-west-3",
+      "eu-north-1",
+      "eu-south-2",
       "sa-east-1",
-      "us-west-2"
+      "us-gov-west-1",
+      "us-west-2",
+      "eu-west-3"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "MSK",
     "resources": [
-      { "resource": "Cluster", "resourceType": "AWS::MSK::Cluster" }
+      {
+        "resource": "Cluster",
+        "resourceType": "AWS::MSK::Cluster"
+      }
     ],
     "regions": [
       "ap-east-1",
@@ -963,25 +1131,31 @@
       "ap-southeast-2",
       "ca-central-1",
       "cn-north-1",
-      "eu-central-1",
       "eu-north-1",
       "eu-south-1",
+      "me-central-1",
       "sa-east-1",
       "us-east-2",
-      "af-south-1",
-      "ap-northeast-1",
       "ap-southeast-1",
       "ap-southeast-3",
-      "cn-northwest-1",
+      "eu-central-1",
+      "eu-central-2",
+      "eu-south-2",
       "eu-west-1",
       "eu-west-3",
-      "us-gov-east-1",
+      "il-central-1",
       "us-west-1",
       "us-west-2",
+      "af-south-1",
+      "ap-northeast-1",
       "ap-northeast-2",
       "ap-northeast-3",
+      "ap-south-2",
+      "ap-southeast-4",
+      "cn-northwest-1",
       "eu-west-2",
       "me-south-1",
+      "us-gov-east-1",
       "us-east-1",
       "us-gov-west-1"
     ],
@@ -990,10 +1164,17 @@
   {
     "service": "Neptune",
     "resources": [
-      { "resource": "DBInstance", "resourceType": "AWS::Neptune::DBInstance" },
+      {
+        "resource": "DBInstance",
+        "resourceType": "AWS::Neptune::DBInstance"
+      },
       {
         "resource": "DBClusterParameterGroup",
         "resourceType": "AWS::Neptune::DBClusterParameterGroup"
+      },
+      {
+        "resource": "DBCluster",
+        "resourceType": "AWS::Neptune::DBCluster"
       }
     ],
     "regions": [
@@ -1001,8 +1182,8 @@
       "eu-central-1",
       "eu-west-1",
       "eu-west-3",
+      "me-central-1",
       "me-south-1",
-      "us-east-2",
       "us-gov-east-1",
       "us-gov-west-1",
       "us-west-1",
@@ -1011,14 +1192,15 @@
       "ap-south-1",
       "ap-southeast-1",
       "ap-southeast-2",
-      "ca-central-1",
       "cn-north-1",
       "cn-northwest-1",
       "eu-north-1",
       "eu-west-2",
       "us-east-1",
+      "us-east-2",
       "af-south-1",
       "ap-east-1",
+      "ca-central-1",
       "sa-east-1"
     ],
     "scope": "AWSAccount"
@@ -1026,9 +1208,18 @@
   {
     "service": "MemoryDB",
     "resources": [
-      { "resource": "ACL", "resourceType": "AWS::MemoryDB::ACL" },
-      { "resource": "Cluster", "resourceType": "AWS::MemoryDB::Cluster" },
-      { "resource": "User", "resourceType": "AWS::MemoryDB::User" }
+      {
+        "resource": "ACL",
+        "resourceType": "AWS::MemoryDB::ACL"
+      },
+      {
+        "resource": "Cluster",
+        "resourceType": "AWS::MemoryDB::Cluster"
+      },
+      {
+        "resource": "User",
+        "resourceType": "AWS::MemoryDB::User"
+      }
     ],
     "regions": [
       "ap-east-1",
@@ -1057,50 +1248,70 @@
   {
     "service": "SageMaker",
     "resources": [
-      { "resource": "Notebook", "resourceType": "AWS::SageMaker::Notebook" },
-      { "resource": "Model", "resourceType": "AWS::SageMaker::Model" },
-      { "resource": "Endpoint", "resourceType": "AWS::SageMaker::Endpoint" },
+      {
+        "resource": "Notebook",
+        "resourceType": "AWS::SageMaker::Notebook"
+      },
+      {
+        "resource": "Model",
+        "resourceType": "AWS::SageMaker::Model"
+      },
+      {
+        "resource": "Endpoint",
+        "resourceType": "AWS::SageMaker::Endpoint"
+      },
       {
         "resource": "EndpointConfig",
         "resourceType": "AWS::SageMaker::EndpointConfig"
       }
     ],
     "regions": [
-      "ap-east-1",
       "ap-northeast-3",
       "ap-south-1",
-      "eu-north-1",
+      "ap-southeast-4",
       "eu-south-1",
+      "eu-south-2",
       "me-south-1",
       "sa-east-1",
       "us-east-1",
       "us-east-2",
       "us-gov-west-1",
-      "ap-northeast-1",
+      "ap-east-1",
       "ap-northeast-2",
       "ap-southeast-1",
       "cn-north-1",
       "cn-northwest-1",
       "eu-central-1",
-      "eu-west-2",
+      "eu-central-2",
+      "eu-north-1",
       "me-central-1",
       "us-gov-east-1",
-      "us-west-2",
-      "af-south-1",
+      "ap-northeast-1",
+      "ap-south-2",
       "ap-southeast-2",
       "ap-southeast-3",
       "ca-central-1",
       "eu-west-1",
-      "eu-west-3",
-      "us-west-1"
+      "eu-west-2",
+      "il-central-1",
+      "us-west-1",
+      "us-west-2",
+      "af-south-1",
+      "eu-west-3"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "Glue",
     "resources": [
-      { "resource": "Crawler", "resourceType": "AWS::Glue::Database" },
-      { "resource": "Crawler", "resourceType": "AWS::Glue::Crawler" },
+      {
+        "resource": "Crawler",
+        "resourceType": "AWS::Glue::Database"
+      },
+      {
+        "resource": "Crawler",
+        "resourceType": "AWS::Glue::Crawler"
+      },
       {
         "resource": "SecurityConfiguration",
         "resourceType": "AWS::Glue::SecurityConfiguration"
@@ -1112,6 +1323,10 @@
       {
         "resource": "ResourcePolicy",
         "resourceType": "AWS::Glue::ResourcePolicy"
+      },
+      {
+        "resource": "Job",
+        "resourceType": "AWS::Glue::Job"
       }
     ],
     "regions": [
@@ -1119,36 +1334,44 @@
       "ap-east-1",
       "ap-northeast-1",
       "ap-south-1",
+      "ap-south-2",
       "ap-southeast-2",
-      "ca-central-1",
-      "cn-north-1",
+      "ap-southeast-4",
       "eu-south-1",
       "us-gov-east-1",
       "us-west-2",
       "ap-northeast-2",
-      "ap-northeast-3",
       "ap-southeast-1",
       "ap-southeast-3",
-      "eu-west-2",
-      "eu-west-3",
-      "me-central-1",
+      "ca-central-1",
+      "cn-north-1",
+      "eu-south-2",
+      "il-central-1",
       "me-south-1",
       "us-east-2",
       "us-gov-west-1",
-      "cn-northwest-1",
+      "ap-northeast-3",
       "eu-central-1",
-      "eu-north-1",
+      "eu-central-2",
       "eu-west-1",
+      "eu-west-2",
+      "eu-west-3",
+      "me-central-1",
       "sa-east-1",
       "us-east-1",
-      "us-west-1"
+      "us-west-1",
+      "cn-northwest-1",
+      "eu-north-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "OpenSearch",
     "resources": [
-      { "resource": "Domain", "resourceType": "AWS::OpenSearch::Domain" }
+      {
+        "resource": "Domain",
+        "resourceType": "AWS::OpenSearch::Domain"
+      }
     ],
     "regions": [
       "af-south-1",
@@ -1173,14 +1396,15 @@
       "us-west-2",
       "ap-east-1",
       "ap-northeast-1",
-      "ap-south-1",
       "ap-southeast-2",
       "eu-central-1",
       "eu-central-2",
       "eu-south-1",
       "eu-west-1",
+      "il-central-1",
       "me-central-1",
       "us-gov-west-1",
+      "ap-south-1",
       "cn-northwest-1"
     ],
     "scope": "AWSAccount"
@@ -1221,7 +1445,12 @@
   },
   {
     "service": "SQS",
-    "resources": [{ "resource": "Queue", "resourceType": "AWS::SQS::Queue" }],
+    "resources": [
+      {
+        "resource": "Queue",
+        "resourceType": "AWS::SQS::Queue"
+      }
+    ],
     "regions": [
       "ap-northeast-1",
       "ap-south-2",
@@ -1230,21 +1459,21 @@
       "eu-north-1",
       "eu-west-2",
       "eu-west-3",
-      "sa-east-1",
+      "il-central-1",
       "us-gov-east-1",
       "us-west-2",
       "ap-east-1",
-      "ap-northeast-3",
       "ap-southeast-3",
       "ca-central-1",
       "eu-central-1",
       "eu-central-2",
       "eu-south-1",
       "eu-south-2",
+      "sa-east-1",
       "us-east-1",
       "us-west-1",
       "af-south-1",
-      "ap-northeast-2",
+      "ap-northeast-3",
       "ap-south-1",
       "ap-southeast-1",
       "cn-north-1",
@@ -1253,6 +1482,7 @@
       "me-central-1",
       "me-south-1",
       "us-east-2",
+      "ap-northeast-2",
       "us-gov-west-1"
     ],
     "scope": "AWSAccount"
@@ -1260,7 +1490,14 @@
   {
     "service": "EKS",
     "resources": [
-      { "resource": "Cluster", "resourceType": "AWS::EKS::Cluster" }
+      {
+        "resource": "Cluster",
+        "resourceType": "AWS::EKS::Cluster"
+      },
+      {
+        "resource": "NodeGroup",
+        "resourceType": "AWS::EKS::NodeGroup"
+      }
     ],
     "regions": [
       "ap-east-1",
@@ -1273,34 +1510,42 @@
       "eu-south-2",
       "me-central-1",
       "us-east-1",
-      "ap-northeast-1",
       "ap-south-1",
       "ap-south-2",
       "ap-southeast-1",
       "ap-southeast-2",
+      "ap-southeast-4",
       "eu-west-2",
       "eu-west-3",
       "us-gov-west-1",
       "us-west-1",
       "us-west-2",
       "af-south-1",
+      "ap-northeast-1",
       "ca-central-1",
       "eu-central-1",
-      "eu-north-1",
       "eu-south-1",
       "eu-west-1",
+      "il-central-1",
       "me-south-1",
-      "sa-east-1",
       "us-east-2",
-      "us-gov-east-1"
+      "us-gov-east-1",
+      "eu-north-1",
+      "sa-east-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "ECS",
     "resources": [
-      { "resource": "Cluster", "resourceType": "AWS::ECS::Cluster" },
-      { "resource": "Service", "resourceType": "AWS::ECS::Service" },
+      {
+        "resource": "Cluster",
+        "resourceType": "AWS::ECS::Cluster"
+      },
+      {
+        "resource": "Service",
+        "resourceType": "AWS::ECS::Service"
+      },
       {
         "resource": "TaskDefinition",
         "resourceType": "AWS::ECS::TaskDefinition"
@@ -1308,13 +1553,9 @@
     ],
     "regions": [
       "ap-south-1",
-      "ap-southeast-3",
-      "cn-north-1",
-      "cn-northwest-1",
       "eu-central-2",
       "eu-north-1",
       "eu-west-2",
-      "me-central-1",
       "us-east-1",
       "us-west-2",
       "af-south-1",
@@ -1327,16 +1568,17 @@
       "me-south-1",
       "sa-east-1",
       "us-east-2",
-      "ap-east-1",
       "ap-northeast-1",
       "ap-northeast-2",
       "ap-northeast-3",
       "ap-south-2",
       "ap-southeast-4",
       "eu-south-1",
+      "il-central-1",
       "us-gov-east-1",
       "us-gov-west-1",
       "us-west-1",
+      "ap-east-1",
       "eu-central-1"
     ],
     "scope": "AWSAccount"
@@ -1380,17 +1622,25 @@
       "us-east-2",
       "us-gov-west-1",
       "us-west-2",
-      "eu-central-1"
+      "eu-central-1",
+      "il-central-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "EMR",
     "resources": [
-      { "resource": "Cluster", "resourceType": "AWS::EMR::Cluster" },
+      {
+        "resource": "Cluster",
+        "resourceType": "AWS::EMR::Cluster"
+      },
       {
         "resource": "PublicAccessConfiguration",
         "resourceType": "AWS::EMR::PublicAccessConfiguration"
+      },
+      {
+        "resource": "Studio",
+        "resourceType": "AWS::EMR::Studio"
       }
     ],
     "regions": [
@@ -1421,10 +1671,11 @@
       "eu-south-1",
       "eu-south-2",
       "eu-west-2",
+      "il-central-1",
       "me-central-1",
       "us-east-1",
-      "us-west-2",
-      "us-gov-west-1"
+      "us-gov-west-1",
+      "us-west-2"
     ],
     "scope": "AWSAccount"
   },
@@ -1434,31 +1685,36 @@
     "regions": [
       "ap-east-1",
       "ap-northeast-3",
+      "ap-south-2",
       "ap-southeast-2",
       "eu-central-1",
-      "eu-west-2",
+      "il-central-1",
       "me-central-1",
       "us-east-1",
       "us-gov-east-1",
       "us-gov-west-1",
-      "us-west-1",
-      "af-south-1",
       "ap-northeast-2",
       "cn-north-1",
       "cn-northwest-1",
-      "eu-north-1",
       "eu-south-1",
+      "eu-south-2",
       "eu-west-1",
+      "eu-west-2",
       "eu-west-3",
-      "sa-east-1",
+      "us-west-1",
       "us-west-2",
-      "ap-northeast-1",
+      "af-south-1",
       "ap-south-1",
       "ap-southeast-1",
       "ap-southeast-3",
+      "ap-southeast-4",
       "ca-central-1",
+      "eu-north-1",
       "me-south-1",
-      "us-east-2"
+      "sa-east-1",
+      "us-east-2",
+      "ap-northeast-1",
+      "eu-central-2"
     ],
     "scope": "AWSAccount"
   },
@@ -1471,52 +1727,31 @@
       }
     ],
     "regions": [
-      "af-south-1",
-      "ap-northeast-2",
-      "ap-southeast-3",
-      "ap-southeast-4",
-      "ca-central-1",
-      "eu-south-1",
-      "eu-south-2",
-      "eu-west-1",
-      "me-central-1",
-      "me-south-1",
-      "ap-east-1",
-      "ap-northeast-1",
-      "ap-southeast-2",
-      "cn-north-1",
-      "cn-northwest-1",
-      "eu-central-1",
-      "eu-north-1",
-      "eu-west-3",
-      "sa-east-1",
-      "us-east-2",
-      "ap-northeast-3",
-      "ap-south-1",
-      "ap-south-2",
-      "ap-southeast-1",
-      "eu-central-2",
-      "eu-west-2",
-      "us-east-1",
-      "us-west-1",
-      "us-west-2"
+      "us-east-1"
     ],
-    "scope": "AWSAccount"
+    "scope": "AWSAccount",
+    "isGlobalNamespace": true
   },
   {
     "service": "APIGateway",
     "resources": [
-      { "resource": "RestAPI", "resourceType": "AWS::APIGateway::RestAPI" },
-      { "resource": "Stage", "resourceType": "AWS::APIGateway::Stage" }
+      {
+        "resource": "RestAPI",
+        "resourceType": "AWS::APIGateway::RestAPI"
+      },
+      {
+        "resource": "Stage",
+        "resourceType": "AWS::APIGateway::Stage"
+      }
     ],
     "regions": [
       "ap-south-1",
       "ap-south-2",
       "ca-central-1",
       "cn-northwest-1",
-      "eu-central-1",
       "eu-west-1",
       "eu-west-3",
+      "il-central-1",
       "me-central-1",
       "us-east-2",
       "us-west-2",
@@ -1524,7 +1759,7 @@
       "ap-northeast-2",
       "ap-southeast-2",
       "ap-southeast-3",
-      "eu-north-1",
+      "eu-central-1",
       "eu-south-2",
       "me-south-1",
       "us-gov-east-1",
@@ -1536,10 +1771,11 @@
       "ap-southeast-1",
       "ap-southeast-4",
       "cn-north-1",
-      "eu-central-2",
+      "eu-north-1",
       "eu-west-2",
       "sa-east-1",
       "us-east-1",
+      "eu-central-2",
       "eu-south-1"
     ],
     "scope": "AWSAccount"
@@ -1547,7 +1783,10 @@
   {
     "service": "ApiGatewayV2",
     "resources": [
-      { "resource": "Api", "resourceType": "AWS::ApiGatewayV2::Api" }
+      {
+        "resource": "Api",
+        "resourceType": "AWS::ApiGatewayV2::Api"
+      }
     ],
     "regions": [
       "ap-northeast-3",
@@ -1581,8 +1820,14 @@
   {
     "service": "Lightsail",
     "resources": [
-      { "resource": "Instance", "resourceType": "AWS::Lightsail::Instance" },
-      { "resource": "Database", "resourceType": "AWS::Lightsail::Database" }
+      {
+        "resource": "Instance",
+        "resourceType": "AWS::Lightsail::Instance"
+      },
+      {
+        "resource": "Database",
+        "resourceType": "AWS::Lightsail::Database"
+      }
     ],
     "regions": [
       "ap-northeast-1",
@@ -1608,6 +1853,10 @@
       {
         "resource": "LoadBalancer",
         "resourceType": "AWS::ElasticLoadBalancingV2::LoadBalancer"
+      },
+      {
+        "resource": "TargetGroup",
+        "resourceType": "AWS::ElasticLoadBalancingV2::TargetGroup"
       }
     ],
     "regions": [
@@ -1637,50 +1886,55 @@
       "ap-southeast-4",
       "cn-north-1",
       "eu-south-1",
-      "eu-west-3",
+      "il-central-1",
       "me-central-1",
       "us-east-1",
       "us-gov-west-1",
-      "ca-central-1"
+      "ca-central-1",
+      "eu-west-3"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "EventBridge",
     "resources": [
-      { "resource": "EventBus", "resourceType": "AWS::EventBridge::EventBus" }
+      {
+        "resource": "EventBus",
+        "resourceType": "AWS::EventBridge::EventBus"
+      }
     ],
     "regions": [
       "ap-northeast-2",
-      "ap-northeast-3",
       "ap-southeast-2",
       "eu-central-2",
       "eu-north-1",
       "eu-south-1",
+      "il-central-1",
       "me-central-1",
       "sa-east-1",
       "us-gov-west-1",
       "us-west-2",
       "af-south-1",
       "ap-northeast-1",
+      "ap-northeast-3",
       "ap-south-1",
       "ap-south-2",
       "ap-southeast-3",
       "cn-northwest-1",
       "eu-central-1",
       "eu-west-2",
-      "us-east-1",
       "us-west-1",
       "ap-east-1",
       "ap-southeast-1",
       "ap-southeast-4",
-      "ca-central-1",
       "cn-north-1",
       "eu-west-1",
       "eu-west-3",
       "me-south-1",
+      "us-east-1",
       "us-east-2",
       "us-gov-east-1",
+      "ca-central-1",
       "eu-south-2"
     ],
     "scope": "AWSAccount"
@@ -1688,23 +1942,36 @@
   {
     "service": "Schemas",
     "resources": [
-      { "resource": "Schema", "resourceType": "AWS::Schemas::Registry" }
+      {
+        "resource": "Schema",
+        "resourceType": "AWS::Schemas::Registry"
+      }
     ],
     "regions": [
+      "af-south-1",
+      "ap-northeast-3",
+      "ap-southeast-2",
+      "ap-southeast-3",
+      "cn-northwest-1",
+      "eu-south-1",
+      "eu-south-2",
+      "eu-west-3",
+      "me-central-1",
+      "us-east-1",
       "ap-northeast-2",
       "ap-southeast-1",
-      "ap-southeast-2",
+      "ca-central-1",
       "eu-central-1",
+      "eu-central-2",
       "eu-west-1",
       "eu-west-2",
-      "eu-west-3",
+      "me-south-1",
       "sa-east-1",
-      "us-east-1",
       "us-west-1",
       "ap-east-1",
       "ap-northeast-1",
       "ap-south-1",
-      "ca-central-1",
+      "cn-north-1",
       "eu-north-1",
       "us-east-2",
       "us-west-2"
@@ -1714,7 +1981,10 @@
   {
     "service": "SES",
     "resources": [
-      { "resource": "EmailIdentity", "resourceType": "AWS::SES::EmailIdentity" }
+      {
+        "resource": "EmailIdentity",
+        "resourceType": "AWS::SES::EmailIdentity"
+      }
     ],
     "regions": [
       "ap-northeast-3",
@@ -1732,20 +2002,24 @@
       "ap-southeast-3",
       "eu-central-1",
       "eu-west-1",
-      "sa-east-1",
+      "il-central-1",
       "us-east-2",
       "us-gov-west-1",
       "us-west-1",
       "us-west-2",
       "ap-northeast-1",
-      "me-south-1"
+      "me-south-1",
+      "sa-east-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "SSM",
     "resources": [
-      { "resource": "Document", "resourceType": "AWS::SSM::Document" }
+      {
+        "resource": "Document",
+        "resourceType": "AWS::SSM::Document"
+      }
     ],
     "regions": [
       "af-south-1",
@@ -1773,56 +2047,71 @@
       "cn-north-1",
       "eu-south-1",
       "eu-west-2",
-      "me-central-1",
+      "il-central-1",
       "sa-east-1",
       "us-gov-east-1",
       "us-west-1",
       "us-west-2",
-      "ap-southeast-3"
+      "ap-southeast-3",
+      "me-central-1"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "WAFv2",
     "resources": [
-      { "resource": "WebACL", "resourceType": "AWS::WAFv2::WebACL" },
-      { "resource": "RuleGroup", "resourceType": "AWS::WAFv2::RuleGroup" }
+      {
+        "resource": "WebACL",
+        "resourceType": "AWS::WAFv2::WebACL"
+      },
+      {
+        "resource": "RuleGroup",
+        "resourceType": "AWS::WAFv2::RuleGroup"
+      }
     ],
     "regions": [
-      "ap-northeast-1",
       "ap-northeast-2",
       "ap-south-1",
       "ap-southeast-1",
       "eu-south-1",
       "eu-west-3",
+      "il-central-1",
       "me-central-1",
       "us-east-1",
       "us-east-2",
       "us-gov-east-1",
       "ap-east-1",
-      "ap-northeast-3",
-      "ca-central-1",
-      "cn-north-1",
+      "ap-northeast-1",
+      "ap-southeast-4",
       "eu-central-1",
+      "eu-central-2",
       "eu-north-1",
-      "eu-west-1",
+      "eu-south-2",
       "me-south-1",
       "us-west-1",
       "us-west-2",
-      "af-south-1",
+      "ap-northeast-3",
+      "ap-south-2",
       "ap-southeast-2",
       "ap-southeast-3",
+      "ca-central-1",
+      "cn-north-1",
       "cn-northwest-1",
-      "eu-west-2",
+      "eu-west-1",
       "sa-east-1",
-      "us-gov-west-1"
+      "us-gov-west-1",
+      "af-south-1",
+      "eu-west-2"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "MediaStore",
     "resources": [
-      { "resource": "Container", "resourceType": "AWS::MediaStore::Container" }
+      {
+        "resource": "Container",
+        "resourceType": "AWS::MediaStore::Container"
+      }
     ],
     "regions": [
       "ap-northeast-1",
@@ -1840,14 +2129,21 @@
   {
     "service": "Backup",
     "resources": [
-      { "resource": "BackupVault", "resourceType": "AWS::Backup::BackupVault" }
+      {
+        "resource": "BackupVault",
+        "resourceType": "AWS::Backup::BackupVault"
+      },
+      {
+        "resource": "ProtectedResource",
+        "resourceType": "AWS::Backup::ProtectedResource"
+      }
     ],
     "regions": [
       "ap-east-1",
       "ap-southeast-1",
       "cn-northwest-1",
       "eu-central-1",
-      "me-central-1",
+      "eu-central-2",
       "me-south-1",
       "sa-east-1",
       "us-east-1",
@@ -1855,101 +2151,64 @@
       "us-west-1",
       "af-south-1",
       "ap-south-1",
-      "ap-southeast-2",
       "ap-southeast-3",
+      "ap-southeast-4",
       "ca-central-1",
       "cn-north-1",
       "eu-south-1",
       "eu-west-1",
-      "eu-west-2",
+      "me-central-1",
       "us-gov-west-1",
       "ap-northeast-1",
-      "ap-northeast-2",
       "ap-northeast-3",
+      "ap-south-2",
+      "ap-southeast-2",
       "eu-north-1",
-      "eu-west-3",
+      "eu-south-2",
+      "eu-west-2",
+      "il-central-1",
       "us-east-2",
-      "us-west-2"
+      "us-west-2",
+      "ap-northeast-2",
+      "eu-west-3"
     ],
     "scope": "AWSAccount"
   },
   {
     "service": "DocDB",
     "resources": [
-      { "resource": "DBInstance", "resourceType": "AWS::DocDB::DBInstance" },
-      { "resource": "DBCluster", "resourceType": "AWS::DocDB::DBCluster" }
-    ],
-    "regions": [
-      "ap-northeast-1",
-      "ap-south-1",
-      "ca-central-1",
-      "cn-northwest-1",
-      "eu-central-1",
-      "eu-south-1",
-      "eu-west-1",
-      "eu-west-2",
-      "eu-west-3",
-      "us-gov-west-1",
-      "ap-northeast-2",
-      "ap-southeast-1",
-      "ap-southeast-2",
-      "cn-north-1",
-      "sa-east-1",
-      "us-east-1",
-      "us-east-2",
-      "us-west-2"
-    ],
-    "scope": "AWSAccount"
-  },
-  {
-    "service": "MediaStore",
-    "resources": [
-      { "resource": "Container", "resourceType": "AWS::MediaStore::Container" }
-    ],
-    "regions": [
-      "ap-northeast-1",
-      "ap-northeast-2",
-      "ap-southeast-2",
-      "eu-central-1",
-      "eu-north-1",
-      "eu-west-1",
-      "eu-west-2",
-      "us-east-1",
-      "us-west-2"
-    ],
-    "scope": "AWSAccount"
-  },
-  {
-    "service": "Backup",
-    "resources": [
-      { "resource": "BackupVault", "resourceType": "AWS::Backup::BackupVault" }
+      {
+        "resource": "DBInstance",
+        "resourceType": "AWS::DocDB::DBInstance"
+      },
+      {
+        "resource": "DBCluster",
+        "resourceType": "AWS::DocDB::DBCluster"
+      },
+      {
+        "resource": "DBClusterParameterGroup",
+        "resourceType": "AWS::DocDB::DBClusterParameterGroup"
+      }
     ],
     "regions": [
       "ap-east-1",
-      "ap-southeast-1",
+      "ap-northeast-1",
+      "ap-south-1",
+      "ap-south-2",
       "cn-northwest-1",
       "eu-central-1",
-      "me-central-1",
-      "me-south-1",
-      "sa-east-1",
-      "us-east-1",
-      "us-gov-east-1",
-      "us-west-1",
-      "af-south-1",
-      "ap-south-1",
-      "ap-southeast-2",
-      "ap-southeast-3",
-      "ca-central-1",
-      "cn-north-1",
       "eu-south-1",
       "eu-west-1",
       "eu-west-2",
       "us-gov-west-1",
-      "ap-northeast-1",
       "ap-northeast-2",
-      "ap-northeast-3",
-      "eu-north-1",
+      "ap-southeast-1",
+      "ap-southeast-2",
+      "ca-central-1",
+      "cn-north-1",
       "eu-west-3",
+      "sa-east-1",
+      "us-east-1",
       "us-east-2",
       "us-west-2"
     ],
@@ -1961,6 +2220,14 @@
       {
         "resource": "AutoScalingGroup",
         "resourceType": "AWS::AutoScaling::AutoScalingGroup"
+      },
+      {
+        "resource": "LaunchConfiguration",
+        "resourceType": "AWS::AutoScaling::LaunchConfiguration"
+      },
+      {
+        "resource": "ScalingPolicy",
+        "resourceType": "AWS::AutoScaling::ScalingPolicy"
       }
     ],
     "regions": [
@@ -1990,11 +2257,320 @@
       "ap-south-1",
       "ap-south-2",
       "ap-southeast-4",
-      "eu-north-1",
       "eu-west-1",
+      "il-central-1",
       "me-central-1",
       "us-east-2",
+      "eu-north-1",
       "eu-south-1"
+    ],
+    "scope": "AWSAccount"
+  },
+  {
+    "service": "SecurityHub",
+    "resources": [
+      {
+        "resource": "StandardSubscription",
+        "resourceType": "AWS::SecurityHub::StandardSubscription"
+      }
+    ],
+    "regions": [
+      "ap-east-1",
+      "ap-northeast-3",
+      "ap-south-2",
+      "ap-southeast-2",
+      "eu-central-1",
+      "il-central-1",
+      "me-central-1",
+      "us-east-1",
+      "us-gov-east-1",
+      "us-gov-west-1",
+      "ap-northeast-2",
+      "cn-north-1",
+      "cn-northwest-1",
+      "eu-south-1",
+      "eu-south-2",
+      "eu-west-1",
+      "eu-west-2",
+      "eu-west-3",
+      "us-west-1",
+      "us-west-2",
+      "af-south-1",
+      "ap-south-1",
+      "ap-southeast-1",
+      "ap-southeast-3",
+      "ap-southeast-4",
+      "ca-central-1",
+      "eu-north-1",
+      "me-south-1",
+      "sa-east-1",
+      "us-east-2",
+      "ap-northeast-1",
+      "eu-central-2"
+    ],
+    "scope": "AWSAccount"
+  },
+  {
+    "service": "Cloudformation",
+    "resources": [
+      {
+        "resource": "Stack",
+        "resourceType": "AWS::Cloudformation::Stack"
+      }
+    ],
+    "regions": [
+      "ap-northeast-2",
+      "ap-northeast-3",
+      "ap-south-2",
+      "ca-central-1",
+      "eu-north-1",
+      "eu-west-1",
+      "eu-west-2",
+      "sa-east-1",
+      "us-east-1",
+      "us-west-1",
+      "ap-southeast-2",
+      "cn-northwest-1",
+      "eu-central-2",
+      "eu-south-1",
+      "eu-south-2",
+      "eu-west-3",
+      "il-central-1",
+      "me-south-1",
+      "us-east-2",
+      "us-west-2",
+      "af-south-1",
+      "ap-east-1",
+      "ap-northeast-1",
+      "ap-southeast-1",
+      "ap-southeast-3",
+      "ap-southeast-4",
+      "cn-north-1",
+      "eu-central-1",
+      "us-gov-east-1",
+      "us-gov-west-1",
+      "ap-south-1",
+      "me-central-1"
+    ],
+    "scope": "AWSAccount"
+  },
+  {
+    "service": "ElasticLoadBalancing",
+    "resources": [
+      {
+        "resource": "LoadBalancer",
+        "resourceType": "AWS::ElasticLoadBalancing::LoadBalancer"
+      }
+    ],
+    "regions": [
+      "ap-east-1",
+      "ap-south-1",
+      "ap-south-2",
+      "ap-southeast-1",
+      "eu-north-1",
+      "eu-west-2",
+      "me-south-1",
+      "us-east-2",
+      "us-west-1",
+      "us-west-2",
+      "af-south-1",
+      "ap-northeast-1",
+      "ap-northeast-3",
+      "cn-northwest-1",
+      "eu-central-1",
+      "eu-central-2",
+      "eu-south-2",
+      "eu-west-1",
+      "sa-east-1",
+      "us-gov-east-1",
+      "ap-northeast-2",
+      "ap-southeast-2",
+      "ap-southeast-3",
+      "ap-southeast-4",
+      "cn-north-1",
+      "eu-south-1",
+      "il-central-1",
+      "me-central-1",
+      "us-east-1",
+      "us-gov-west-1",
+      "ca-central-1",
+      "eu-west-3"
+    ],
+    "scope": "AWSAccount"
+  },
+  {
+    "service": "NetworkFirewall",
+    "resources": [
+      {
+        "resource": "Firewall",
+        "resourceType": "AWS::NetworkFirewall::Firewall"
+      }
+    ],
+    "regions": [
+      "af-south-1",
+      "ap-northeast-3",
+      "ap-southeast-4",
+      "eu-south-1",
+      "eu-south-2",
+      "me-south-1",
+      "sa-east-1",
+      "us-east-2",
+      "us-west-1",
+      "us-west-2",
+      "ap-east-1",
+      "ap-northeast-1",
+      "ap-south-1",
+      "ap-southeast-1",
+      "ca-central-1",
+      "eu-west-2",
+      "me-central-1",
+      "us-east-1",
+      "us-gov-east-1",
+      "us-gov-west-1",
+      "ap-northeast-2",
+      "ap-south-2",
+      "ap-southeast-2",
+      "ap-southeast-3",
+      "eu-central-1",
+      "eu-central-2",
+      "eu-north-1",
+      "eu-west-1",
+      "eu-west-3",
+      "il-central-1"
+    ],
+    "scope": "AWSAccount"
+  },
+  {
+    "service": "WAF",
+    "resources": [
+      {
+        "resource": "RegionalWebACL",
+        "resourceType": "AWS::WAF::RegionalWebACL"
+      }
+    ],
+    "regions": [
+      "ap-northeast-2",
+      "ap-south-1",
+      "ap-southeast-1",
+      "eu-south-1",
+      "eu-west-3",
+      "il-central-1",
+      "me-central-1",
+      "us-east-1",
+      "us-east-2",
+      "us-gov-east-1",
+      "ap-east-1",
+      "ap-northeast-1",
+      "ap-southeast-4",
+      "eu-central-1",
+      "eu-central-2",
+      "eu-north-1",
+      "eu-south-2",
+      "me-south-1",
+      "us-west-1",
+      "us-west-2",
+      "ap-northeast-3",
+      "ap-south-2",
+      "ap-southeast-2",
+      "ap-southeast-3",
+      "ca-central-1",
+      "cn-north-1",
+      "cn-northwest-1",
+      "eu-west-1",
+      "sa-east-1",
+      "us-gov-west-1",
+      "af-south-1",
+      "eu-west-2"
+    ],
+    "scope": "AWSAccount"
+  },
+  {
+    "service": "ComputeOptimizer",
+    "resources": [
+      {
+        "resource": "EnrollmentStatus",
+        "resourceType": "AWS::ComputeOptimizer::EnrollmentStatus"
+      }
+    ],
+    "regions": [
+      "us-east-1"
+    ],
+    "isGlobalNamespace": true,
+    "scope": "AWSAccount"
+  },
+  {
+    "service": "ApplicationAutoScaling",
+    "resources": [
+      {
+        "resource": "ECSScalingPolicy",
+        "resourceType": "AWS::ApplicationAutoScaling::ECSScalingPolicy"
+      }
+    ],
+    "regions": [
+      "af-south-1",
+      "ap-east-1",
+      "ap-northeast-1",
+      "ap-northeast-3",
+      "ap-southeast-2",
+      "eu-south-1",
+      "eu-west-3",
+      "me-south-1",
+      "sa-east-1",
+      "us-east-1",
+      "ap-northeast-2",
+      "ap-south-1",
+      "ap-southeast-3",
+      "cn-northwest-1",
+      "eu-north-1",
+      "eu-west-1",
+      "us-east-2",
+      "us-gov-west-1",
+      "us-west-1",
+      "us-west-2",
+      "ap-southeast-1",
+      "ca-central-1",
+      "cn-north-1",
+      "eu-central-1",
+      "eu-west-2",
+      "us-gov-east-1"
+    ],
+    "scope": "AWSAccount"
+  },
+  {
+    "service": "Macie",
+    "resources": [
+      {
+        "resource": "Session",
+        "resourceType": "AWS::Macie::Session"
+      },
+      {
+        "resource": "Finding",
+        "resourceType": "AWS::Macie::Finding"
+      }
+    ],
+    "regions": [
+      "af-south-1",
+      "ap-northeast-1",
+      "ap-southeast-1",
+      "ca-central-1",
+      "eu-south-1",
+      "eu-west-3",
+      "il-central-1",
+      "me-south-1",
+      "us-east-2",
+      "us-west-2",
+      "ap-east-1",
+      "ap-northeast-2",
+      "ap-northeast-3",
+      "ap-south-1",
+      "ap-southeast-2",
+      "eu-central-1",
+      "eu-north-1",
+      "eu-west-1",
+      "sa-east-1",
+      "us-west-1",
+      "eu-west-2",
+      "us-east-1"
     ],
     "scope": "AWSAccount"
   }

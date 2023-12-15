@@ -1,24 +1,5 @@
 [
   {
-    "id": "S3",
-    "resources": [
-      {
-        "resourceType": "AWS::S3::Bucket",
-        "listClientConfig": {
-          "clientType": "AWS_CLOUDCONTROL_V3",
-          "clientName": "CloudControlClient",
-          "packageName": "@aws-sdk/client-cloudcontrol"
-        },
-        "list": {
-          "action": {
-            "outputProperty": "Identifier",
-            "resourceIdentifier": "Identifier"
-          }
-        }
-      }
-    ]
-  },
-  {
     "id": "DynamoDB",
     "resources": [
       {
@@ -161,12 +142,57 @@
         }
       },
       {
+        "resourceType": "AWS::EC2::VPC",
+        "list": {
+          "action": {
+            "command": "paginateDescribeVpcs",
+            "outputProperty": "Vpcs",
+            "resourceIdentifier": "VpcIds"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "EC2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-ec2"
+        }
+      },
+      {
         "resourceType": "AWS::EC2::LaunchTemplate",
         "list": {
           "action": {
             "command": "paginateDescribeLaunchTemplates",
             "outputProperty": "LaunchTemplates",
             "resourceIdentifier": "LaunchTemplateId"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "EC2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-ec2"
+        }
+      },
+      {
+        "resourceType": "AWS::EC2::Volume",
+        "list": {
+          "action": {
+            "command": "paginateDescribeVolumes",
+            "outputProperty": "Volumes",
+            "resourceIdentifier": "VolumeId"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "EC2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-ec2"
+        }
+      },
+      {
+        "resourceType": "AWS::EC2::VPN",
+        "list": {
+          "action": {
+            "command": "DescribeVpnConnections",
+            "outputProperty": "VpnConnections",
+            "resourceIdentifier": "VpnConnectionId"
           }
         },
         "listClientConfig": {
@@ -200,6 +226,20 @@
           "action": {
             "command": "ListFindings",
             "outputProperty": "findings"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Inspector2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-inspector2"
+        }
+      },
+      {
+        "resourceType": "AWS::InspectorV2::Account",
+        "list": {
+          "action": {
+            "command": "BatchGetAccountStatus",
+            "outputProperty": "accounts"
           }
         },
         "listClientConfig": {
@@ -375,7 +415,7 @@
         },
         "list": {
           "action": {
-            "command": "ListSubscriptions",
+            "command": "paginateListSubscriptions",
             "outputProperty": "Subscriptions"
           }
         }
@@ -773,6 +813,20 @@
             "resourceIdentifier": "PolicyHash"
           }
         }
+      },
+      {
+        "resourceType": "AWS::Glue::Job",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "GlueClient",
+          "packageName": "@aws-sdk/client-glue"
+        },
+        "list": {
+          "action": {
+            "command": "paginateGetJobs",
+            "outputProperty": "Jobs"
+          }
+        }
       }
     ]
   },
@@ -876,20 +930,6 @@
     "id": "EMR",
     "resources": [
       {
-        "resourceType": "AWS::EMR::Cluster",
-        "listClientConfig": {
-          "clientName": "EMRClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-emr"
-        },
-        "list": {
-          "action": {
-            "command": "paginateListClusters",
-            "outputProperty": "Clusters"
-          }
-        }
-      },
-      {
         "resourceType": "AWS::EMR::PublicAccessConfiguration",
         "listClientConfig": {
           "clientName": "EMRClient",
@@ -900,6 +940,20 @@
           "action": {
             "command": "GetBlockPublicAccessConfiguration",
             "outputProperty": "BlockPublicAccessConfiguration"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::EMR::Studio",
+        "listClientConfig": {
+          "clientName": "EMRClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-emr"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListStudios",
+            "outputProperty": "Studios"
           }
         }
       }
@@ -945,26 +999,6 @@
     ]
   },
   {
-    "id": "ApiGatewayV2",
-    "resources": [
-      {
-        "resourceType": "AWS::ApiGatewayV2::Api",
-        "list": {
-          "action": {
-            "command": "GetApis",
-            "outputProperty": "Items",
-            "resourceIdentifier": "ApiId"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "ApiGatewayV2Client",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-apigatewayv2"
-        }
-      }
-    ]
-  },
-  {
     "id": "Lightsail",
     "resources": [
       {
@@ -972,7 +1006,9 @@
         "list": {
           "action": {
             "command": "GetInstances",
-            "outputProperty": "instances"
+            "outputProperty": "instances",
+            "paginationToken": "nextPageToken",
+            "nextPageTokenKey": "pageToken"
           }
         },
         "listClientConfig": {
@@ -986,7 +1022,9 @@
         "list": {
           "action": {
             "command": "GetRelationalDatabases",
-            "outputProperty": "relationalDatabases"
+            "outputProperty": "relationalDatabases",
+            "paginationToken": "nextPageToken",
+            "nextPageTokenKey": "pageToken"
           }
         },
         "listClientConfig": {
@@ -1013,6 +1051,20 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-elastic-load-balancing-v2"
         }
+      },
+      {
+        "resourceType": "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "list": {
+          "action": {
+            "command": "paginateDescribeTargetGroups",
+            "outputProperty": "TargetGroups"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "ElasticLoadBalancingV2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-elastic-load-balancing-v2"
+        }
       }
     ]
   },
@@ -1024,7 +1076,8 @@
         "list": {
           "action": {
             "command": "paginateListClusters",
-            "outputProperty": "clusterArns"
+            "outputProperty": "clusterArns",
+            "resourceIdentifier": "clusterArn"
           }
         },
         "listClientConfig": {
@@ -1119,7 +1172,8 @@
         "list": {
           "action": {
             "command": "ListWebACLs",
-            "outputProperty": "WebACLs"
+            "outputProperty": "WebACLs",
+            "paginationToken": "NextMarker"
           }
         },
         "listClientConfig": {
@@ -1165,6 +1219,20 @@
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-backup"
         }
+      },
+      {
+        "resourceType": "AWS::Backup::ProtectedResource",
+        "list": {
+          "action": {
+            "command": "paginateListProtectedResources",
+            "outputProperty": "Results"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "BackupClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-backup"
+        }
       }
     ]
   },
@@ -1183,6 +1251,190 @@
           "clientName": "AutoScalingClient",
           "clientType": "AWS_V3",
           "packageName": "@aws-sdk/client-auto-scaling"
+        }
+      },
+      {
+        "resourceType": "AWS::AutoScaling::LaunchConfiguration",
+        "list": {
+          "action": {
+            "command": "paginateDescribeLaunchConfigurations",
+            "outputProperty": "LaunchConfigurations"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "AutoScalingClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-auto-scaling"
+        }
+      },
+      {
+        "resourceType": "AWS::AutoScaling::ScalingPolicy",
+        "list": {
+          "action": {
+            "command": "paginateDescribePolicies",
+            "outputProperty": "ScalingPolicies"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "AutoScalingClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-auto-scaling"
+        }
+      }
+    ]
+  },
+  {
+    "id": "SecurityHub",
+    "resources": [
+      {
+        "resourceType": "AWS::SecurityHub::StandardSubscription",
+        "list": {
+          "action": {
+            "command": "GetEnabledStandards",
+            "outputProperty": "StandardsSubscriptions"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "SecurityHubClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-securityhub"
+        }
+      }
+    ]
+  },
+  {
+    "id": "Cloudformation",
+    "resources": [
+      {
+        "resourceType": "AWS::Cloudformation::Stack",
+        "list": {
+          "action": {
+            "command": "paginateListStacks",
+            "outputProperty": "StackSummaries"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "CloudFormationClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-cloudformation"
+        }
+      }
+    ]
+  },
+  {
+    "id": "RDS",
+    "resources": [
+      {
+        "resourceType": "AWS::RDS::DBSecurityGroup",
+        "list": {
+          "action": {
+            "command": "paginateDescribeDBSecurityGroups",
+            "outputProperty": "DBSecurityGroups"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "RDSClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-rds"
+        }
+      }
+    ]
+  },
+  {
+    "id": "ElasticLoadBalancing",
+    "resources": [
+      {
+        "resourceType": "AWS::ElasticLoadBalancing::LoadBalancer",
+        "list": {
+          "action": {
+            "command": "paginateDescribeLoadBalancers",
+            "outputProperty": "LoadBalancerDescriptions"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "ElasticLoadBalancingClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-elastic-load-balancing"
+        }
+      }
+    ]
+  },
+  {
+    "id": "NetworkFirewall",
+    "resources": [
+      {
+        "resourceType": "AWS::NetworkFirewall::Firewall",
+        "list": {
+          "action": {
+            "command": "paginateListFirewalls",
+            "outputProperty": "Firewalls"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "NetworkFirewallClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-network-firewall"
+        }
+      }
+    ]
+  },
+  {
+    "id": "WAF",
+    "resources": [
+      {
+        "resourceType": "AWS::WAF::RegionalWebACL",
+        "list": {
+          "action": {
+            "command": "ListWebACLs",
+            "paginationToken": "NextMarker",
+            "outputProperty": "WebACLs"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "WAFRegionalClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-waf-regional"
+        }
+      }
+    ]
+  },
+  {
+    "id": "Macie",
+    "resources": [
+      {
+        "resourceType": "AWS::Macie::Session",
+        "list": {
+          "action": {
+            "command": "GetMacieSession",
+            "outputProperty": "$.status",
+            "outputPropertySearchType": "JSON_PATH",
+            "resourceIdentifier": "MacieSession"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "Macie2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-macie2"
+        }
+      }
+    ]
+  },
+  {
+    "id": "Organizations",
+    "resources": [
+      {
+        "resourceType": "AWS::Organizations::Account",
+        "list": {
+          "action": {
+            "command": "DescribeOrganization",
+            "outputProperty": "$.Organization",
+            "outputPropertySearchType": "JSON_PATH"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "OrganizationsClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-organizations"
         }
       }
     ]

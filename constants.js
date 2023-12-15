@@ -5,7 +5,7 @@ export const UNIT_MAPPING = {
       "AWS::EC2::Instance": 10,
     },
     Lambda: { "AWS::Lambda::Function": 10 },
-    ECS: { "AWS::ECS::Cluster": 10 },
+    ECS: { "AWS::ECS::TaskDefinition": 10 },
   },
 };
 
