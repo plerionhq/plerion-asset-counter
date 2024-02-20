@@ -1448,7 +1448,9 @@
           "action": {
             "command": "ListGroups",
             "outputProperty": "$.GroupIdentifiers",
-            "outputPropertySearchType": "JSON_PATH"
+            "outputPropertySearchType": "JSON_PATH",
+            "paginationToken": "NextToken",
+            "nextPageTokenKey": "NextToken"
           }
         },
         "listClientConfig": {
