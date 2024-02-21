@@ -29,13 +29,19 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
         (instance) =>
           isInstanceFromAutoScaleGroup(instance)
       );
-    const amiScannedForAsg = asgInstances.reduce((amiIds, instance) => {
-        if (!amiIds.some(amiId => amiId === instance.ImageId)) {
-          amiIds.push(instance.ImageId);
+    const groupedAsgAmi = asgInstances.reduce((asgAmiGroup, instance) => {
+        const asgName = instance.Tags.find((tag)=> tag.Key === "aws:autoscaling:groupName").Value;
+        const imageId = instance.ImageId;
+        if(asgAmiGroup[asgName]) {
+          asgAmiGroup[asgName] = {};
         }
-        return amiIds;
-      }, []);
-      const ec2InstancesCount = (nonTerminatedInstances.length - asgInstances.length) + amiScannedForAsg.length;
+        asgAmiGroup[asgName][imageId] = true
+        return asgAmiGroup;
+      });
+
+    const amiScannedPerAsg = Object.keys(groupedAsgAmi).map((asgName) => Object.keys(groupedAsgAmi[asgName]).length);
+    const totalEc2ScannedForAsg = amiScannedPerAsg.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    const ec2InstancesCount = (nonTerminatedInstances.length - asgInstances.length) + totalEc2ScannedForAsg;
     total += ec2InstancesCount;
     updateResourceTypeCounter(
       AWS_MAPPING,
