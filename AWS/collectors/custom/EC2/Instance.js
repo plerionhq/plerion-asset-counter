@@ -32,12 +32,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     const groupedAsgAmi = asgInstances.reduce((asgAmiGroup, instance) => {
         const asgName = instance.Tags.find((tag)=> tag.Key === "aws:autoscaling:groupName").Value;
         const imageId = instance.ImageId;
-        if(asgAmiGroup[asgName]) {
+        if(!asgAmiGroup[asgName]) {
           asgAmiGroup[asgName] = {};
         }
         asgAmiGroup[asgName][imageId] = true
         return asgAmiGroup;
-      });
+      }, {});
 
     const amiScannedPerAsg = Object.keys(groupedAsgAmi).map((asgName) => Object.keys(groupedAsgAmi[asgName]).length);
     const totalEc2ScannedForAsg = amiScannedPerAsg.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
