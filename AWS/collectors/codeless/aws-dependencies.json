@@ -1438,5 +1438,27 @@
         }
       }
     ]
+  },
+  {
+    "id": "ResourceGroups",
+    "resources": [
+      {
+        "resourceType": "AWS::ResourceGroups::ResourceGroup",
+        "list": {
+          "action": {
+            "command": "ListGroups",
+            "outputProperty": "$.GroupIdentifiers",
+            "outputPropertySearchType": "JSON_PATH",
+            "paginationToken": "NextToken",
+            "nextPageTokenKey": "NextToken"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "ResourceGroupsClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-resource-groups"
+        }
+      }
+    ]
   }
 ]
