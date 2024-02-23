@@ -61,21 +61,28 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
             }
           });
         }
+        const taskDefs = [...new Set(taskDefinitionArns)];
+        updateResourceTypeCounter(
+          AWS_MAPPING,
+          serviceName,
+          ECS_TASK_DEFINITION,
+          { cspmUnits: taskDefs.length }
+        );
+        total += taskDefs.length;
 
         await Promise.all(
-          [...new Set(taskDefinitionArns)].map(async (taskDefinition) => {
+          taskDefs.map(async (taskDefinition) => {
             let getTaskDefCmd = new DescribeTaskDefinitionCommand({
               taskDefinition,
             });
             let getTaskDefRes = await client?.send(getTaskDefCmd);
             let containerCount =
               getTaskDefRes.taskDefinition?.containerDefinitions.length;
-            total += containerCount;
             updateResourceTypeCounter(
               AWS_MAPPING,
               serviceName,
               ECS_TASK_DEFINITION,
-              containerCount,
+              { cwppUnits: containerCount },
             );
           }),
         );

@@ -23,25 +23,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
         );
       }
     }
-    const nonTerminatedInstances = resources.filter(
-      (instance) => !isInstanceTerminated(instance));
-    const asgInstances =  nonTerminatedInstances.filter(
-        (instance) =>
-          isInstanceFromAutoScaleGroup(instance)
-      );
-    const groupedAsgAmi = asgInstances.reduce((asgAmiGroup, instance) => {
-        const asgName = instance.Tags.find((tag)=> tag.Key === "aws:autoscaling:groupName").Value;
-        const imageId = instance.ImageId;
-        if(!asgAmiGroup[asgName]) {
-          asgAmiGroup[asgName] = {};
-        }
-        asgAmiGroup[asgName][imageId] = true
-        return asgAmiGroup;
-      }, {});
-
-    const amiScannedPerAsg = Object.keys(groupedAsgAmi).map((asgName) => Object.keys(groupedAsgAmi[asgName]).length);
-    const totalEc2ScannedForAsg = amiScannedPerAsg.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    const ec2InstancesCount = (nonTerminatedInstances.length - asgInstances.length) + totalEc2ScannedForAsg;
+    const filteredInstances = resources.filter(
+      (instance) =>
+        isInstanceFromAutoScaleGroup(instance) ||
+        isInstanceTerminated(instance),
+    );
+    const ec2InstancesCount = resources.length - filteredInstances.length;
     total += ec2InstancesCount;
     updateResourceTypeCounter(
       AWS_MAPPING,

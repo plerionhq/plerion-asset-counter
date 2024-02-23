@@ -32,11 +32,33 @@ export const updateResourceTypeCounter = (
   resourceType,
   value,
 ) => {
-  if (AWS_MAPPING[serviceName] === undefined) {
-    AWS_MAPPING[serviceName] = { [resourceType]: value };
-  } else if (AWS_MAPPING[serviceName][resourceType] === undefined) {
-    AWS_MAPPING[serviceName][resourceType] = value;
+  const service = AWS_MAPPING[serviceName] || {};
+  const updatedCount = updateCount(service[resourceType] || (isInteger(value) ? 0 : {}), value);
+
+  AWS_MAPPING[serviceName] = {
+    ...(AWS_MAPPING[serviceName] || {}),
+    [resourceType]: updatedCount,
+  };
+};
+
+const updateCount = (currentValue, increment) => {
+  if (isInteger(increment)) {
+    return currentValue + increment;
   } else {
-    AWS_MAPPING[serviceName][resourceType] += value;
+    let updatedValue = { ...currentValue };
+    for (const [key, value] of Object.entries(increment)) {
+      updatedValue[key] = (updatedValue[key] || 0) + value;
+    }
+    return updatedValue;
   }
 };
+
+const isInteger = (input) => (typeof input === 'number' && Number.isInteger(input))
+
+export const batchArray = (array, batchSize) => {
+  const batchedArray = [];
+  for (let i = 0; i < array.length; i += batchSize) {
+    batchedArray.push(array.slice(i, i + batchSize));
+  }
+  return batchedArray;
+}
