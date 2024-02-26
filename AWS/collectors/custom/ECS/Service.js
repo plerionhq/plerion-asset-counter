@@ -84,6 +84,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
               ECS_TASK_DEFINITION,
               { cwppUnits: containerCount },
             );
+            total += containerCount;
           }),
         );
       }),

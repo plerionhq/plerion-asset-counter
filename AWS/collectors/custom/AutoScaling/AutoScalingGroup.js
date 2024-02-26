@@ -61,7 +61,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
         resourceType,
         { cwppUnits: amiScanned.length },
       );
-
+      total += amiScanned.length;
     });
   } catch(error) {
     console.log(`Error finding ${resourceType}`);
