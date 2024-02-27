@@ -19,6 +19,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
       });
       const response = await asgClient.send(command);
       allAsg = allAsg.concat(response.AutoScalingGroups);
+      nextToken = response.NextToken;
     } while(nextToken);
 
     total += allAsg.length;
