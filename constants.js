@@ -6,6 +6,7 @@ export const UNIT_MAPPING = {
     },
     Lambda: { "AWS::Lambda::Function": 10 },
     ECS: { "AWS::ECS::TaskDefinition": 10 },
+    AutoScaling: { "AWS::AutoScaling::AutoScalingGroup": 10 },
   },
 };
 

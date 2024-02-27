@@ -26,13 +26,13 @@ const calculateUnits = (result, provider) => {
     }
     const serviceResourceTypesCounts = result[serviceName];
     const serviceUnits = providerUnits[serviceName];
-    Object.keys(serviceResourceTypesCounts).forEach((resourceTypeCount) => {
-      if (serviceUnits && serviceUnits[resourceTypeCount] !== undefined) {
+    Object.keys(serviceResourceTypesCounts).forEach((resourceType) => {
+      if (serviceUnits && serviceUnits[resourceType] !== undefined) {
         cwppUnits +=
-          serviceUnits[resourceTypeCount] *
-          serviceResourceTypesCounts[resourceTypeCount];
+          serviceUnits[resourceType] *
+          (serviceResourceTypesCounts[resourceType]['cwppUnits'] || serviceResourceTypesCounts[resourceType]);
       }
-      cspmUnits += serviceResourceTypesCounts[resourceTypeCount];
+      cspmUnits += (serviceResourceTypesCounts[resourceType]['cspmUnits'] || serviceResourceTypesCounts[resourceType]);
     });
   });
   return { CSPM: cspmUnits, CWPP: cwppUnits };
