@@ -400,7 +400,7 @@
       },
       {
         "resource": "Policy",
-        "resourceType": "AWS::Organizations::Policy"
+        "resourceType": "AWS::Organizations::ServiceControlPolicy"
       }
     ],
     "regions": [
