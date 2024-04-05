@@ -399,7 +399,7 @@
         "resourceType": "AWS::Organizations::Account"
       },
       {
-        "resource": "Policy",
+        "resource": "ServiceControlPolicy",
         "resourceType": "AWS::Organizations::ServiceControlPolicy"
       }
     ],
