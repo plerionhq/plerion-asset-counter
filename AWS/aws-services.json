@@ -397,6 +397,10 @@
       {
         "resource": "Account",
         "resourceType": "AWS::Organizations::Account"
+      },
+      {
+        "resource": "ServiceControlPolicy",
+        "resourceType": "AWS::Organizations::ServiceControlPolicy"
       }
     ],
     "regions": [
