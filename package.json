@@ -71,7 +71,7 @@
     "@aws-sdk/client-organizations": "^3.347.1",
     "@aws-sdk/client-rds": "^3.347.1",
     "@aws-sdk/client-redshift": "^3.347.1",
-    "@aws-sdk/client-resource-groups": "^3.347.1",
+    "@aws-sdk/client-resource-groups": "^3.515.0",
     "@aws-sdk/client-s3": "^3.347.1",
     "@aws-sdk/client-s3-control": "^3.347.1",
     "@aws-sdk/client-sagemaker": "^3.347.1",
