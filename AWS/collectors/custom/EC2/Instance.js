@@ -37,7 +37,9 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
       ec2InstancesCount,
     );
   } catch (err) {
-    console.log(`Error finding ${resourceType}`);
+    console.log(
+      `Error finding ${resourceType} on region ${region}. Region could be disabled. Continuing...`,
+    );
   }
   AWS_MAPPING.total += total;
 };

@@ -8,10 +8,11 @@ import { queryDependencies, checkModuleAndQuery } from "./service/index.js";
 
 const AWS_MAPPING = { total: 0 };
 
-export const queryAWS = async (parsedService, parsedResourceType) => {
+export const queryAWS = async (parsedService, parsedResourceType, verbose) => {
   await Promise.all(
     services.map(async (service) => {
       const { regions, service: serviceName, resources } = service;
+      console.log(`Calculating ${serviceName}...`);
       if (parsedService && parsedService !== serviceName) {
         return;
       }
@@ -30,7 +31,9 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
             process.cwd(),
             `${providerName}/collectors/custom/${serviceName}/${resourceName}.js`,
           );
-          console.log(`Checking ${resourceType} on region ${region}`);
+          if (verbose) {
+            console.log(`Checking ${resourceType} on region ${region}`);
+          }
 
           const success = await checkModuleAndQuery(
             filePath,
@@ -49,11 +52,14 @@ export const queryAWS = async (parsedService, parsedResourceType) => {
                 region,
               );
             } catch (err) {
-              console.log(`Error checking ${resourceType} on ${region}`);
+              if (verbose) {
+                console.log(`Error checking ${resourceType} on ${region}`);
+              }
             }
           }
         }
       }
+      console.log(`Finished calculating ${serviceName}`);
     }),
   );
   return AWS_MAPPING;
