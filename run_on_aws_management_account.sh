@@ -1,39 +1,39 @@
 #!/bin/bash
 
 # Step 1: Ask for role name with default value
-#read -p "Enter the role name (default: OrganizationAccountAccessRole): " role_name
-#role_name=${role_name:-OrganizationAccountAccessRole}
-#
-## Store original environment variables
-#original_aws_access_key_id=$AWS_ACCESS_KEY_ID
-#original_aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
-#original_aws_session_token=$AWS_SESSION_TOKEN
-#
-## Step 2: List accounts in the organization using management account credentials
-#accounts=$(aws organizations list-accounts --output text --query 'Accounts[*].Id')
-#
-## Step 3: For each member account, assume the specified role and run the original script
-#for account_id in $accounts; do
-#    echo "Assuming role $role_name in account $account_id..."
-#    assumed_role=$(aws sts assume-role --role-arn arn:aws:iam::$account_id:role/$role_name --role-session-name "AssumeRoleSession")
-#    export AWS_ACCESS_KEY_ID=$(echo $assumed_role | jq -r '.Credentials.AccessKeyId')
-#    export AWS_SECRET_ACCESS_KEY=$(echo $assumed_role | jq -r '.Credentials.SecretAccessKey')
-#    export AWS_SESSION_TOKEN=$(echo $assumed_role | jq -r '.Credentials.SessionToken')
-#
-#    echo "Running script in account $account_id..."
-#
-#    node index.js -p AWS --accountId $account_id
-#
-#    # Restore original environment variables
-#    export AWS_ACCESS_KEY_ID=$original_aws_access_key_id
-#    export AWS_SECRET_ACCESS_KEY=$original_aws_secret_access_key
-#    export AWS_SESSION_TOKEN=$original_aws_session_token
-#done
-#
-## Unset temporary variables
-#unset original_aws_access_key_id
-#unset original_aws_secret_access_key
-#unset original_aws_session_token
+read -p "Enter the role name (default: OrganizationAccountAccessRole): " role_name
+role_name=${role_name:-OrganizationAccountAccessRole}
+
+# Store original environment variables
+original_aws_access_key_id=$AWS_ACCESS_KEY_ID
+original_aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
+original_aws_session_token=$AWS_SESSION_TOKEN
+
+# Step 2: List accounts in the organization using management account credentials
+accounts=$(aws organizations list-accounts --output text --query 'Accounts[*].Id')
+
+# Step 3: For each member account, assume the specified role and run the original script
+for account_id in $accounts; do
+    echo "Assuming role $role_name in account $account_id..."
+    assumed_role=$(aws sts assume-role --role-arn arn:aws:iam::$account_id:role/$role_name --role-session-name "AssumeRoleSession")
+    export AWS_ACCESS_KEY_ID=$(echo $assumed_role | jq -r '.Credentials.AccessKeyId')
+    export AWS_SECRET_ACCESS_KEY=$(echo $assumed_role | jq -r '.Credentials.SecretAccessKey')
+    export AWS_SESSION_TOKEN=$(echo $assumed_role | jq -r '.Credentials.SessionToken')
+
+    echo "Running script in account $account_id..."
+
+    node index.js -p AWS --accountId $account_id
+
+    # Restore original environment variables
+    export AWS_ACCESS_KEY_ID=$original_aws_access_key_id
+    export AWS_SECRET_ACCESS_KEY=$original_aws_secret_access_key
+    export AWS_SESSION_TOKEN=$original_aws_session_token
+done
+
+# Unset temporary variables
+unset original_aws_access_key_id
+unset original_aws_secret_access_key
+unset original_aws_session_token
 
 # Initialize variables to hold the sum
 total_cspm=0

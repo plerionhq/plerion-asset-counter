@@ -24,3 +24,8 @@ error if there are no resources in that region.
 ## How to run for an AWS account using an AWS Organization Management Account
 1. Give `run_on_aws_management_account.sh` permission to run. `chmod +x run_on_aws_management_account.sh`
 2. Assume Role into your AWS Organization Management Account using admin access
+3. You can verify this by running `aws sts get-caller-identity` and checking if the outputed `Account` field is the same as the AWS Organization Management Account's id
+4. Run the script `./run_on_aws_management_account.sh`
+5. For each member account it will assume either the `OrganizationAccountAccessRole` by default, or an otherwise specified role. [`OrganizationAccountAccessRole` is a default role which managed accounts automatically have](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html).
+6. If you have many member accounts this script may take some time to run. Each time a member account's run has completed it'll create a new file called `<awsAccountId>-AWS-Output.json`
+7. Once completely done it will create a file `AWS-Organization-output.json` which will contain estimated Plerion Unit consumption data for your entire Organization
