@@ -67,9 +67,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
       const amiScanned = [
         ...new Set(asgInstances.map((instance) => ec2AmiMap[instance])),
       ];
-      updateResourceTypeCounter(AWS_MAPPING, serviceName, resourceType, {
-        cwppUnits: amiScanned.length,
-      });
+      updateResourceTypeCounter(
+        AWS_MAPPING,
+        serviceName,
+        resourceType,
+        amiScanned.length,
+      );
       total += amiScanned.length;
     });
   } catch (error) {

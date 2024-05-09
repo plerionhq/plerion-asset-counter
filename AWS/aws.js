@@ -8,11 +8,17 @@ import { queryDependencies, checkModuleAndQuery } from "./service/index.js";
 
 const AWS_MAPPING = { total: 0 };
 
-export const queryAWS = async (parsedService, parsedResourceType, verbose) => {
+export const queryAWS = async (
+  parsedService,
+  parsedResourceType,
+  verbose,
+  accountId,
+) => {
+  const accountIdText = accountId ? ` for AWS Account ${accountId}` : "";
   await Promise.all(
     services.map(async (service) => {
       const { regions, service: serviceName, resources } = service;
-      console.log(`Calculating ${serviceName}...`);
+      console.log(`Calculating ${serviceName}${accountIdText}...`);
       if (parsedService && parsedService !== serviceName) {
         return;
       }
@@ -59,7 +65,7 @@ export const queryAWS = async (parsedService, parsedResourceType, verbose) => {
           }
         }
       }
-      console.log(`Finished calculating ${serviceName}`);
+      console.log(`Finished calculating ${serviceName}${accountIdText}`);
     }),
   );
   return AWS_MAPPING;

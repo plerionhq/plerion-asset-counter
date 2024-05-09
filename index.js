@@ -53,7 +53,7 @@ const calculateUnits = (result, provider) => {
   let result;
   switch (provider) {
     case AWS:
-      result = await queryAWS(service, resourceType, verbose);
+      result = await queryAWS(service, resourceType, verbose, accountId);
       break;
   }
   const { CSPM: CSPM_UNITS, CWPP: CWPP_UNITS } = calculateUnits(

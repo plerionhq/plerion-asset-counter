@@ -9,21 +9,28 @@ original_aws_access_key_id=$AWS_ACCESS_KEY_ID
 original_aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
 original_aws_session_token=$AWS_SESSION_TOKEN
 
-# Step 2: List accounts in the organization using management account credentials
-accounts=$(aws organizations list-accounts --output text --query 'Accounts[*].Id')
+# Step 2: Run on Organization account
+get_caller_identity=$(aws sts get-caller-identity)
+org_account_id=$(echo $get_caller_identity | jq -r '.Account')
 
-# Step 3: For each member account, assume the specified role and run the original script
+
+# Step 3: List accounts in the organization using management account credentials
+accounts=$(aws organizations list-accounts --output text --query 'Accounts[?Status==`ACTIVE`].Id')
+
+# Step 4: For each member account, assume the specified role and run the original script
 for account_id in $accounts; do
+
+    if [ "$account_id" != "$org_account_id" ]; then
     echo "Assuming role $role_name in account $account_id..."
     assumed_role=$(aws sts assume-role --role-arn arn:aws:iam::$account_id:role/$role_name --role-session-name "AssumeRoleSession")
     export AWS_ACCESS_KEY_ID=$(echo $assumed_role | jq -r '.Credentials.AccessKeyId')
     export AWS_SECRET_ACCESS_KEY=$(echo $assumed_role | jq -r '.Credentials.SecretAccessKey')
     export AWS_SESSION_TOKEN=$(echo $assumed_role | jq -r '.Credentials.SessionToken')
+    fi
 
     echo "Running script in account $account_id..."
 
     node index.js -p AWS --accountId $account_id
-
     # Restore original environment variables
     export AWS_ACCESS_KEY_ID=$original_aws_access_key_id
     export AWS_SECRET_ACCESS_KEY=$original_aws_secret_access_key
