@@ -21,7 +21,7 @@ error if there are no resources in that region.
 1. `docker build -t asset-counter .`
 2. `docker run --rm -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN asset-counter -p AWS`
 
-## How to run for an AWS account using an AWS Organization Management Account
+## Using with an AWS Organization Management Account
 1. Give `run_on_aws_management_account.sh` permission to run. `chmod +x run_on_aws_management_account.sh`
 2. Assume Role into your AWS Organization Management Account using admin access
 3. You can verify this by running `aws sts get-caller-identity` and checking if the outputed `Account` field is the same as the AWS Organization Management Account's id
