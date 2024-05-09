@@ -82,7 +82,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
               AWS_MAPPING,
               serviceName,
               ECS_TASK_DEFINITION,
-              { cwppUnits: containerCount },
+              containerCount,
             );
             total += containerCount;
           }),

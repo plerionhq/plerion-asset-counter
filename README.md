@@ -20,3 +20,14 @@ error if there are no resources in that region.
 ## Docker instructions
 1. `docker build -t asset-counter .`
 2. `docker run --rm -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN asset-counter -p AWS`
+
+## Using with an AWS Organization Management Account
+1. Run `npm i` to install packages
+2. [Ensure you have `jq` installed (`brew install jq`)](https://jqlang.github.io/jq/)
+3. Give `run_on_aws_management_account.sh` permission to run. `chmod +x run_on_aws_management_account.sh`
+4. Assume Role into your AWS Organization Management Account using admin access
+5. You can verify this by running `aws sts get-caller-identity` and checking if the outputed `Account` field is the same as the AWS Organization Management Account's id
+6. Run the script `./run_on_aws_management_account.sh`
+7. For each member account it will assume either the `OrganizationAccountAccessRole` by default, or an otherwise specified role. [`OrganizationAccountAccessRole` is a default role which managed accounts automatically have](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html).
+8. If you have many member accounts this script may take some time to run. Each time a member account's run has completed it'll create a new file called `<awsAccountId>-AWS-Output.json`
+9. Once completely done it will create a file `AWS-Organization-output.json` which will contain estimated Plerion Unit consumption data for your entire Organization

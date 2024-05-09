@@ -9,6 +9,7 @@ program
   .option("-p, --provider <provider>")
   .option("-s, --service <service>")
   .option("-r, --resource <resource>")
+  .option("--accountId <a provider's account id to prefix the output file>")
   .option("-v, --verbose", "Verbose resource type logging");
 
 program.parse();
@@ -30,20 +31,29 @@ const calculateUnits = (result, provider) => {
       if (serviceUnits && serviceUnits[resourceType] !== undefined) {
         cwppUnits +=
           serviceUnits[resourceType] *
-          (serviceResourceTypesCounts[resourceType]['cwppUnits'] || serviceResourceTypesCounts[resourceType]);
+          (serviceResourceTypesCounts[resourceType]["cwppUnits"] ||
+            serviceResourceTypesCounts[resourceType]);
       }
-      cspmUnits += (serviceResourceTypesCounts[resourceType]['cspmUnits'] || serviceResourceTypesCounts[resourceType]);
+      cspmUnits +=
+        serviceResourceTypesCounts[resourceType]["cspmUnits"] ||
+        serviceResourceTypesCounts[resourceType];
     });
   });
   return { CSPM: cspmUnits, CWPP: cwppUnits };
 };
 
 (async () => {
-  const { provider, service, resource: resourceType, verbose } = options;
+  const {
+    provider,
+    service,
+    resource: resourceType,
+    verbose,
+    accountId,
+  } = options;
   let result;
   switch (provider) {
     case AWS:
-      result = await queryAWS(service, resourceType);
+      result = await queryAWS(service, resourceType, verbose, accountId);
       break;
   }
   const { CSPM: CSPM_UNITS, CWPP: CWPP_UNITS } = calculateUnits(
@@ -83,8 +93,9 @@ const calculateUnits = (result, provider) => {
   if (verbose) {
     await writeFile(`${provider}-output.json`, JSON.stringify(result, null, 2));
   } else {
+    const accountIdPrefix = accountId ? `${accountId}-` : "";
     await writeFile(
-      `${provider}-output.json`,
+      `${accountIdPrefix}${provider}-output.json`,
       JSON.stringify(
         {
           TOTAL: result.total,

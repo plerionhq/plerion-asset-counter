@@ -32,8 +32,17 @@ export const updateResourceTypeCounter = (
   resourceType,
   value,
 ) => {
+  if (typeof value !== "number") {
+    console.log(
+      `${serviceName} ${resourceType} DID NOT RECEIVE NUMBER FOR VALUE`,
+    );
+    process.exit(1);
+  }
   const service = AWS_MAPPING[serviceName] || {};
-  const updatedCount = updateCount(service[resourceType] || (isInteger(value) ? 0 : {}), value);
+  const updatedCount = updateCount(
+    service[resourceType] || (isInteger(value) ? 0 : {}),
+    value,
+  );
 
   AWS_MAPPING[serviceName] = {
     ...(AWS_MAPPING[serviceName] || {}),
@@ -53,7 +62,8 @@ const updateCount = (currentValue, increment) => {
   }
 };
 
-const isInteger = (input) => (typeof input === 'number' && Number.isInteger(input))
+const isInteger = (input) =>
+  typeof input === "number" && Number.isInteger(input);
 
 export const batchArray = (array, batchSize) => {
   const batchedArray = [];
@@ -61,4 +71,4 @@ export const batchArray = (array, batchSize) => {
     batchedArray.push(array.slice(i, i + batchSize));
   }
   return batchedArray;
-}
+};
