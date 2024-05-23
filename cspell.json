@@ -41,6 +41,8 @@
     "networkpolicies",
     "networkpolicy",
     "pdodistributionbudget",
+    "persistentvolumeclaims",
+    "persistentvolumes",
     "poddisruptionbudgets",
     "podtemplate",
     "podtemplates",

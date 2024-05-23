@@ -305,7 +305,7 @@
     "nameSpaced": true,
     "kind": "NetworkPolicy"
   },
-  "Kubernetes::Policy::PdoDistributionBudget": {
+  "Kubernetes::Policy::PodDistributionBudget": {
     "name": "poddisruptionbudgets",
     "shortNames": [
       "pdb"
@@ -337,5 +337,19 @@
     "apiVersion": "admissionregistration.k8s.io/v1",
     "nameSpaced": false,
     "kind": "ValidatingWebhookConfiguration"
+  },
+  "Kubernetes::Storage::PersistentVolume": {
+    "name": "persistentvolumes",
+    "shortName": "pv",
+    "apiVersion": "v1",
+    "nameSpaced": false,
+    "kind": "PersistentVolume"
+  },
+  "Kubernetes::Storage::PersistentVolumeClaim": {
+    "name": "persistentvolumeclaims",
+    "shortName": "pvc",
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "PersistentVolumeClaim"
   }
 }
