@@ -1,0 +1,341 @@
+{
+  "Kubernetes::Workload::PodTemplate": {
+    "name": "podtemplates",
+    "shortNames": null,
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "PodTemplate"
+  },
+  "Kubernetes::Workload::Pod": {
+    "name": "pods",
+    "shortNames": [
+      "po"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "Pod"
+  },
+  "Kubernetes::Workload::ReplicaSet": {
+    "name": "replicasets",
+    "shortNames": [
+      "rs"
+    ],
+    "apiVersion": "apps/v1",
+    "nameSpaced": true,
+    "kind": "ReplicaSet"
+  },
+  "Kubernetes::Workload::Deployment": {
+    "name": "deployments",
+    "shortNames": [
+      "deploy"
+    ],
+    "apiVersion": "apps/v1",
+    "nameSpaced": true,
+    "kind": "Deployment"
+  },
+  "Kubernetes::Workload::StatefulSet": {
+    "name": "statefulsets",
+    "shortNames": [
+      "sts"
+    ],
+    "apiVersion": "apps/v1",
+    "nameSpaced": true,
+    "kind": "StatefulSet"
+  },
+  "Kubernetes::Workload::DaemonSet": {
+    "name": "daemonsets",
+    "shortNames": [
+      "ds"
+    ],
+    "apiVersion": "apps/v1",
+    "nameSpaced": true,
+    "kind": "DaemonSet"
+  },
+  "Kubernetes::Workload::Job": {
+    "name": "jobs",
+    "shortNames": null,
+    "apiVersion": "batch/v1",
+    "nameSpaced": true,
+    "kind": "Job"
+  },
+  "Kubernetes::Workload::CronJob": {
+    "name": "cronjobs",
+    "shortNames": [
+      "cj"
+    ],
+    "apiVersion": "batch/v1",
+    "nameSpaced": true,
+    "kind": "CronJob"
+  },
+  "Kubernetes::Workload::PriorityClass": {
+    "name": "priorityclasses",
+    "shortNames": [
+      "pc"
+    ],
+    "apiVersion": "scheduling.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "PriorityClass"
+  },
+  "Kubernetes::Workload::HorizontalPodAutoScaler": {
+    "name": "horizontalpodautoscalers",
+    "shortNames": [
+      "hpa"
+    ],
+    "apiVersion": "autoscaling/v2",
+    "nameSpaced": true,
+    "kind": "HorizontalPodAutoscaler"
+  },
+  "Kubernetes::Workload::ReplicationController": {
+    "name": "replicationcontrollers",
+    "shortNames": [
+      "rc"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "ReplicationController"
+  },
+  "Kubernetes::Cluster::Node": {
+    "name": "nodes",
+    "shortNames": [
+      "no"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": false,
+    "kind": "Node"
+  },
+  "Kubernetes::Cluster::Namespace": {
+    "name": "namespaces",
+    "shortNames": [
+      "ns"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": false,
+    "kind": "Namespace"
+  },
+  "Kubernetes::Cluster::ApiService": {
+    "name": "apiservices",
+    "shortNames": null,
+    "apiVersion": "apiregistration.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "APIService"
+  },
+  "Kubernetes::Cluster::Lease": {
+    "name": "leases",
+    "shortNames": null,
+    "apiVersion": "coordination.k8s.io/v1",
+    "nameSpaced": true,
+    "kind": "Lease"
+  },
+  "Kubernetes::Cluster::RuntimeClass": {
+    "name": "runtimeclasses",
+    "shortNames": null,
+    "apiVersion": "node.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "RuntimeClass"
+  },
+  "Kubernetes::Cluster::FlowSchema": {
+    "name": "flowschemas",
+    "shortNames": null,
+    "apiVersion": "flowcontrol.apiserver.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "FlowSchema"
+  },
+  "Kubernetes::Cluster::PriorityLevelConfiguration": {
+    "name": "prioritylevelconfigurations",
+    "shortNames": null,
+    "apiVersion": "flowcontrol.apiserver.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "PriorityLevelConfiguration"
+  },
+  "Kubernetes::Service::Service": {
+    "name": "services",
+    "shortNames": [
+      "svc"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "Service"
+  },
+  "Kubernetes::Service::Endpoint": {
+    "name": "endpoints",
+    "shortNames": [
+      "ep"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "Endpoints"
+  },
+  "Kubernetes::Service::EndpointSlice": {
+    "name": "endpointslices",
+    "shortNames": null,
+    "apiVersion": "discovery.k8s.io/v1",
+    "nameSpaced": true,
+    "kind": "EndpointSlice"
+  },
+  "Kubernetes::Service::Ingress": {
+    "name": "ingresses",
+    "shortNames": [
+      "ing"
+    ],
+    "apiVersion": "networking.k8s.io/v1",
+    "nameSpaced": true,
+    "kind": "Ingress"
+  },
+  "Kubernetes::Service::IngressClass": {
+    "name": "ingressclasses",
+    "shortNames": null,
+    "apiVersion": "networking.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "IngressClass"
+  },
+  "Kubernetes::Config::ConfigMap": {
+    "name": "configmaps",
+    "shortNames": [
+      "cm"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "ConfigMap"
+  },
+  "Kubernetes::Config::Secret": {
+    "name": "secrets",
+    "shortNames": null,
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "Secret"
+  },
+  "Kubernetes::Storage::StorageClass": {
+    "name": "storageclasses",
+    "shortNames": [
+      "sc"
+    ],
+    "apiVersion": "storage.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "StorageClass"
+  },
+  "Kubernetes::Storage::VolumeAttachment": {
+    "name": "volumeattachments",
+    "shortNames": null,
+    "apiVersion": "storage.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "VolumeAttachment"
+  },
+  "Kubernetes::Storage::CSIDriver": {
+    "name": "csidrivers",
+    "shortNames": null,
+    "apiVersion": "storage.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "CSIDriver"
+  },
+  "Kubernetes::Storage::CSINode": {
+    "name": "csinodes",
+    "shortNames": null,
+    "apiVersion": "storage.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "CSINode"
+  },
+  "Kubernetes::Storage::CSIStorageCapacity": {
+    "name": "csistoragecapacities",
+    "shortNames": null,
+    "apiVersion": "storage.k8s.io/v1",
+    "nameSpaced": true,
+    "kind": "CSIStorageCapacity"
+  },
+  "Kubernetes::Auth::ServiceAccount": {
+    "name": "serviceaccounts",
+    "shortNames": [
+      "sa"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "ServiceAccount"
+  },
+  "Kubernetes::Auth::ClusterRole": {
+    "name": "clusterroles",
+    "shortNames": null,
+    "apiVersion": "rbac.authorization.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "ClusterRole"
+  },
+  "Kubernetes::Auth::ClusterRoleBinding": {
+    "name": "clusterrolebindings",
+    "shortNames": null,
+    "apiVersion": "rbac.authorization.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "ClusterRoleBinding"
+  },
+  "Kubernetes::Auth::Role": {
+    "name": "roles",
+    "shortNames": null,
+    "apiVersion": "rbac.authorization.k8s.io/v1",
+    "nameSpaced": true,
+    "kind": "Role"
+  },
+  "Kubernetes::Auth::RoleBinding": {
+    "name": "rolebindings",
+    "shortNames": null,
+    "apiVersion": "rbac.authorization.k8s.io/v1",
+    "nameSpaced": true,
+    "kind": "RoleBinding"
+  },
+  "Kubernetes::Policy::LimitRange": {
+    "name": "limitranges",
+    "shortNames": [
+      "limits"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "LimitRange"
+  },
+  "Kubernetes::Policy::ResourceQuota": {
+    "name": "resourcequotas",
+    "shortNames": [
+      "quota"
+    ],
+    "apiVersion": "v1",
+    "nameSpaced": true,
+    "kind": "ResourceQuota"
+  },
+  "Kubernetes::Policy::NetworkPolicy": {
+    "name": "networkpolicies",
+    "shortNames": [
+      "netpol"
+    ],
+    "apiVersion": "networking.k8s.io/v1",
+    "nameSpaced": true,
+    "kind": "NetworkPolicy"
+  },
+  "Kubernetes::Policy::PdoDistributionBudget": {
+    "name": "poddisruptionbudgets",
+    "shortNames": [
+      "pdb"
+    ],
+    "apiVersion": "policy/v1",
+    "nameSpaced": true,
+    "kind": "PodDisruptionBudget"
+  },
+  "Kubernetes::Ext::CustomResourceDefinition": {
+    "name": "customresourcedefinitions",
+    "shortNames": [
+      "crd",
+      "crds"
+    ],
+    "apiVersion": "apiextensions.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "CustomResourceDefinition"
+  },
+  "Kubernetes::Ext::MutationWebhookConfiguration": {
+    "name": "mutatingwebhookconfigurations",
+    "shortNames": null,
+    "apiVersion": "admissionregistration.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "MutatingWebhookConfiguration"
+  },
+  "Kubernetes::Ext::ValidatingWebhookConfiguration": {
+    "name": "validatingwebhookconfigurations",
+    "shortNames": null,
+    "apiVersion": "admissionregistration.k8s.io/v1",
+    "nameSpaced": false,
+    "kind": "ValidatingWebhookConfiguration"
+  }
+}

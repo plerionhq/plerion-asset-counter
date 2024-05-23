@@ -31,3 +31,14 @@ error if there are no resources in that region.
 7. For each member account it will assume either the `OrganizationAccountAccessRole` by default, or an otherwise specified role. [`OrganizationAccountAccessRole` is a default role which managed accounts automatically have](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html).
 8. If you have many member accounts this script may take some time to run. Each time a member account's run has completed it'll create a new file called `<awsAccountId>-AWS-Output.json`
 9. Once completely done it will create a file `AWS-Organization-output.json` which will contain estimated Plerion Unit consumption data for your entire Organization
+
+
+## How to run for Kubernetes cluster
+1. Install kubernetes and ensure `kubectl` command runs locally. Further information on Kubernetes installation can be found [here](https://kubernetes.io/docs/tasks/tools).
+2. Ensure kubernetes context and authentication is properly configured. Use command `kubectl config current-context` to verify.
+    * For AWS EKS, authentication can be done using: `aws eks update-kubeconfig --region <region> --name <cluster-name>`
+3. Run `npm i` to install packages
+4. Run `node index.js -p K8S`
+    * Can also be run on the resource level `node index.js -p K8S -r po,ns`
+    * You may also include verbose logging which will give you resource counts `node index.js -p K8S -v`
+5. Open up `K8S-output.json` once it has finished running.
