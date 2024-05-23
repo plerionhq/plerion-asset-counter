@@ -1,11 +1,7 @@
 import { writeFile } from "fs/promises";
 import { Command } from "commander";
 import { queryAWS } from "./AWS/aws.js";
-import {
-  isKubectlInstalled,
-  queryKubernetes,
-  getK8sClusterName,
-} from "./k8s/index.js";
+import { isKubectlInstalled, queryKubernetes } from "./k8s/index.js";
 
 import { UNIT_MAPPING, DAYS_PER_MONTH } from "./constants.js";
 
@@ -79,13 +75,8 @@ const calculateUnits = (result, provider) => {
         );
         return;
       }
-      const clusterName = await getK8sClusterName(verbose);
-      verbose &&
-        console.log(
-          `Running Kubernetes unit consumption for cluster: ${clusterName}`,
-        );
       result = await queryKubernetes(resourceType, verbose);
-      await reportK8sStat(clusterName, result, verbose);
+      await reportK8sStat(result, verbose);
       break;
     }
   }
@@ -188,7 +179,7 @@ const reportCloudProviderStat = async (
   console.log("-----------------------------------");
 };
 
-const reportK8sStat = async (clusterName, result, verbose) => {
+const reportK8sStat = async (result, verbose) => {
   const { KSPM: KSPM_UNITS } = calculateK8sUnits(result);
   result["KSPM_UNITS"] = KSPM_UNITS;
   result["TOTAL_UNITS"] = KSPM_UNITS;
@@ -215,14 +206,12 @@ const reportK8sStat = async (clusterName, result, verbose) => {
   console.log(result);
   console.log("-----------------------------------");
 
+  const resultFileName = `${Kubernetes}-output.json`;
   if (verbose) {
-    await writeFile(
-      `${Kubernetes}-output.json`,
-      JSON.stringify(result, null, 2),
-    );
+    await writeFile(resultFileName, JSON.stringify(result, null, 2));
   } else {
     await writeFile(
-      `${clusterName}${Kubernetes}-output.json`,
+      resultFileName,
       JSON.stringify(
         {
           TOTAL: result.total,

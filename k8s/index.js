@@ -62,7 +62,7 @@ export const queryKubernetes = async (requestedResources, verbose) => {
 
   for (const k8sResource of resourcesToQuery) {
     try {
-      verbose && console.log(`querying resource: ${k8sResource}`);
+      console.log(`querying ${k8sResource}`);
       const resourceResponse = await execCommand(
         `kubectl get ${k8sResource} --all-namespaces -o json`,
         true,
@@ -101,17 +101,4 @@ export const isKubectlInstalled = async () => {
     console.log("Failed to check if kubectl is installed");
   }
   return installed;
-};
-
-export const getK8sClusterName = async (verbose) => {
-  let clusterName = "";
-  try {
-    clusterName = await execCommand("kubectl config current-context");
-    clusterName = clusterName.includes("/")
-      ? clusterName.split("/").pop()
-      : clusterName;
-  } catch (err) {
-    verbose && console.log(err);
-  }
-  return clusterName;
 };

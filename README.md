@@ -41,4 +41,4 @@ error if there are no resources in that region.
 4. Run `node index.js -p K8S`
     * Can also be run on the resource level `node index.js -p K8S -r po,ns`
     * You may also include verbose logging which will give you resource counts `node index.js -p K8S -v`
-5. Open up `K8S-output.json` once it has finished running.
+5. Open up `K8S-output.json` once it has finished running. The `K8S-output.json` file should consist count of each Kubernetes resources under `resources` attribute when `verbose` flag is enabled.  
