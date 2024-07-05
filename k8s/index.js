@@ -1,5 +1,6 @@
 import path from "path";
 import { readFileSync } from "fs";
+import jp from "jsonpath";
 
 import { execCommand } from "../utils/index.js";
 
@@ -19,22 +20,21 @@ const getContainers = (resourceDescription, resourceName) => {
   switch (resourceName) {
     case "pods": {
       // Get pods with no owner
-      const ownerLessPodsDescription = resourceItems.filter(
+      const ownerLessPods = resourceItems.filter(
         (podsDescription) => !podsDescription.metadata.ownerReferences,
       );
-      return (ownerLessPodsDescription || []).flatMap((podDescription) =>
-        podDescription.spec.containers.map((container) => container.image),
-      );
+      return jp.query(ownerLessPods, "$..spec.containers[*].image");
     }
+    case "cronjobs":
+      return jp.query(
+        resourceItems,
+        "$..spec.jobTemplate.spec.template.spec.containers[*].image",
+      );
     default:
-      return resourceItems.flatMap((resourceItem) => {
-        const template = resourceItem.spec.template;
-        if (!template && !template.spec && !template.spec.containers.length) {
-          return [];
-        }
-        const containers = template.spec?.containers || [];
-        return containers.map((container) => container.image);
-      });
+      return jp.query(
+        resourceItems,
+        "$..spec.template.spec.containers[*].image",
+      );
   }
 };
 
