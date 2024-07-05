@@ -9,12 +9,41 @@ const supportedKubernetesResources = JSON.parse(
   readFileSync(path.join(process.cwd(), "k8s/k8-resources.json")),
 );
 
+const getContainers = (resourceDescription, resourceName) => {
+  if (!resourceDescription && !resourceDescription.items.length) {
+    return [];
+  }
+
+  const resourceItems = resourceDescription.items;
+
+  switch (resourceName) {
+    case "pods": {
+      // Get pods with no owner
+      const ownerLessPodsDescription = resourceItems.filter(
+        (podsDescription) => !podsDescription.metadata.ownerReferences,
+      );
+      return (ownerLessPodsDescription || []).flatMap((podDescription) =>
+        podDescription.spec.containers.map((container) => container.image),
+      );
+    }
+    default:
+      return resourceItems.flatMap((resourceItem) => {
+        const template = resourceItem.spec.template;
+        if (!template && !template.spec && !template.spec.containers.length) {
+          return [];
+        }
+        const containers = template.spec?.containers || [];
+        return containers.map((container) => container.image);
+      });
+  }
+};
+
 const getResourcesToQuery = (requestedResources) => {
   const allK8sResources = Object.entries(supportedKubernetesResources).map(
     ([, k8Resource]) => k8Resource,
   );
 
-  let resourcesToQuery = allK8sResources.map((resource) => resource.name);
+  let resourcesToQuery = allK8sResources;
 
   if (!requestedResources) {
     return resourcesToQuery;
@@ -30,8 +59,10 @@ const getResourcesToQuery = (requestedResources) => {
             (K8sResource.shortNames || []).includes(resource),
         );
         if (validResource) {
-          !acc.validResources.includes(validResource.name) &&
-            acc.validResources.push(validResource.name);
+          !acc.validResources
+            .map((resource) => resource.name)
+            .includes(validResource.name) &&
+            acc.validResources.push(validResource);
         } else {
           acc.invalidResources.push(resource);
         }
@@ -61,20 +92,33 @@ export const queryKubernetes = async (requestedResources, verbose) => {
   const resourcesToQuery = getResourcesToQuery(requestedResources);
 
   for (const k8sResource of resourcesToQuery) {
+    const resourceName = k8sResource.name;
     try {
-      console.log(`querying ${k8sResource}`);
+      console.log(`querying ${resourceName}`);
       const resourceResponse = await execCommand(
-        `kubectl get ${k8sResource} --all-namespaces -o json`,
+        `kubectl get ${resourceName} --all-namespaces -o json`,
         true,
       );
       updateResourceCounter(
         K8S_MAPPING,
-        k8sResource,
+        resourceName,
+        "KSPM",
         resourceResponse.items.length,
       );
       K8S_MAPPING.total += resourceResponse.items.length;
+
+      if (k8sResource.isWorkload) {
+        const containers = getContainers(resourceResponse, resourceName);
+        updateResourceCounter(
+          K8S_MAPPING,
+          resourceName,
+          "CWPP",
+          containers.length,
+        );
+        K8S_MAPPING.total += containers.length;
+      }
     } catch (err) {
-      console.log(`Error fetching resource detail of ${k8sResource}`);
+      console.log(`Error fetching resource detail of ${resourceName}`);
       verbose && console.log(err);
     }
   }
@@ -82,14 +126,17 @@ export const queryKubernetes = async (requestedResources, verbose) => {
   return K8S_MAPPING;
 };
 
-export const updateResourceCounter = (K8S_MAPPING, resource, value) => {
+export const updateResourceCounter = (K8S_MAPPING, resource, type, value) => {
   if (typeof value !== "number") {
     console.log(`${resource} DID NOT RECEIVE NUMBER FOR VALUE`);
     process.exit(1);
   }
-  const previousCount = K8S_MAPPING.resources[resource] || 0;
+  if (!K8S_MAPPING.resources[resource]) {
+    K8S_MAPPING.resources[resource] = {};
+  }
+  const previousCount = K8S_MAPPING.resources[resource][type] || 0;
 
-  K8S_MAPPING.resources[resource] = previousCount + value;
+  K8S_MAPPING.resources[resource][type] = previousCount + value;
 };
 
 export const isKubectlInstalled = async () => {

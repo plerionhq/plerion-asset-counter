@@ -8,6 +8,14 @@ export const UNIT_MAPPING = {
     ECS: { "AWS::ECS::TaskDefinition": 10 },
     AutoScaling: { "AWS::AutoScaling::AutoScalingGroup": 10 },
   },
+  K8S: {
+    pods: 10,
+    deployments: 10,
+    statefulsets: 10,
+    daemonsets: 10,
+    jobs: 10,
+    cronjobs: 10,
+  },
 };
 
 export const DAYS_PER_MONTH = 30;
