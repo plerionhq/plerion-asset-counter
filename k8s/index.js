@@ -10,32 +10,21 @@ const supportedKubernetesResources = JSON.parse(
   readFileSync(path.join(process.cwd(), "k8s/k8-resources.json")),
 );
 
-const getContainers = (resourceDescription, resourceName) => {
-  if (!resourceDescription && !resourceDescription.items.length) {
+const getContainers = (resources, resourceName) => {
+  if (!resources.length) {
     return [];
   }
 
-  const resourceItems = resourceDescription.items;
+  const containerPathMap = {
+    pods: "$..spec.containers[*].image",
+    cronjobs: "$..spec.jobTemplate.spec.template.spec.containers[*].image",
+    default: "$..spec.template.spec.containers[*].image",
+  };
 
-  switch (resourceName) {
-    case "pods": {
-      // Get pods with no owner
-      const ownerLessPods = resourceItems.filter(
-        (podsDescription) => !podsDescription.metadata.ownerReferences,
-      );
-      return jp.query(ownerLessPods, "$..spec.containers[*].image");
-    }
-    case "cronjobs":
-      return jp.query(
-        resourceItems,
-        "$..spec.jobTemplate.spec.template.spec.containers[*].image",
-      );
-    default:
-      return jp.query(
-        resourceItems,
-        "$..spec.template.spec.containers[*].image",
-      );
-  }
+  return jp.query(
+    resources,
+    containerPathMap[resourceName] || containerPathMap.default,
+  );
 };
 
 const getResourcesToQuery = (requestedResources) => {
@@ -88,6 +77,17 @@ const getResourcesToQuery = (requestedResources) => {
   return resourcesToQuery;
 };
 
+const getOwnerLessPods = (pods) => {
+  return pods.filter((podsDescription) => {
+    const ownerReferences = podsDescription.metadata.ownerReferences;
+    if (!ownerReferences) return true;
+
+    return ownerReferences.some(
+      (ownerReference) => ownerReference.kind === "Node",
+    );
+  });
+};
+
 export const queryKubernetes = async (requestedResources, verbose) => {
   const resourcesToQuery = getResourcesToQuery(requestedResources);
 
@@ -99,16 +99,22 @@ export const queryKubernetes = async (requestedResources, verbose) => {
         `kubectl get ${resourceName} --all-namespaces -o json`,
         true,
       );
+      let resources = [];
+      if (resourceName === "pods") {
+        resources = getOwnerLessPods(resourceResponse.items);
+      } else {
+        resources = resourceResponse.items;
+      }
       updateResourceCounter(
         K8S_MAPPING,
         resourceName,
         "KSPM",
-        resourceResponse.items.length,
+        resources.length,
       );
-      K8S_MAPPING.total += resourceResponse.items.length;
+      K8S_MAPPING.total += resources.length;
 
       if (k8sResource.isWorkload) {
-        const containers = getContainers(resourceResponse, resourceName);
+        const containers = getContainers(resources, resourceName);
         updateResourceCounter(
           K8S_MAPPING,
           resourceName,
