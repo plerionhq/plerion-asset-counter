@@ -77,9 +77,9 @@ const getResourcesToQuery = (requestedResources) => {
   return resourcesToQuery;
 };
 
-const getOwnerLessPods = (pods) => {
-  return pods.filter((podsDescription) => {
-    const ownerReferences = podsDescription.metadata.ownerReferences;
+const getOwnerLessResources = (resources) => {
+  return resources.filter((resourceDescription) => {
+    const ownerReferences = resourceDescription.metadata.ownerReferences;
     if (!ownerReferences) return true;
 
     return ownerReferences.some(
@@ -100,8 +100,8 @@ export const queryKubernetes = async (requestedResources, verbose) => {
         true,
       );
       let resources = [];
-      if (resourceName === "pods") {
-        resources = getOwnerLessPods(resourceResponse.items);
+      if (k8sResource.allowsOwnership) {
+        resources = getOwnerLessResources(resourceResponse.items);
       } else {
         resources = resourceResponse.items;
       }
