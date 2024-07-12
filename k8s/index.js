@@ -1,5 +1,6 @@
 import path from "path";
 import { readFileSync } from "fs";
+import jp from "jsonpath";
 
 import { execCommand } from "../utils/index.js";
 
@@ -9,12 +10,29 @@ const supportedKubernetesResources = JSON.parse(
   readFileSync(path.join(process.cwd(), "k8s/k8-resources.json")),
 );
 
+const getContainers = (resources, resourceName) => {
+  if (!resources.length) {
+    return [];
+  }
+
+  const containerPathMap = {
+    pods: "$..spec.containers[*].image",
+    cronjobs: "$..spec.jobTemplate.spec.template.spec.containers[*].image",
+    default: "$..spec.template.spec.containers[*].image",
+  };
+
+  return jp.query(
+    resources,
+    containerPathMap[resourceName] || containerPathMap.default,
+  );
+};
+
 const getResourcesToQuery = (requestedResources) => {
   const allK8sResources = Object.entries(supportedKubernetesResources).map(
     ([, k8Resource]) => k8Resource,
   );
 
-  let resourcesToQuery = allK8sResources.map((resource) => resource.name);
+  let resourcesToQuery = allK8sResources;
 
   if (!requestedResources) {
     return resourcesToQuery;
@@ -30,8 +48,10 @@ const getResourcesToQuery = (requestedResources) => {
             (K8sResource.shortNames || []).includes(resource),
         );
         if (validResource) {
-          !acc.validResources.includes(validResource.name) &&
-            acc.validResources.push(validResource.name);
+          !acc.validResources
+            .map((resource) => resource.name)
+            .includes(validResource.name) &&
+            acc.validResources.push(validResource);
         } else {
           acc.invalidResources.push(resource);
         }
@@ -57,24 +77,54 @@ const getResourcesToQuery = (requestedResources) => {
   return resourcesToQuery;
 };
 
+const getOwnerLessResources = (resources) => {
+  return resources.filter((resourceDescription) => {
+    const ownerReferences = resourceDescription.metadata.ownerReferences;
+    if (!ownerReferences) return true;
+
+    return ownerReferences.some(
+      (ownerReference) => ownerReference.kind === "Node",
+    );
+  });
+};
+
 export const queryKubernetes = async (requestedResources, verbose) => {
   const resourcesToQuery = getResourcesToQuery(requestedResources);
 
   for (const k8sResource of resourcesToQuery) {
+    const resourceName = k8sResource.name;
     try {
-      console.log(`querying ${k8sResource}`);
+      console.log(`querying ${resourceName}`);
       const resourceResponse = await execCommand(
-        `kubectl get ${k8sResource} --all-namespaces -o json`,
+        `kubectl get ${resourceName} --all-namespaces -o json`,
         true,
       );
+      let resources = [];
+      if (k8sResource.allowsOwnership) {
+        resources = getOwnerLessResources(resourceResponse.items);
+      } else {
+        resources = resourceResponse.items;
+      }
       updateResourceCounter(
         K8S_MAPPING,
-        k8sResource,
-        resourceResponse.items.length,
+        resourceName,
+        "KSPM",
+        resources.length,
       );
-      K8S_MAPPING.total += resourceResponse.items.length;
+      K8S_MAPPING.total += resources.length;
+
+      if (k8sResource.isWorkload) {
+        const containers = getContainers(resources, resourceName);
+        updateResourceCounter(
+          K8S_MAPPING,
+          resourceName,
+          "CWPP",
+          containers.length,
+        );
+        K8S_MAPPING.total += containers.length;
+      }
     } catch (err) {
-      console.log(`Error fetching resource detail of ${k8sResource}`);
+      console.log(`Error fetching resource detail of ${resourceName}`);
       verbose && console.log(err);
     }
   }
@@ -82,14 +132,17 @@ export const queryKubernetes = async (requestedResources, verbose) => {
   return K8S_MAPPING;
 };
 
-export const updateResourceCounter = (K8S_MAPPING, resource, value) => {
+export const updateResourceCounter = (K8S_MAPPING, resource, type, value) => {
   if (typeof value !== "number") {
     console.log(`${resource} DID NOT RECEIVE NUMBER FOR VALUE`);
     process.exit(1);
   }
-  const previousCount = K8S_MAPPING.resources[resource] || 0;
+  if (!K8S_MAPPING.resources[resource]) {
+    K8S_MAPPING.resources[resource] = {};
+  }
+  const previousCount = K8S_MAPPING.resources[resource][type] || 0;
 
-  K8S_MAPPING.resources[resource] = previousCount + value;
+  K8S_MAPPING.resources[resource][type] = previousCount + value;
 };
 
 export const isKubectlInstalled = async () => {

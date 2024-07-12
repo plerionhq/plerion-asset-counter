@@ -12,7 +12,9 @@
       "po"
     ],
     "apiVersion": "v1",
+    "isWorkload": true,
     "nameSpaced": true,
+    "allowsOwnership": true,
     "kind": "Pod"
   },
   "Kubernetes::Workload::ReplicaSet": {
@@ -30,6 +32,7 @@
       "deploy"
     ],
     "apiVersion": "apps/v1",
+    "isWorkload": true,
     "nameSpaced": true,
     "kind": "Deployment"
   },
@@ -39,6 +42,7 @@
       "sts"
     ],
     "apiVersion": "apps/v1",
+    "isWorkload": true,
     "nameSpaced": true,
     "kind": "StatefulSet"
   },
@@ -49,13 +53,16 @@
     ],
     "apiVersion": "apps/v1",
     "nameSpaced": true,
+    "isWorkload": true,
     "kind": "DaemonSet"
   },
   "Kubernetes::Workload::Job": {
     "name": "jobs",
     "shortNames": null,
     "apiVersion": "batch/v1",
+    "isWorkload": true,
     "nameSpaced": true,
+    "allowsOwnership": true,
     "kind": "Job"
   },
   "Kubernetes::Workload::CronJob": {
@@ -65,6 +72,7 @@
     ],
     "apiVersion": "batch/v1",
     "nameSpaced": true,
+    "isWorkload": true,
     "kind": "CronJob"
   },
   "Kubernetes::Workload::PriorityClass": {
