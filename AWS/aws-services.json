@@ -166,6 +166,10 @@
       {
         "resource": "VPN",
         "resourceType": "AWS::EC2::VPN"
+      },
+      {
+        "resource": "ElasticIP",
+        "resourceType": "AWS::EC2::ElasticIP"
       }
     ],
     "regions": [
