@@ -1304,25 +1304,6 @@
     ]
   },
   {
-    "id": "Cloudformation",
-    "resources": [
-      {
-        "resourceType": "AWS::Cloudformation::Stack",
-        "list": {
-          "action": {
-            "command": "paginateListStacks",
-            "outputProperty": "StackSummaries"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "CloudFormationClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-cloudformation"
-        }
-      }
-    ]
-  },
-  {
     "id": "RDS",
     "resources": [
       {
