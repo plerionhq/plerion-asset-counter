@@ -429,6 +429,10 @@
         "resourceType": "AWS::RDS::DBClusterSnapshot"
       },
       {
+        "resource": "DBInstanceSnapshot",
+        "resourceType": "AWS::RDS::DBInstanceSnapshot"
+      },
+      {
         "resource": "DBSecurityGroup",
         "resourceType": "AWS::RDS::DBSecurityGroup"
       }
@@ -2196,6 +2200,10 @@
       {
         "resource": "DBClusterParameterGroup",
         "resourceType": "AWS::DocDB::DBClusterParameterGroup"
+      },
+      {
+        "resource": "DBClusterSnapshot",
+        "resourceType": "AWS::DocDB::DBClusterSnapshot"
       }
     ],
     "regions": [
