@@ -13,9 +13,6 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
           Name: "engine",
           Values: [
             "aurora-mysql",
-            "custom-sqlserver-ee",
-            "custom-sqlserver-se",
-            "custom-sqlserver-web",
             "aurora-postgresql",
             "mariadb",
             "mysql",
@@ -23,7 +20,6 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
             "oracle-ee-cdb",
             "oracle-se2",
             "oracle-se2-cdb",
-            "aurora",
             "postgres",
             "sqlserver-ee",
             "sqlserver-ex",
