@@ -1,35 +1,17 @@
 import {
+  DocDBClient,
   paginateDescribeDBClusterSnapshots,
-  RDSClient,
-} from "@aws-sdk/client-rds";
+} from "@aws-sdk/client-docdb";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let resources = [];
-  const client = new RDSClient({ region });
+  const client = new DocDBClient({ region });
   for await (const page of paginateDescribeDBClusterSnapshots(
     { client },
     {
-      Filters: [
-        {
-          Name: "engine",
-          Values: [
-            'aurora-mysql',
-            'aurora-postgresql',
-            'mariadb',
-            'mysql',
-            'oracle-ee',
-            'oracle-ee-cdb',
-            'oracle-se2',
-            'oracle-se2-cdb',
-            'postgres',
-            'sqlserver-ee',
-            'sqlserver-ex',
-            'sqlserver-se',
-            'sqlserver-web',
-          ],
-        },
-      ],
+      SnapshotType: "manual",
+      Filters: [{ Name: "engine", Values: ["docdb"] }],
     },
   )) {
     resources.push(...(page.DBClusterSnapshots || []));
