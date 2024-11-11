@@ -13,23 +13,20 @@ const filterLatestTaskDefinitionsByRevision = (taskDefinitionArns) => {
 
   taskDefinitionArns.forEach((arn) => {
     const [family, revisionStr] = arn.split(":task-definition/")[1].split(":");
-    const revision = Number(revisionStr);
-
-    if (
-      !latestDefinitions.has(family) ||
-      Number(latestDefinitions.get(family).split(":").pop()) < revision
-    ) {
-      latestDefinitions.set(family, arn);
+    const revision = parseInt(revisionStr, 10);
+    const latestDefinitionEntry = latestDefinitions.get(family);
+    if (!latestDefinitionEntry || latestDefinitionEntry.revision < revision) {
+      latestDefinitions.set(family, { arn, revision });
     }
   });
 
-  return Array.from(latestDefinitions.values());
+  return Array.from(latestDefinitions.values()).map((entry) => entry.arn);
 };
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new ECSClient({ region });
   const resources = [];
-  let numberOfAttachedTaskedDefintions = 0;
+  let clusterTaskDefinitionArns = [];
 
   for await (const page of paginateListClusters({ client }, {})) {
     resources.push(...(page.clusterArns || []));
@@ -47,11 +44,11 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
           services: serviceArns,
         });
         const response = await client?.send(command);
-        const taskDefinitionArns = [];
+        const serviceTaskDefinitionArns = [];
         if (response && Array.isArray(response?.services)) {
           response.services.forEach((service) => {
             if (service?.taskDefinition) {
-              taskDefinitionArns.push(service.taskDefinition);
+              serviceTaskDefinitionArns.push(service.taskDefinition);
             }
             if (Array.isArray(service?.deployments)) {
               const deploymentTaskDefinitionArns = service.deployments
@@ -62,27 +59,33 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
                 )
                 .map((deployment) => deployment?.taskDefinition);
               if (deploymentTaskDefinitionArns) {
-                taskDefinitionArns.push(...deploymentTaskDefinitionArns);
+                serviceTaskDefinitionArns.push(...deploymentTaskDefinitionArns);
               }
             }
           });
         }
-        numberOfAttachedTaskedDefintions += taskDefinitionArns.length;
+        clusterTaskDefinitionArns = [
+          ...new Set([
+            ...clusterTaskDefinitionArns,
+            ...serviceTaskDefinitionArns,
+          ]),
+        ];
       }),
     );
   }
-
+  const latestTaskDefintions = [];
   for await (const page of paginateListTaskDefinitions(
     { client },
     { status: "ACTIVE" },
   )) {
-    const latestTaskDefintions = filterLatestTaskDefinitionsByRevision(
-      page.taskDefinitionArns,
+    latestTaskDefintions.push(
+      ...(filterLatestTaskDefinitionsByRevision(page.taskDefinitionArns) || []),
     );
-    resources.push(...(latestTaskDefintions || []));
   }
-  const totalTaskDefinitions =
-    resources.length + numberOfAttachedTaskedDefintions;
+  const deduplicatedTaskDefintions = [
+    ...new Set([...latestTaskDefintions, ...clusterTaskDefinitionArns]),
+  ];
+  const totalTaskDefinitions = deduplicatedTaskDefintions.length;
   updateResourceTypeCounter(
     AWS_MAPPING,
     serviceName,
