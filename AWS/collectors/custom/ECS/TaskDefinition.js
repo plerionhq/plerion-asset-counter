@@ -1,4 +1,11 @@
-import { ECSClient, paginateListTaskDefinitions } from "@aws-sdk/client-ecs";
+import {
+  ECSClient,
+  paginateListClusters,
+  paginateListTaskDefinitions,
+  ListServicesCommand,
+  DescribeServicesCommand,
+} from "@aws-sdk/client-ecs";
+import chunks from "lodash.chunk";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 const filterLatestTaskDefinitionsByRevision = (taskDefinitionArns) => {
@@ -22,6 +29,49 @@ const filterLatestTaskDefinitionsByRevision = (taskDefinitionArns) => {
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new ECSClient({ region });
   const resources = [];
+  let numberOfAttachedTaskedDefintions = 0;
+
+  for await (const page of paginateListClusters({ client }, {})) {
+    resources.push(...(page.clusterArns || []));
+  }
+  for await (const clusterArn of resources) {
+    const command = new ListServicesCommand({
+      cluster: clusterArn,
+    });
+    const response = await client?.send(command);
+    const chunkedServices = chunks(response?.serviceArns, 10);
+    await Promise.all(
+      chunkedServices.map(async (serviceArns) => {
+        const command = new DescribeServicesCommand({
+          cluster: clusterArn,
+          services: serviceArns,
+        });
+        const response = await client?.send(command);
+        const taskDefinitionArns = [];
+        if (response && Array.isArray(response?.services)) {
+          response.services.forEach((service) => {
+            if (service?.taskDefinition) {
+              taskDefinitionArns.push(service.taskDefinition);
+            }
+            if (Array.isArray(service?.deployments)) {
+              const deploymentTaskDefinitionArns = service.deployments
+                .filter(
+                  (deployment) =>
+                    deployment?.status === "PRIMARY" &&
+                    !!deployment?.taskDefinition,
+                )
+                .map((deployment) => deployment?.taskDefinition);
+              if (deploymentTaskDefinitionArns) {
+                taskDefinitionArns.push(...deploymentTaskDefinitionArns);
+              }
+            }
+          });
+        }
+        numberOfAttachedTaskedDefintions += taskDefinitionArns.length;
+      }),
+    );
+  }
+
   for await (const page of paginateListTaskDefinitions(
     { client },
     { status: "ACTIVE" },
@@ -31,11 +81,13 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     );
     resources.push(...(latestTaskDefintions || []));
   }
+  const totalTaskDefinitions =
+    resources.length + numberOfAttachedTaskedDefintions;
   updateResourceTypeCounter(
     AWS_MAPPING,
     serviceName,
     resourceType,
-    resources.length,
+    totalTaskDefinitions,
   );
-  AWS_MAPPING.total += resources.length;
+  AWS_MAPPING.total += totalTaskDefinitions;
 };
