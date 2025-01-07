@@ -405,6 +405,10 @@
       {
         "resource": "ServiceControlPolicy",
         "resourceType": "AWS::Organizations::ServiceControlPolicy"
+      },
+      {
+        "resource": "ResourceControlPolicy",
+        "resourceType": "AWS::Organizations::ResourceControlPolicy"
       }
     ],
     "regions": [
