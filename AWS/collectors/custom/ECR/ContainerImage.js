@@ -26,7 +26,6 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
       !repository.repositoryArn ||
       !repository.repositoryUri
     ) {
-      logger.info("Skipping fetching image for repository", { repository });
       continue;
     }
     const images = [];
