@@ -877,6 +877,10 @@
     "service": "ECR",
     "resources": [
       {
+        "resource": "ContainerImage",
+        "resourceType": "AWS::ECR::ContainerImage"
+      },
+      {
         "resource": "Repository",
         "resourceType": "AWS::ECR::Repository"
       }

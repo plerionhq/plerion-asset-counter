@@ -5,7 +5,6 @@ import {
 } from "@aws-sdk/client-ecs";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   let total = 0;
   const client = new ECSClient({ region });
