@@ -5,8 +5,6 @@ import {
 } from "@aws-sdk/client-ecr";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-const NUMBER_OF_LATEST_IMAGES_TO_COLLECT = 1000;
-
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new ECRClient({ region });
   let total = 0;
@@ -50,54 +48,12 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
       continue;
     }
 
-    // sort by latest pushed images
-    const latestPushedImages = images.sort((a, b) => {
-      const aTime = a.imagePushedAt
-        ? new Date(a.imagePushedAt).getTime()
-        : -Infinity;
-      const bTime = b.imagePushedAt
-        ? new Date(b.imagePushedAt).getTime()
-        : -Infinity;
-      return bTime - aTime;
-    });
-
-    const latestPushedImage = latestPushedImages[0];
-    // get the two latest pulled images by date
-    const latestPullImages = images
-      .filter(
-        (image) =>
-          image.ImageId !== latestPushedImage.ImageId &&
-          !!image.lastRecordedPullTime,
-      )
-      .sort((a, b) => {
-        const aTime = a.lastRecordedPullTime
-          ? new Date(a.lastRecordedPullTime).getTime()
-          : -Infinity;
-        const bTime = b.lastRecordedPullTime
-          ? new Date(b.lastRecordedPullTime).getTime()
-          : -Infinity;
-        return bTime - aTime;
-      })
-      .slice(0, NUMBER_OF_LATEST_IMAGES_TO_COLLECT);
-    const addedImageIds = new Set([
-      latestPushedImage.ImageId,
-      ...latestPullImages.map(({ ImageId }) => ImageId),
-    ]);
-    const remainingIds =
-      1 + NUMBER_OF_LATEST_IMAGES_TO_COLLECT - addedImageIds.size;
-    const repoCount = [
-      latestPushedImage,
-      ...latestPullImages,
-      ...latestPushedImages
-        .filter((image) => !addedImageIds.has(image.ImageId))
-        .slice(0, remainingIds),
-    ].length;
-    total += repoCount;
+    total += images.length;
     updateResourceTypeCounter(
       AWS_MAPPING,
       serviceName,
       resourceType,
-      repoCount,
+      images.length,
     );
   }
   AWS_MAPPING.total += total;
