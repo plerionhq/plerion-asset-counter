@@ -5,6 +5,8 @@ import {
 } from "@aws-sdk/client-ecr";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
+const NUMBER_OF_LATEST_IMAGES_TO_COLLECT = 1000;
+
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new ECRClient({ region });
   let total = 0;
@@ -76,12 +78,13 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
           : -Infinity;
         return bTime - aTime;
       })
-      .slice(0, 2);
+      .slice(0, NUMBER_OF_LATEST_IMAGES_TO_COLLECT);
     const addedImageIds = new Set([
       latestPushedImage.ImageId,
       ...latestPullImages.map(({ ImageId }) => ImageId),
     ]);
-    const remainingIds = 3 - addedImageIds.size;
+    const remainingIds =
+      1 + NUMBER_OF_LATEST_IMAGES_TO_COLLECT - addedImageIds.size;
     const repoCount = [
       latestPushedImage,
       ...latestPullImages,
