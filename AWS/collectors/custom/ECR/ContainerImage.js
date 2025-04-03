@@ -5,6 +5,8 @@ import {
 } from "@aws-sdk/client-ecr";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
+const CONTAINER_IMAGE_LIMIT = 100;
+
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new ECRClient({ region });
   let total = 0;
@@ -31,7 +33,10 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     const images = [];
     for await (const page of paginateDescribeImages(
       { client },
-      { repositoryName: repository.repositoryName, maxResults: 1000 },
+      {
+        repositoryName: repository.repositoryName,
+        maxResults: CONTAINER_IMAGE_LIMIT,
+      },
     )) {
       if (page.imageDetails) {
         for (const image of page.imageDetails) {
