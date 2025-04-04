@@ -5,7 +5,7 @@ import {
 } from "@aws-sdk/client-ecr";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
-const CONTAINER_IMAGE_LIMIT = 100;
+const CONTAINER_IMAGE_LIMIT = 10;
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new ECRClient({ region });
@@ -47,18 +47,24 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
           });
         }
       }
+      if (images.length >= CONTAINER_IMAGE_LIMIT) {
+        break;
+      }
     }
 
     if (!images.length) {
       continue;
     }
 
-    total += images.length;
+    const imagesToCollect = images.slice(0, CONTAINER_IMAGE_LIMIT);
+    const lengthOfImages = imagesToCollect.length;
+
+    total += lengthOfImages;
     updateResourceTypeCounter(
       AWS_MAPPING,
       serviceName,
       resourceType,
-      images.length,
+      lengthOfImages,
     );
   }
   AWS_MAPPING.total += total;
