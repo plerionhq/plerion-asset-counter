@@ -145,7 +145,7 @@
         "resourceType": "AWS::EC2::VpcPeeringConnection",
         "list": {
           "action": {
-            "command": "DescribeVpcPeeringConnections",
+            "command": "paginateDescribeVpcPeeringConnections",
             "outputProperty": "VpcPeeringConnections",
             "resourceIdentifier": "VpcPeeringConnectionId"
           }

@@ -156,6 +156,10 @@
         "resourceType": "AWS::EC2::Endpoint"
       },
       {
+        "resource": "VpcPeeringConnection",
+        "resourceType": "AWS::EC2::VpcPeeringConnection"
+      },
+      {
         "resource": "LaunchTemplate",
         "resourceType": "AWS::EC2::LaunchTemplate"
       },
