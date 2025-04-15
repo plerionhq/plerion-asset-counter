@@ -6,7 +6,7 @@ import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new EC2Client({ region });
-  const resources = [];
+  let resources = [];
   for await (const vpcPeeringConnection of paginateDescribeVpcPeeringConnections(
     { client },
     {
@@ -16,7 +16,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
           Values: ["active"],
         },
       ],
-    }
+    },
   )) {
     const { VpcPeeringConnections: vpcPeeringConnections } =
       vpcPeeringConnection;
@@ -30,7 +30,7 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
     AWS_MAPPING,
     serviceName,
     resourceType,
-    resources.length
+    resources.length,
   );
   AWS_MAPPING.total += resources.length;
 };
