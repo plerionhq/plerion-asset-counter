@@ -142,21 +142,6 @@
         }
       },
       {
-        "resourceType": "AWS::EC2::VpcPeeringConnection",
-        "list": {
-          "action": {
-            "command": "paginateDescribeVpcPeeringConnections",
-            "outputProperty": "VpcPeeringConnections",
-            "resourceIdentifier": "VpcPeeringConnectionId"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "EC2Client",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-ec2"
-        }
-      },
-      {
         "resourceType": "AWS::EC2::VPC",
         "list": {
           "action": {
