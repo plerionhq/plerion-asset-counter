@@ -2043,6 +2043,10 @@
       {
         "resource": "Document",
         "resourceType": "AWS::SSM::Document"
+      },
+      {
+        "resource": "Parameter",
+        "resourceType": "AWS::SSM::Parameter"
       }
     ],
     "regions": [
