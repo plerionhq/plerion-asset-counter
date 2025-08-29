@@ -24,6 +24,7 @@ declare -a resources=(
 "AWS::Organizations::Account"
 "AWS::S3Control::PublicAccessBlock"
 "AWS::SSM::Document"
+"AWS::SSM::Parameter"
 "AWS::APIGateway::Stage"
 "AWS::ECS::Service"
 "AWS::DocDB::DBInstance"
