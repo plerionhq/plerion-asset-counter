@@ -15,13 +15,13 @@ export const queryAWS = async (
   accountId,
 ) => {
   const accountIdText = accountId ? ` for AWS Account ${accountId}` : "";
+  const servicesToQuery = parsedService
+    ? services.filter(({ service }) => service === parsedService)
+    : services;
   await Promise.all(
-    services.map(async (service) => {
+    servicesToQuery.map(async (service) => {
       const { regions, service: serviceName, resources } = service;
       console.log(`Calculating ${serviceName}${accountIdText}...`);
-      if (parsedService && parsedService !== serviceName) {
-        return;
-      }
       for (const resource of resources) {
         const { resourceType } = resource;
         if (parsedResourceType && parsedResourceType !== resourceType) {
