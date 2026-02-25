@@ -2658,6 +2658,54 @@
       {
         "resource": "Agent",
         "resourceType": "AWS::Bedrock::Agent"
+      },
+      {
+        "resource": "DataSource",
+        "resourceType": "AWS::Bedrock::DataSource"
+      },
+      {
+        "resource": "EvaluationJob",
+        "resourceType": "AWS::Bedrock::EvaluationJob"
+      },
+      {
+        "resource": "Flow",
+        "resourceType": "AWS::Bedrock::Flow"
+      },
+      {
+        "resource": "ImportedModel",
+        "resourceType": "AWS::Bedrock::ImportedModel"
+      },
+      {
+        "resource": "KnowledgeBase",
+        "resourceType": "AWS::Bedrock::KnowledgeBase"
+      },
+      {
+        "resource": "ModelCopyJob",
+        "resourceType": "AWS::Bedrock::ModelCopyJob"
+      },
+      {
+        "resource": "ModelCustomizationJob",
+        "resourceType": "AWS::Bedrock::ModelCustomizationJob"
+      },
+      {
+        "resource": "ModelImportJob",
+        "resourceType": "AWS::Bedrock::ModelImportJob"
+      },
+      {
+        "resource": "Prompt",
+        "resourceType": "AWS::Bedrock::Prompt"
+      },
+      {
+        "resource": "Session",
+        "resourceType": "AWS::Bedrock::Session"
+      },
+      {
+        "resource": "AutomatedReasoningPolicy",
+        "resourceType": "AWS::Bedrock::AutomatedReasoningPolicy"
+      },
+      {
+        "resource": "CustomModel",
+        "resourceType": "AWS::Bedrock::CustomModel"
       }
     ],
     "regions": [

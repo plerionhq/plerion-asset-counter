@@ -32,6 +32,7 @@
     "@aws-sdk/client-backup": "^3.662.0",
     "@aws-sdk/client-bedrock": "^3.914.0",
     "@aws-sdk/client-bedrock-agent": "^3.914.0",
+    "@aws-sdk/client-bedrock-agent-runtime": "^3.914.0",
     "@aws-sdk/client-bedrock-data-automation": "^3.914.0",
     "@aws-sdk/client-bedrock-runtime": "^3.914.0",
     "@aws-sdk/client-cloudcontrol": "^3.662.0",
