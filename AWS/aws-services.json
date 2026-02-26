@@ -145,11 +145,7 @@
       {
         "resource": "FpgaImage",
         "resourceType": "AWS::EC2::FpgaImage",
-        "resourceRegions": [
-          "us-east-1",
-          "us-west-2",
-          "eu-west-1"
-        ]
+        "resourceRegions": ["us-east-1", "us-west-2", "eu-west-1"]
       },
       {
         "resource": "Endpoint",
@@ -256,9 +252,7 @@
         "resource": "Group"
       }
     ],
-    "regions": [
-      "us-east-1"
-    ],
+    "regions": ["us-east-1"],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -415,9 +409,7 @@
         "resourceType": "AWS::Organizations::ResourceControlPolicy"
       }
     ],
-    "regions": [
-      "us-east-1"
-    ],
+    "regions": ["us-east-1"],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -489,9 +481,7 @@
         "resourceType": "AWS::S3::Bucket"
       }
     ],
-    "regions": [
-      "us-east-1"
-    ],
+    "regions": ["us-east-1"],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -547,9 +537,7 @@
         "resourceType": "AWS::S3Control::PublicAccessBlock"
       }
     ],
-    "regions": [
-      "us-east-1"
-    ],
+    "regions": ["us-east-1"],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -1287,6 +1275,90 @@
       {
         "resource": "EndpointConfig",
         "resourceType": "AWS::SageMaker::EndpointConfig"
+      },
+      {
+        "resource": "Algorithm",
+        "resourceType": "AWS::SageMaker::Algorithm"
+      },
+      {
+        "resource": "Cluster",
+        "resourceType": "AWS::SageMaker::Cluster"
+      },
+      {
+        "resource": "ModelPackage",
+        "resourceType": "AWS::SageMaker::ModelPackage"
+      },
+      {
+        "resource": "MlflowTrackingServer",
+        "resourceType": "AWS::SageMaker::MlflowTrackingServer"
+      },
+      {
+        "resource": "Pipeline",
+        "resourceType": "AWS::SageMaker::Pipeline"
+      },
+      {
+        "resource": "TransformJob",
+        "resourceType": "AWS::SageMaker::TransformJob"
+      },
+      {
+        "resource": "TrainingJob",
+        "resourceType": "AWS::SageMaker::TrainingJob"
+      },
+      {
+        "resource": "ProcessingJob",
+        "resourceType": "AWS::SageMaker::ProcessingJob"
+      },
+      {
+        "resource": "OptimizationJob",
+        "resourceType": "AWS::SageMaker::OptimizationJob"
+      },
+      {
+        "resource": "HyperParameterTuningJob",
+        "resourceType": "AWS::SageMaker::HyperParameterTuningJob"
+      },
+      {
+        "resource": "EarthObservationJob",
+        "resourceType": "AWS::SageMaker::EarthObservationJob"
+      },
+      {
+        "resource": "CompilationJob",
+        "resourceType": "AWS::SageMaker::CompilationJob"
+      },
+      {
+        "resource": "AutoMLJob",
+        "resourceType": "AWS::SageMaker::AutoMLJob"
+      },
+      {
+        "resource": "DataQualityJobDefinition",
+        "resourceType": "AWS::SageMaker::DataQualityJobDefinition"
+      },
+      {
+        "resource": "Image",
+        "resourceType": "AWS::SageMaker::Image"
+      },
+      {
+        "resource": "VectorEnrichmentJob",
+        "resourceType": "AWS::SageMaker::VectorEnrichmentJob"
+      },
+      {
+        "resource": "ModelPackageGroup",
+        "resourceType": "AWS::SageMaker::ModelPackageGroup"
+      },
+      {
+        "resource": "ModelCard",
+        "resourceType": "AWS::SageMaker::ModelCard"
+      },
+      {
+        "resource": "ExplainabilityJobDefinition",
+        "resourceType": "AWS::SageMaker::ExplainabilityJobDefinition"
+      },
+      {
+        "resource": "FeatureGroup",
+        "resourceType": "AWS::SageMaker::FeatureGroup"
+      },
+      {
+        "resource": "Domain",
+        "resourceType": "AWS::SageMaker::Domain"
       }
     ],
     "regions": [
@@ -1750,9 +1822,7 @@
         "resourceType": "AWS::CloudFront::Distribution"
       }
     ],
-    "regions": [
-      "us-east-1"
-    ],
+    "regions": ["us-east-1"],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -2524,9 +2594,7 @@
         "resourceType": "AWS::ComputeOptimizer::EnrollmentStatus"
       }
     ],
-    "regions": [
-      "us-east-1"
-    ],
+    "regions": ["us-east-1"],
     "isGlobalNamespace": true,
     "scope": "AWSAccount"
   },
@@ -2658,6 +2726,54 @@
       {
         "resource": "Agent",
         "resourceType": "AWS::Bedrock::Agent"
+      },
+      {
+        "resource": "DataSource",
+        "resourceType": "AWS::Bedrock::DataSource"
+      },
+      {
+        "resource": "EvaluationJob",
+        "resourceType": "AWS::Bedrock::EvaluationJob"
+      },
+      {
+        "resource": "Flow",
+        "resourceType": "AWS::Bedrock::Flow"
+      },
+      {
+        "resource": "ImportedModel",
+        "resourceType": "AWS::Bedrock::ImportedModel"
+      },
+      {
+        "resource": "KnowledgeBase",
+        "resourceType": "AWS::Bedrock::KnowledgeBase"
+      },
+      {
+        "resource": "ModelCopyJob",
+        "resourceType": "AWS::Bedrock::ModelCopyJob"
+      },
+      {
+        "resource": "ModelCustomizationJob",
+        "resourceType": "AWS::Bedrock::ModelCustomizationJob"
+      },
+      {
+        "resource": "ModelImportJob",
+        "resourceType": "AWS::Bedrock::ModelImportJob"
+      },
+      {
+        "resource": "Prompt",
+        "resourceType": "AWS::Bedrock::Prompt"
+      },
+      {
+        "resource": "Session",
+        "resourceType": "AWS::Bedrock::Session"
+      },
+      {
+        "resource": "AutomatedReasoningPolicy",
+        "resourceType": "AWS::Bedrock::AutomatedReasoningPolicy"
+      },
+      {
+        "resource": "CustomModel",
+        "resourceType": "AWS::Bedrock::CustomModel"
       }
     ],
     "regions": [

@@ -1,19 +1,16 @@
 import {
   BedrockClient,
-  GetModelInvocationLoggingConfigurationCommand,
+  paginateListCustomModels,
 } from "@aws-sdk/client-bedrock";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
+  let resources = [];
   const client = new BedrockClient({ region });
-  const getModelInvocationLoggingConfigurationCommand =
-    new GetModelInvocationLoggingConfigurationCommand({});
-  const response = await client.send(
-    getModelInvocationLoggingConfigurationCommand,
-  );
-  const { loggingConfig } = response;
-  const data = loggingConfig ? [loggingConfig] : [];
-  const resourceCount = data.length;
+  for await (const page of paginateListCustomModels({ client }, {})) {
+    resources.push(...(page.modelSummaries || []));
+  }
+  const resourceCount = resources.length;
   updateResourceTypeCounter(
     AWS_MAPPING,
     serviceName,
