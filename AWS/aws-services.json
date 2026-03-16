@@ -145,7 +145,11 @@
       {
         "resource": "FpgaImage",
         "resourceType": "AWS::EC2::FpgaImage",
-        "resourceRegions": ["us-east-1", "us-west-2", "eu-west-1"]
+        "resourceRegions": [
+          "us-east-1",
+          "us-west-2",
+          "eu-west-1"
+        ]
       },
       {
         "resource": "Endpoint",
@@ -252,7 +256,9 @@
         "resource": "Group"
       }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -409,7 +415,9 @@
         "resourceType": "AWS::Organizations::ResourceControlPolicy"
       }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -481,7 +489,9 @@
         "resourceType": "AWS::S3::Bucket"
       }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -537,7 +547,9 @@
         "resourceType": "AWS::S3Control::PublicAccessBlock"
       }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -1822,7 +1834,9 @@
         "resourceType": "AWS::CloudFront::Distribution"
       }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "scope": "AWSAccount",
     "isGlobalNamespace": true
   },
@@ -2204,27 +2218,6 @@
     "scope": "AWSAccount"
   },
   {
-    "service": "MediaStore",
-    "resources": [
-      {
-        "resource": "Container",
-        "resourceType": "AWS::MediaStore::Container"
-      }
-    ],
-    "regions": [
-      "ap-northeast-1",
-      "ap-northeast-2",
-      "ap-southeast-2",
-      "eu-central-1",
-      "eu-north-1",
-      "eu-west-1",
-      "eu-west-2",
-      "us-east-1",
-      "us-west-2"
-    ],
-    "scope": "AWSAccount"
-  },
-  {
     "service": "Backup",
     "resources": [
       {
@@ -2594,7 +2587,9 @@
         "resourceType": "AWS::ComputeOptimizer::EnrollmentStatus"
       }
     ],
-    "regions": ["us-east-1"],
+    "regions": [
+      "us-east-1"
+    ],
     "isGlobalNamespace": true,
     "scope": "AWSAccount"
   },

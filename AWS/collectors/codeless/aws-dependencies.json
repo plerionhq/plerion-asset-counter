@@ -1200,25 +1200,6 @@
     ]
   },
   {
-    "id": "MediaStore",
-    "resources": [
-      {
-        "resourceType": "AWS::MediaStore::Container",
-        "list": {
-          "action": {
-            "command": "paginateListContainers",
-            "outputProperty": "Containers"
-          }
-        },
-        "listClientConfig": {
-          "clientName": "MediaStoreClient",
-          "clientType": "AWS_V3",
-          "packageName": "@aws-sdk/client-mediastore"
-        }
-      }
-    ]
-  },
-  {
     "id": "Backup",
     "resources": [
       {
