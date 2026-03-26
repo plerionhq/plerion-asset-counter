@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY ["package.json", "package-lock.json*", "./"]
 
-RUN npm install
+RUN npm ci --ignore-scripts
 
 COPY AWS ./AWS
 COPY index.js ./
