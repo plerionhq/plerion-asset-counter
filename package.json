@@ -76,6 +76,7 @@
     "@aws-sdk/client-organizations": "^3.997.0",
     "@aws-sdk/client-rds": "^3.997.0",
     "@aws-sdk/client-redshift": "^3.997.0",
+    "@aws-sdk/client-rekognition": "^3.997.0",
     "@aws-sdk/client-resource-groups": "^3.997.0",
     "@aws-sdk/client-s3": "^3.997.0",
     "@aws-sdk/client-s3-control": "^3.997.0",
