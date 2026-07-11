@@ -2832,5 +2832,116 @@
       "eu-west-2"
     ],
     "scope": "AWSAccount"
+  },
+  {
+    "service": "BedrockAgentCore",
+    "resources": [
+      {
+        "resource": "ApiKeyCredentialProvider",
+        "resourceType": "AWS::BedrockAgentCore::ApiKeyCredentialProvider"
+      },
+      {
+        "resource": "Browser",
+        "resourceType": "AWS::BedrockAgentCore::Browser"
+      },
+      {
+        "resource": "BrowserProfile",
+        "resourceType": "AWS::BedrockAgentCore::BrowserProfile"
+      },
+      {
+        "resource": "CodeInterpreter",
+        "resourceType": "AWS::BedrockAgentCore::CodeInterpreter"
+      },
+      {
+        "resource": "Evaluator",
+        "resourceType": "AWS::BedrockAgentCore::Evaluator"
+      },
+      {
+        "resource": "Gateway",
+        "resourceType": "AWS::BedrockAgentCore::Gateway"
+      },
+      {
+        "resource": "GatewayTarget",
+        "resourceType": "AWS::BedrockAgentCore::GatewayTarget"
+      },
+      {
+        "resource": "Harness",
+        "resourceType": "AWS::BedrockAgentCore::Harness"
+      },
+      {
+        "resource": "Memory",
+        "resourceType": "AWS::BedrockAgentCore::Memory"
+      },
+      {
+        "resource": "OAuth2CredentialProvider",
+        "resourceType": "AWS::BedrockAgentCore::OAuth2CredentialProvider"
+      },
+      {
+        "resource": "OnlineEvaluationConfig",
+        "resourceType": "AWS::BedrockAgentCore::OnlineEvaluationConfig"
+      },
+      {
+        "resource": "PaymentConnector",
+        "resourceType": "AWS::BedrockAgentCore::PaymentConnector"
+      },
+      {
+        "resource": "PaymentCredentialProvider",
+        "resourceType": "AWS::BedrockAgentCore::PaymentCredentialProvider"
+      },
+      {
+        "resource": "PaymentManager",
+        "resourceType": "AWS::BedrockAgentCore::PaymentManager"
+      },
+      {
+        "resource": "Policy",
+        "resourceType": "AWS::BedrockAgentCore::Policy"
+      },
+      {
+        "resource": "PolicyEngine",
+        "resourceType": "AWS::BedrockAgentCore::PolicyEngine"
+      },
+      {
+        "resource": "Registry",
+        "resourceType": "AWS::BedrockAgentCore::Registry"
+      },
+      {
+        "resource": "RegistryRecord",
+        "resourceType": "AWS::BedrockAgentCore::RegistryRecord"
+      },
+      {
+        "resource": "Runtime",
+        "resourceType": "AWS::BedrockAgentCore::Runtime"
+      },
+      {
+        "resource": "TokenVault",
+        "resourceType": "AWS::BedrockAgentCore::TokenVault"
+      },
+      {
+        "resource": "WorkloadIdentity",
+        "resourceType": "AWS::BedrockAgentCore::WorkloadIdentity"
+      }
+    ],
+    "regions": [
+      "ap-northeast-1",
+      "ap-northeast-2",
+      "ap-south-1",
+      "ap-southeast-1",
+      "ap-southeast-2",
+      "ap-southeast-5",
+      "ap-southeast-7",
+      "ca-central-1",
+      "eu-central-1",
+      "eu-north-1",
+      "eu-south-1",
+      "eu-south-2",
+      "eu-west-1",
+      "eu-west-2",
+      "eu-west-3",
+      "sa-east-1",
+      "us-east-1",
+      "us-east-2",
+      "us-west-2"
+    ],
+    "scope": "AWSAccount"
   }
 ]
