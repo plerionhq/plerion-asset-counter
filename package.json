@@ -33,6 +33,7 @@
     "@aws-sdk/client-bedrock": "^3.997.0",
     "@aws-sdk/client-bedrock-agent": "^3.997.0",
     "@aws-sdk/client-bedrock-agent-runtime": "^3.997.0",
+    "@aws-sdk/client-bedrock-agentcore-control": "^3.1085.0",
     "@aws-sdk/client-bedrock-data-automation": "^3.997.0",
     "@aws-sdk/client-bedrock-runtime": "^3.997.0",
     "@aws-sdk/client-cloudcontrol": "^3.997.0",
