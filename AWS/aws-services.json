@@ -407,6 +407,10 @@
       {
         "resource": "ResourceControlPolicy",
         "resourceType": "AWS::Organizations::ResourceControlPolicy"
+      },
+      {
+        "resource": "DelegatedAdministrator",
+        "resourceType": "AWS::Organizations::DelegatedAdministrator"
       }
     ],
     "regions": ["us-east-1"],
@@ -1777,7 +1781,12 @@
   },
   {
     "service": "SecurityHub",
-    "resources": [],
+    "resources": [
+      {
+        "resource": "Hub",
+        "resourceType": "AWS::SecurityHub::Hub"
+      }
+    ],
     "regions": [
       "ap-east-1",
       "ap-northeast-3",
