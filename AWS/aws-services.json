@@ -2952,5 +2952,17 @@
       "us-west-2"
     ],
     "scope": "AWSAccount"
+  },
+  {
+    "service": "Signin",
+    "resources": [
+      {
+        "resource": "ConsoleAuthorizationConfiguration",
+        "resourceType": "AWS::Signin::ConsoleAuthorizationConfiguration"
+      }
+    ],
+    "regions": ["us-east-1"],
+    "scope": "AWSAccount",
+    "isGlobalNamespace": true
   }
 ]
