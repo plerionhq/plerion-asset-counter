@@ -62,6 +62,7 @@
     "runtimeclasses",
     "serviceaccount",
     "serviceaccounts",
+    "signin",
     "statefulset",
     "statefulsets",
     "storageclass",
