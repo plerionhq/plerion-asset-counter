@@ -63,7 +63,7 @@
     "@aws-sdk/client-iam": "^3.997.0",
     "@aws-sdk/client-inspector2": "^3.997.0",
     "@aws-sdk/client-kafka": "^3.997.0",
-    "@aws-sdk/client-kinesis": "^3.997.0",
+    "@aws-sdk/client-kinesis": "^3.1128.0",
     "@aws-sdk/client-kms": "^3.997.0",
     "@aws-sdk/client-lambda": "^3.997.0",
     "@aws-sdk/client-lightsail": "^3.997.0",
