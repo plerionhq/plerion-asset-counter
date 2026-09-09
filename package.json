@@ -93,6 +93,8 @@
     "@aws-sdk/client-sqs": "^3.997.0",
     "@aws-sdk/client-ssm": "^3.997.0",
     "@aws-sdk/client-sts": "^3.997.0",
+    "@aws-sdk/client-timestream-influxdb": "^3.997.0",
+    "@aws-sdk/client-timestream-write": "^3.997.0",
     "@aws-sdk/client-waf-regional": "^3.997.0",
     "@aws-sdk/client-wafv2": "^3.997.0",
     "commander": "^14.0.3",
