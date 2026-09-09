@@ -1,7 +1,4 @@
-import {
-  KinesisClient,
-  paginateListChannels,
-} from "@aws-sdk/client-kinesis";
+import { KinesisClient, paginateListChannels } from "@aws-sdk/client-kinesis";
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
