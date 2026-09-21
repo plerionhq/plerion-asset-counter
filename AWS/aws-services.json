@@ -1052,6 +1052,10 @@
       {
         "resource": "FirehoseDeliveryStream",
         "resourceType": "AWS::Kinesis::FirehoseDeliveryStream"
+      },
+      {
+        "resource": "Channel",
+        "resourceType": "AWS::Kinesis::Channel"
       }
     ],
     "regions": [
