@@ -483,6 +483,10 @@
       {
         "resource": "Bucket",
         "resourceType": "AWS::S3::Bucket"
+      },
+      {
+        "resource": "MultiRegionAccessPoint",
+        "resourceType": "AWS::S3::MultiRegionAccessPoint"
       }
     ],
     "regions": ["us-east-1"],
