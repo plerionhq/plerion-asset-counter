@@ -485,6 +485,10 @@
         "resourceType": "AWS::S3::Bucket"
       },
       {
+        "resource": "AccessPoint",
+        "resourceType": "AWS::S3::AccessPoint"
+      },
+      {
         "resource": "MultiRegionAccessPoint",
         "resourceType": "AWS::S3::MultiRegionAccessPoint"
       }
