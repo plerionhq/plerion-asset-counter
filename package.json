@@ -42,6 +42,7 @@
     "@aws-sdk/client-cloudtrail": "^3.997.0",
     "@aws-sdk/client-cloudwatch": "^3.997.0",
     "@aws-sdk/client-cloudwatch-logs": "^3.997.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.1128.0",
     "@aws-sdk/client-compute-optimizer": "^3.997.0",
     "@aws-sdk/client-config-service": "^3.997.0",
     "@aws-sdk/client-docdb": "^3.997.0",
