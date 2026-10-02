@@ -9,7 +9,7 @@ import { updateResourceTypeCounter } from "../../../utils/index.js";
 // Plerion collects an Identity Center instance only in its primary region,
 // and only in the management or delegated administrator account: members
 // can list the organization's instance but are refused its contents.
-const administeredInstances = async (client, region) => {
+export const administeredInstances = async (client, region) => {
   const administered = [];
   for await (const page of paginateListInstances({ client }, {})) {
     for (const instance of page.Instances || []) {
