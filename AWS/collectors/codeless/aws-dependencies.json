@@ -1251,6 +1251,20 @@
     "id": "Backup",
     "resources": [
       {
+        "resourceType": "AWS::Backup::BackupPlan",
+        "list": {
+          "action": {
+            "command": "paginateListBackupPlans",
+            "outputProperty": "BackupPlansList"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "BackupClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-backup"
+        }
+      },
+      {
         "resourceType": "AWS::Backup::BackupVault",
         "list": {
           "action": {
