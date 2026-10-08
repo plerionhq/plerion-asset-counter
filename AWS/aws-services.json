@@ -3303,5 +3303,17 @@
       "us-west-2"
     ],
     "scope": "AWSAccount"
+  },
+  {
+    "service": "Route53",
+    "resources": [
+      {
+        "resource": "HostedZone",
+        "resourceType": "AWS::Route53::HostedZone"
+      }
+    ],
+    "regions": ["us-east-1"],
+    "scope": "AWSAccount",
+    "isGlobalNamespace": true
   }
 ]
