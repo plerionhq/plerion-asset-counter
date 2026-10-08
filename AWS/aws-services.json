@@ -2265,6 +2265,10 @@
     "service": "Backup",
     "resources": [
       {
+        "resource": "BackupPlan",
+        "resourceType": "AWS::Backup::BackupPlan"
+      },
+      {
         "resource": "BackupVault",
         "resourceType": "AWS::Backup::BackupVault"
       },
