@@ -112,6 +112,21 @@
         }
       },
       {
+        "resourceType": "AWS::EC2::NatGateway",
+        "list": {
+          "action": {
+            "command": "paginateDescribeNatGateways",
+            "outputProperty": "NatGateways",
+            "resourceIdentifier": "NatGatewayId"
+          }
+        },
+        "listClientConfig": {
+          "clientName": "EC2Client",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-ec2"
+        }
+      },
+      {
         "resourceType": "AWS::EC2::InternetGateway",
         "list": {
           "action": {
@@ -936,6 +951,20 @@
           "action": {
             "command": "paginateDescribeCacheClusters",
             "outputProperty": "CacheClusters"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::ElastiCache::ReplicationGroup",
+        "listClientConfig": {
+          "clientName": "ElastiCacheClient",
+          "clientType": "AWS_V3",
+          "packageName": "@aws-sdk/client-elasticache"
+        },
+        "list": {
+          "action": {
+            "command": "paginateDescribeReplicationGroups",
+            "outputProperty": "ReplicationGroups"
           }
         }
       }

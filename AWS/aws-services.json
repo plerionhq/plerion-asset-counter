@@ -139,6 +139,10 @@
         "resourceType": "AWS::EC2::InternetGateway"
       },
       {
+        "resource": "NatGateway",
+        "resourceType": "AWS::EC2::NatGateway"
+      },
+      {
         "resource": "AMI",
         "resourceType": "AWS::EC2::AMI"
       },
@@ -1709,6 +1713,10 @@
       {
         "resource": "CacheCluster",
         "resourceType": "AWS::ElastiCache::CacheCluster"
+      },
+      {
+        "resource": "ReplicationGroup",
+        "resourceType": "AWS::ElastiCache::ReplicationGroup"
       }
     ],
     "regions": [
