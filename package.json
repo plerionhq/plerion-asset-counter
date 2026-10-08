@@ -84,6 +84,7 @@
     "@aws-sdk/client-rekognition": "^3.997.0",
     "@aws-sdk/client-resource-groups": "^3.997.0",
     "@aws-sdk/client-rolesanywhere": "^3.1145.0",
+    "@aws-sdk/client-route-53": "^3.1147.0",
     "@aws-sdk/client-s3": "^3.997.0",
     "@aws-sdk/client-s3-control": "^3.997.0",
     "@aws-sdk/client-sagemaker": "^3.997.0",
