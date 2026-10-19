@@ -359,6 +359,10 @@
       {
         "resource": "Layer",
         "resourceType": "AWS::Lambda::Layer"
+      },
+      {
+        "resource": "WebFunction",
+        "resourceType": "AWS::Lambda::WebFunction"
       }
     ],
     "regions": [
