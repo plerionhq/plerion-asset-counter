@@ -12,14 +12,11 @@ export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
       resources.push(...(page.functions || []));
     }
   } catch (error) {
-    // Web Functions are served in a handful of regions; a region without
-    // the service answers with an unknown-endpoint or access error and
-    // counts as zero.
-    if (
-      error?.name !== "UnknownEndpoint" &&
-      error?.name !== "AccessDeniedException" &&
-      error?.code !== "ENOTFOUND"
-    ) {
+    // Web Functions are served in a handful of regions. Elsewhere the API
+    // answers 403 with an HTML body, which the SDK reports as a
+    // deserialization error; both count as zero.
+    const status = error?.$response?.statusCode ?? error?.$metadata?.httpStatusCode;
+    if (status !== 403 && error?.name !== "AccessDeniedException") {
       throw error;
     }
   }
