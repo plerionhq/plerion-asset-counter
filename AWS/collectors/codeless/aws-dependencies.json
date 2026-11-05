@@ -1485,5 +1485,24 @@
         }
       }
     ]
+  },
+  {
+    "id": "Transfer",
+    "resources": [
+      {
+        "resourceType": "AWS::Transfer::Server",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "TransferClient",
+          "packageName": "@aws-sdk/client-transfer"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListServers",
+            "outputProperty": "Servers"
+          }
+        }
+      }
+    ]
   }
 ]
