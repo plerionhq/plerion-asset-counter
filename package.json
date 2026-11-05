@@ -101,6 +101,7 @@
     "@aws-sdk/client-ssm": "^3.997.0",
     "@aws-sdk/client-sso-admin": "^3.1145.0",
     "@aws-sdk/client-sts": "^3.997.0",
+    "@aws-sdk/client-transfer": "^3.1145.0",
     "@aws-sdk/client-verifiedpermissions": "^3.1145.0",
     "@aws-sdk/client-waf-regional": "^3.997.0",
     "@aws-sdk/client-wafv2": "^3.997.0",
