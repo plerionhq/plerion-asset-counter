@@ -1658,5 +1658,24 @@
         ]
       }
     ]
+  },
+  {
+    "id": "GlobalAccelerator",
+    "resources": [
+      {
+        "resourceType": "AWS::GlobalAccelerator::Accelerator",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "GlobalAcceleratorClient",
+          "packageName": "@aws-sdk/client-global-accelerator"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListAccelerators",
+            "outputProperty": "Accelerators"
+          }
+        }
+      }
+    ]
   }
 ]
