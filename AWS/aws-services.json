@@ -1625,6 +1625,22 @@
       {
         "resource": "NodeGroup",
         "resourceType": "AWS::EKS::NodeGroup"
+      },
+      {
+        "resource": "Addon",
+        "resourceType": "AWS::EKS::Addon"
+      },
+      {
+        "resource": "FargateProfile",
+        "resourceType": "AWS::EKS::FargateProfile"
+      },
+      {
+        "resource": "IdentityProviderConfig",
+        "resourceType": "AWS::EKS::IdentityProviderConfig"
+      },
+      {
+        "resource": "PodIdentityAssociation",
+        "resourceType": "AWS::EKS::PodIdentityAssociation"
       }
     ],
     "regions": [
