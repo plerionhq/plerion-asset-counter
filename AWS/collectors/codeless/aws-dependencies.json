@@ -1677,5 +1677,24 @@
         }
       }
     ]
+  },
+  {
+    "id": "DSQL",
+    "resources": [
+      {
+        "resourceType": "AWS::DSQL::Cluster",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "DSQLClient",
+          "packageName": "@aws-sdk/client-dsql"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListClusters",
+            "outputProperty": "clusters"
+          }
+        }
+      }
+    ]
   }
 ]
