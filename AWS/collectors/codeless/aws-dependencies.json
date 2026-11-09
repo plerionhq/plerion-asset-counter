@@ -1749,5 +1749,94 @@
         }
       }
     ]
+  },
+  {
+    "id": "IoT",
+    "resources": [
+      {
+        "resourceType": "AWS::IoT::Authorizer",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "IoTClient",
+          "packageName": "@aws-sdk/client-iot"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListAuthorizers",
+            "outputProperty": "authorizers"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::IoT::CACertificate",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "IoTClient",
+          "packageName": "@aws-sdk/client-iot"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListCACertificates",
+            "outputProperty": "certificates"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::IoT::DomainConfiguration",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "IoTClient",
+          "packageName": "@aws-sdk/client-iot"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListDomainConfigurations",
+            "outputProperty": "domainConfigurations"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::IoT::Policy",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "IoTClient",
+          "packageName": "@aws-sdk/client-iot"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListPolicies",
+            "outputProperty": "policies"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::IoT::RoleAlias",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "IoTClient",
+          "packageName": "@aws-sdk/client-iot"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListRoleAliases",
+            "outputProperty": "roleAliases"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::IoT::TopicRule",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "IoTClient",
+          "packageName": "@aws-sdk/client-iot"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListTopicRules",
+            "outputProperty": "rules"
+          }
+        }
+      }
+    ]
   }
 ]
