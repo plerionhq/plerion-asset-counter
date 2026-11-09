@@ -1537,5 +1537,126 @@
         }
       }
     ]
+  },
+  {
+    "id": "Route53Resolver",
+    "resources": [
+      {
+        "resourceType": "AWS::Route53Resolver::FirewallDomainList",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "Route53ResolverClient",
+          "packageName": "@aws-sdk/client-route53resolver"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListFirewallDomainLists",
+            "outputProperty": "FirewallDomainLists"
+          }
+        },
+        "skipListed": [
+          {
+            "field": "ManagedOwnerName",
+            "equals": "Route 53 Resolver DNS Firewall"
+          }
+        ]
+      },
+      {
+        "resourceType": "AWS::Route53Resolver::FirewallRuleGroup",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "Route53ResolverClient",
+          "packageName": "@aws-sdk/client-route53resolver"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListFirewallRuleGroups",
+            "outputProperty": "FirewallRuleGroups"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::Route53Resolver::FirewallRuleGroupAssociation",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "Route53ResolverClient",
+          "packageName": "@aws-sdk/client-route53resolver"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListFirewallRuleGroupAssociations",
+            "outputProperty": "FirewallRuleGroupAssociations"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::Route53Resolver::ResolverEndpoint",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "Route53ResolverClient",
+          "packageName": "@aws-sdk/client-route53resolver"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListResolverEndpoints",
+            "outputProperty": "ResolverEndpoints"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::Route53Resolver::ResolverQueryLoggingConfig",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "Route53ResolverClient",
+          "packageName": "@aws-sdk/client-route53resolver"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListResolverQueryLogConfigs",
+            "outputProperty": "ResolverQueryLogConfigs"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::Route53Resolver::ResolverRule",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "Route53ResolverClient",
+          "packageName": "@aws-sdk/client-route53resolver"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListResolverRules",
+            "outputProperty": "ResolverRules"
+          }
+        },
+        "skipListed": [
+          {
+            "field": "OwnerId",
+            "equals": "Route 53 Resolver"
+          }
+        ]
+      },
+      {
+        "resourceType": "AWS::Route53Resolver::ResolverRuleAssociation",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "Route53ResolverClient",
+          "packageName": "@aws-sdk/client-route53resolver"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListResolverRuleAssociations",
+            "outputProperty": "ResolverRuleAssociations"
+          }
+        },
+        "skipListed": [
+          {
+            "field": "ResolverRuleId",
+            "equals": "rslvr-autodefined-rr-internet-resolver"
+          }
+        ]
+      }
+    ]
   }
 ]

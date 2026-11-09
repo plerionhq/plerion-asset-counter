@@ -149,7 +149,16 @@ export const queryDependencies = async (
             nextRequestPageToken
           );
         }
-        const resultsLength = resources.length || 0;
+        // AWS-owned resources the collector leaves out, so the count
+        // matches what it stores.
+        const skipListed = resourceTypeDependency.skipListed || [];
+        const counted = resources.filter(
+          (resource) =>
+            !skipListed.some(
+              ({ field, equals }) => resource?.[field] === equals,
+            ),
+        );
+        const resultsLength = counted.length || 0;
         updateResourceTypeCounter(
           AWS_MAPPING,
           serviceName,
