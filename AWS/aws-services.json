@@ -3436,5 +3436,20 @@
       "us-west-2"
     ],
     "scope": "AWSAccount"
+  },
+  {
+    "service": "GlobalAccelerator",
+    "resources": [
+      {
+        "resource": "Accelerator",
+        "resourceType": "AWS::GlobalAccelerator::Accelerator"
+      },
+      {
+        "resource": "Listener",
+        "resourceType": "AWS::GlobalAccelerator::Listener"
+      }
+    ],
+    "regions": ["us-west-2"],
+    "scope": "AWSAccount"
   }
 ]
