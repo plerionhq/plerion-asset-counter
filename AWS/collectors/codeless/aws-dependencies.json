@@ -1504,5 +1504,38 @@
         }
       }
     ]
+  },
+  {
+    "id": "OpenSearchServerless",
+    "resources": [
+      {
+        "resourceType": "AWS::OpenSearchServerless::Collection",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "OpenSearchServerlessClient",
+          "packageName": "@aws-sdk/client-opensearchserverless"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListCollections",
+            "outputProperty": "collectionSummaries"
+          }
+        }
+      },
+      {
+        "resourceType": "AWS::OpenSearchServerless::VpcEndpoint",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "OpenSearchServerlessClient",
+          "packageName": "@aws-sdk/client-opensearchserverless"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListVpcEndpoints",
+            "outputProperty": "vpcEndpointSummaries"
+          }
+        }
+      }
+    ]
   }
 ]
