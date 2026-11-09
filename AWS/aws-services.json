@@ -1167,6 +1167,10 @@
       {
         "resource": "Cluster",
         "resourceType": "AWS::MSK::Cluster"
+      },
+      {
+        "resource": "VpcConnection",
+        "resourceType": "AWS::MSK::VpcConnection"
       }
     ],
     "regions": [

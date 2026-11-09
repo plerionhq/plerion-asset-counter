@@ -706,6 +706,20 @@
             "outputProperty": "ClusterInfoList"
           }
         }
+      },
+      {
+        "resourceType": "AWS::MSK::VpcConnection",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "KafkaClient",
+          "packageName": "@aws-sdk/client-kafka"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListVpcConnections",
+            "outputProperty": "VpcConnections"
+          }
+        }
       }
     ]
   },
