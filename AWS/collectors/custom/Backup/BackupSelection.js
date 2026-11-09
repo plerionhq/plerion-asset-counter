@@ -6,8 +6,7 @@ import {
 import { updateResourceTypeCounter } from "../../../utils/index.js";
 
 // Selections hang off a plan: AWS Backup has no account-wide list. List the
-// plans, then each plan's selections (mirrors service-collector's
-// BackupSelection collector).
+// plans, then each plan's selections.
 export const query = async (AWS_MAPPING, serviceName, resourceType, region) => {
   const client = new BackupClient({ region });
   const planIds = [];
