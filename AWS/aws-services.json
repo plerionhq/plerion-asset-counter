@@ -2293,6 +2293,10 @@
         "resourceType": "AWS::Backup::BackupPlan"
       },
       {
+        "resource": "BackupSelection",
+        "resourceType": "AWS::Backup::BackupSelection"
+      },
+      {
         "resource": "BackupVault",
         "resourceType": "AWS::Backup::BackupVault"
       },
