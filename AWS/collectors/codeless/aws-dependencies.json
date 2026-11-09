@@ -1710,5 +1710,44 @@
         }
       }
     ]
+  },
+  {
+    "id": "Athena",
+    "resources": [
+      {
+        "resourceType": "AWS::Athena::DataCatalog",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "AthenaClient",
+          "packageName": "@aws-sdk/client-athena"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListDataCatalogs",
+            "outputProperty": "DataCatalogsSummary"
+          }
+        },
+        "skipListed": [
+          {
+            "field": "CatalogName",
+            "equals": "AwsDataCatalog"
+          }
+        ]
+      },
+      {
+        "resourceType": "AWS::Athena::WorkGroup",
+        "listClientConfig": {
+          "clientType": "AWS_V3",
+          "clientName": "AthenaClient",
+          "packageName": "@aws-sdk/client-athena"
+        },
+        "list": {
+          "action": {
+            "command": "paginateListWorkGroups",
+            "outputProperty": "WorkGroups"
+          }
+        }
+      }
+    ]
   }
 ]
