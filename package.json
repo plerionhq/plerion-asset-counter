@@ -48,6 +48,7 @@
     "@aws-sdk/client-config-service": "^3.997.0",
     "@aws-sdk/client-directory-service": "^3.1145.0",
     "@aws-sdk/client-docdb": "^3.997.0",
+    "@aws-sdk/client-dsql": "^3.997.0",
     "@aws-sdk/client-dynamodb": "^3.997.0",
     "@aws-sdk/client-ec2": "^3.997.0",
     "@aws-sdk/client-ecr": "^3.997.0",
