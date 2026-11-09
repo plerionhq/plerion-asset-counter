@@ -69,6 +69,7 @@
     "@aws-sdk/client-iam": "^3.997.0",
     "@aws-sdk/client-identitystore": "^3.1145.0",
     "@aws-sdk/client-inspector2": "^3.997.0",
+    "@aws-sdk/client-iot": "^3.997.0",
     "@aws-sdk/client-kafka": "^3.997.0",
     "@aws-sdk/client-kinesis": "^3.1128.0",
     "@aws-sdk/client-kms": "^3.997.0",
