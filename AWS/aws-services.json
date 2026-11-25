@@ -3014,6 +3014,18 @@
     "scope": "AWSAccount"
   },
   {
+    "service": "Account",
+    "resources": [
+      {
+        "resource": "AlternateContact",
+        "resourceType": "AWS::Account::AlternateContact"
+      }
+    ],
+    "regions": ["us-east-1"],
+    "scope": "AWSAccount",
+    "isGlobalNamespace": true
+  },
+  {
     "service": "Signin",
     "resources": [
       {
